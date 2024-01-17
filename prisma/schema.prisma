@@ -12,35 +12,38 @@ datasource db {
 
 
 model UserProfile {
-  id                Int        @id @default(autoincrement())
-  email             String     @unique
-  password          String
-  createdAt         DateTime   @default(now())
-  companyId         String
-  companyName       String
-  address           String
-  administrator     Boolean
-  shippingInformations ShippingInformations[]
+  id                   Int        @id @default(autoincrement())
+  email                String     @unique
+  password             String
+  createdAt            DateTime   @default(now())
+  companyId            String
+  companyName          String
+  address              String
+  administrator        Boolean
+  shippingInformations ShippingInformation[]
   }
 
-model ShippingInformations {
-  id                Int        @id @default(autoincrement())
-  createdAt         DateTime   @default(now())
-  containerProfile  ContainerProfile[]
-  userProfileId     Int //foreign key
-  userProfile       UserProfile @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
-    }
+model ShippingInformation {
+  id                        Int        @id @default(autoincrement())
+  createdAt                 DateTime   @default(now())
+  containerProfile          ContainerProfile[]
+  userProfileForeignKey     Int
+  userProfile               UserProfile @relation(fields: [userProfileForeignKey], references: [id], onDelete: Cascade)
+  }
 
 
 model ContainerProfile {
-  id                         Int        @id @default(autoincrement())
-  createdAt                  DateTime   @default(now())
-  quantity                   Int
-  locationOrigin             LocationOrigin []
-  wasteProfile               WasteProfile []
-  containerType              ContainerType []
-  shippingInformationsId     Int // foreign key
-  shippingInformations       ShippingInformations @relation(fields: [shippingInformationsId], references: [id], onDelete: Cascade)
+  id                                Int        @id @default(autoincrement())
+  createdAt                         DateTime   @default(now())
+  quantity                          Int
+  shippingInformationForeignKey     Int
+  shippingInformation               ShippingInformation @relation(fields: [shippingInformationForeignKey], references: [id], onDelete: Cascade)
+  locationOriginForeignKey          Int
+  locationOrigin                    LocationOrigin @relation(fields: [locationOriginForeignKey], references: [id],  onDelete: Cascade)
+  wasteProfileForeignKey            Int
+  wasteProfile                      WasteProfile @relation(fields: [wasteProfileForeignKey], references: [id],  onDelete: Cascade)
+  containerTypeForeignKey           Int
+  containerType                     ContainerType @relation(fields: [containerTypeForeignKey], references: [id],  onDelete: Cascade)
   }
 
   model LocationOrigin {
@@ -48,8 +51,10 @@ model ContainerProfile {
   name                 String
   address              String
   origin               String
-  containerProfileId   Int // foreign key
-  containerProfile     ContainerProfile @relation(fields: [containerProfileId], references: [id], onDelete: Cascade)
+  containerProfile     ContainerProfile[]
+
+// If we have a "containerProfile" field in the "LocationOrigin" model that is of type "ContainerProfile[]", 
+// it means that it is expected that one location can be associated with multiple "ContainerProfile" entities.
   }
 
 
@@ -65,8 +70,7 @@ model ContainerProfile {
   biologicalProperties        String
   collectionProcedures        String
   recommendationsForTransport String
-  containerProfileId          Int // foreign key
-  containerProfile            ContainerProfile @relation(fields: [containerProfileId], references: [id], onDelete: Cascade)
+  containerProfile            ContainerProfile[]
   }
 
 
@@ -80,8 +84,7 @@ model ContainerProfile {
   physicalProperties   String
   footprint            Int
   description          String
-  containerProfileId   Int // foreign key
-  containerProfile     ContainerProfile @relation(fields: [containerProfileId], references: [id], onDelete: Cascade)
+  containerProfile     ContainerProfile[]
   }
 
 
