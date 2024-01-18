@@ -99,6 +99,10 @@ module.exports = {
 
 --------------------
 
+** Prettier plugin for Prisma **
+
+npm i -D prettier-plugin-prisma
+
 
 --------------------
 

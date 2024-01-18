@@ -16,7 +16,7 @@ model UserProfile {
   email                String     @unique
   password             String
   createdAt            DateTime   @default(now())
-  companyId            String
+  companyId            Int
   companyName          String
   address              String
   administrator        Boolean
@@ -26,7 +26,7 @@ model UserProfile {
 model ShippingInformation {
   id                        Int        @id @default(autoincrement())
   createdAt                 DateTime   @default(now())
-  containerProfile          ContainerProfile[]
+  containerProfiles         ContainerProfile[]
   userProfileForeignKey     Int
   userProfile               UserProfile @relation(fields: [userProfileForeignKey], references: [id], onDelete: Cascade)
   }
@@ -51,7 +51,7 @@ model ContainerProfile {
   name                 String
   address              String
   origin               String
-  containerProfile     ContainerProfile[]
+  containerProfiles    ContainerProfile[]
 
 // If we have a "containerProfile" field in the "LocationOrigin" model that is of type "ContainerProfile[]", 
 // it means that it is expected that one location can be associated with multiple "ContainerProfile" entities.
@@ -70,7 +70,7 @@ model ContainerProfile {
   biologicalProperties        String
   collectionProcedures        String
   recommendationsForTransport String
-  containerProfile            ContainerProfile[]
+  containerProfiles           ContainerProfile[]
   }
 
 
@@ -84,7 +84,7 @@ model ContainerProfile {
   physicalProperties   String
   footprint            Int
   description          String
-  containerProfile     ContainerProfile[]
+  containerProfiles    ContainerProfile[]
   }
 
 
