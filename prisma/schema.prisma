@@ -10,56 +10,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model UserProfile {
-  id                   Int        @id @default(autoincrement())
-  email                String     @unique
+  id                   Int                   @id @default(autoincrement())
+  email                String                @unique
   password             String
-  createdAt            DateTime   @default(now())
+  createdAt            DateTime              @default(now())
   companyId            Int
   companyName          String
   address              String
   administrator        Boolean
   shippingInformations ShippingInformation[]
-  }
+}
+
+// Setep 1 Shipping Informations
 
 model ShippingInformation {
-  id                        Int        @id @default(autoincrement())
-  createdAt                 DateTime   @default(now())
-  containerProfiles         ContainerProfile[]
-  userProfileForeignKey     Int
-  userProfile               UserProfile @relation(fields: [userProfileForeignKey], references: [id], onDelete: Cascade)
-  }
-
+  id                Int                @id @default(autoincrement())
+  createdAt         DateTime           @default(now())
+  containerProfiles ContainerProfile[]
+  userProfileId     Int                @unique
+  userProfile       UserProfile        @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+}
 
 model ContainerProfile {
-  id                                Int        @id @default(autoincrement())
-  createdAt                         DateTime   @default(now())
-  quantity                          Int
-  shippingInformationForeignKey     Int
-  shippingInformation               ShippingInformation @relation(fields: [shippingInformationForeignKey], references: [id], onDelete: Cascade)
-  locationOriginForeignKey          Int
-  locationOrigin                    LocationOrigin @relation(fields: [locationOriginForeignKey], references: [id],  onDelete: Cascade)
-  wasteProfileForeignKey            Int
-  wasteProfile                      WasteProfile @relation(fields: [wasteProfileForeignKey], references: [id],  onDelete: Cascade)
-  containerTypeForeignKey           Int
-  containerType                     ContainerType @relation(fields: [containerTypeForeignKey], references: [id],  onDelete: Cascade)
-  }
+  id                    Int                 @id @default(autoincrement())
+  createdAt             DateTime            @default(now())
+  quantity              Int
+  shippingInformationId Int                 @unique
+  shippingInformation   ShippingInformation @relation(fields: [shippingInformationId], references: [id], onDelete: Cascade)
+  locationOriginId      Int                 @unique
+  locationOrigin        LocationOrigin      @relation(fields: [locationOriginId], references: [id], onDelete: Cascade)
+  wasteProfileId        Int                 @unique
+  wasteProfile          WasteProfile        @relation(fields: [wasteProfileId], references: [id], onDelete: Cascade)
+  containerTypeId       Int                 @unique
+  containerType         ContainerType       @relation(fields: [containerTypeId], references: [id], onDelete: Cascade)
+}
 
-  model LocationOrigin {
-  id                   Int        @id @default(autoincrement())
-  name                 String
-  address              String
-  origin               String
-  containerProfiles    ContainerProfile[]
+model LocationOrigin {
+  id                Int                @id @default(autoincrement())
+  name              String
+  address           String
+  origin            String
+  containerProfiles ContainerProfile[]
 
-// If we have a "containerProfile" field in the "LocationOrigin" model that is of type "ContainerProfile[]", 
-// it means that it is expected that one location can be associated with multiple "ContainerProfile" entities.
-  }
+  // If we have a "containerProfiles" field in the "LocationOrigin" model that is of type "ContainerProfile[]", 
+  // it means that it is expected that one location can be associated with multiple "ContainerProfile" entities.
+}
 
-
-  model WasteProfile  {
-  id                          Int        @id @default(autoincrement())
+model WasteProfile {
+  id                          Int                @id @default(autoincrement())
   name                        String
   typeOfWaste                 String
   wasteDescription            String
@@ -71,21 +70,122 @@ model ContainerProfile {
   collectionProcedures        String
   recommendationsForTransport String
   containerProfiles           ContainerProfile[]
-  }
+}
 
+model ContainerType {
+  id                 Int                @id @default(autoincrement())
+  name               String
+  material           String
+  volume             Int
+  carryingCapacity   Int
+  radioactivityLevel String
+  physicalProperties String
+  footprint          Int
+  description        String
+  containerProfiles  ContainerProfile[]
+}
 
-  model ContainerType {
-  id                   Int        @id @default(autoincrement())
-  name                 String
-  material             String
-  volume               Int
-  carryingCapacity     Int
-  radioactivityLevel   String
-  physicalProperties   String
-  footprint            Int
-  description          String
-  containerProfiles    ContainerProfile[]
-  }
+// Step 2 "Pre-storage of waste"
 
+model PreStorageOfWaste {
+  id                              Int                           @id @default(autoincrement())
+  createdAt                       DateTime                      @default(now())
+  quantity                        Int
+  preStorageTypeId                Int                           @unique
+  preStorageType                  PreStorageType                @relation(fields: [preStorageTypeId], references: [id], onDelete: Cascade)
+  preStorageLocationId            Int                           @unique
+  preStorageLocation              PreStorageLocation            @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
+  responsibleEmployeePreStorageId Int                           @unique
+  responsibleEmployeePreStorage   ResponsibleEmployeePreStorage @relation(fields: [responsibleEmployeePreStorageId], references: [id], onDelete: Cascade)
+}
 
-  
+model PreStorageType {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  surfaceArea        Int
+  preStorageFor      String
+  preStorageOfWastes PreStorageOfWaste[]
+}
+
+model PreStorageLocation {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  depth              Int
+  stockroom          String
+  preStorageOfWastes PreStorageOfWaste[]
+}
+
+model ResponsibleEmployeePreStorage {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  surname            String
+  dateOfBirth        Int
+  address            String
+  position           String
+  safetyTraining     Boolean
+  preStorageOfWastes PreStorageOfWaste[]
+}
+
+// Step 2.1 Pre-Storage Conditions
+
+model PreStorageConditions {
+  id                       Int      @id @default(autoincrement())
+  createdAt                DateTime @default(now())
+  preStorageTemperature    Float
+  preStorageRadiationLevel Float
+  preStorageHumidity       Float
+  preStoragePressure       Int
+}
+
+// Step 3 "Storage of waste"
+
+model StorageOfWaste {
+  id                           Int                        @id @default(autoincrement())
+  createdAt                    DateTime                   @default(now())
+  quantity                     Int
+  storageTypeId                Int                        @unique
+  storageType                  StorageType                @relation(fields: [storageTypeId], references: [id], onDelete: Cascade)
+  storageLocationId            Int                        @unique
+  storageLocation              StorageLocation            @relation(fields: [storageLocationId], references: [id], onDelete: Cascade)
+  responsibleEmployeeStorageId Int                        @unique
+  responsibleEmployeeStorage   ResponsibleEmployeeStorage @relation(fields: [responsibleEmployeeStorageId], references: [id], onDelete: Cascade)
+}
+
+model StorageType {
+  id              Int              @id @default(autoincrement())
+  name            String
+  surfaceArea     Int
+  storageFor      String
+  storageOfWastes StorageOfWaste[]
+}
+
+model StorageLocation {
+  id              Int              @id @default(autoincrement())
+  name            String
+  level           Int
+  delepth         Int
+  roomName        String
+  storageOfWastes StorageOfWaste[]
+}
+
+model ResponsibleEmployeeStorage {
+  id              Int              @id @default(autoincrement())
+  name            String
+  surname         String
+  dateOfBirth     Int
+  address         String
+  position        String
+  safetyTraining  Boolean
+  storageOfWastes StorageOfWaste[]
+}
+
+// Step 3.1 Storage Conditions
+
+model StorageConditions {
+  id                    Int      @id @default(autoincrement())
+  createdAt             DateTime @default(now())
+  storageTemperature    Float
+  storageRadiationLevel Float
+  storageHumidity       Float
+  storagePressure       Float
+}
