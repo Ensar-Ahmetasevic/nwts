@@ -2,26 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.btnSave {
+  @apply btn btn-sm rounded-md border border-blue-400 bg-transparent text-blue-400 hover:border-blue-600 hover:bg-blue-600 hover:text-white;
+}
+.btnUpdate {
+  @apply btn btn-sm rounded-md border border-yellow-500 bg-transparent text-yellow-500 hover:border-yellow-500 hover:bg-yellow-500 hover:text-white;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.btnCancel {
+  @apply btn btn-sm rounded-md border border-green-500 bg-transparent text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.btnDelete {
+  @apply btn btn-sm rounded-md border border-red-500 bg-transparent text-red-500 hover:border-red-500 hover:bg-red-500 hover:text-white;
 }
