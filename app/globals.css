@@ -10,7 +10,7 @@
 }
 
 .btnCancel {
-  @apply btn btn-sm rounded-md border border-green-500 bg-transparent text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white;
+  @apply btn  rounded-md border-2 border-green-500 bg-transparent text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white;
 }
 
 .btnDelete {

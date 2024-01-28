@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 
 function ShippingInformations() {
-  const [showContainerProfile, setshowContainerProfile] = useState(null);
+  const [showContainerProfile, setshowContainerProfile] = useState(false);
+  const [isMouseDown, setIsMouseDown] = useState(false);
 
   const router = useRouter();
 
@@ -21,11 +22,29 @@ function ShippingInformations() {
     setshowContainerProfile(!showContainerProfile);
   }
 
+  function isFormSubmit(data) {
+    console.log(data.example);
+    console.log(errors.example);
+
+    setshowContainerProfile(false);
+    reset();
+  }
+
+  const handleMouseDown = () => {
+    setIsMouseDown(true);
+    console.log("isMouseDown - true");
+  };
+
+  const handleMouseUp = () => {
+    setIsMouseDown(false);
+    console.log("isMouseDown - false");
+  };
+
   return (
     <>
       <section id="shippingInformations">
-        <div className="container mx-auto flex flex-row justify-center  rounded-md border-4 pt-20 text-center">
-          <div className="mx-1/2 container flex flex-col space-y-8 rounded-md border-4 text-center">
+        <div className="container mx-auto flex flex-row justify-center  rounded-md border-2 pt-20 text-center">
+          <div className="mx-1/2 container flex flex-col space-y-8 rounded-md border-2 text-center">
             <div className="flex flex-row items-center justify-center space-x-6">
               <h2>Crate New Shipping Informations</h2>
               <button
@@ -49,21 +68,50 @@ function ShippingInformations() {
 
             {/* Add Container Profiles Data  */}
             {showContainerProfile ? (
-              <form className="flex flex-col items-center space-y-3">
-                <div className="flex flex-col items-center space-y-1 ">
-                  <label htmlFor="quantity">
-                    Enter the number of containers:
-                  </label>
+              <form
+                className="flex flex-col items-center space-y-3"
+                onSubmit={handleSubmit(isFormSubmit)}
+              >
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text">Quantity:</span>
+                  </div>
                   <input
-                    className="flex-1 rounded-md border-2 px-1 py-1"
-                    id="quantity"
+                    className="input input-bordered w-full max-w-xs"
                     type="number"
-                    placeholder="Enter container quantity"
+                    placeholder="Type here"
+                    {...register("example", {
+                      required: true,
+                      min: 1,
+                    })}
                   />
-                </div>
+                  {errors.example && <p>This is required</p>}
+                </label>
+
+                <label htmlFor="location-origin">
+                  Please select location origin
+                  <select
+                    className="select select-bordered w-full max-w-xs"
+                    id="location-origin"
+                    label="Favorite Animal"
+                    {...register("gender")}
+                  >
+                    <option value="Zwischenlager Brokdorf">
+                      Zwischenlager Brokdorf
+                    </option>
+                    <option value="Zwischenlager Ahaus">
+                      Zwischenlager Ahaus
+                    </option>
+                  </select>
+                </label>
 
                 <div>
-                  <button className="button-add" type="submit">
+                  <button
+                    className={`border-2 border-red-500 p-2 ${isMouseDown ? "scale-95 rounded-md shadow-lg transition duration-200 ease-in-out" : ""}`}
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    type="submit"
+                  >
                     Save
                   </button>
                 </div>
@@ -72,7 +120,7 @@ function ShippingInformations() {
           </div>
 
           {/* Container Profiles Data Details*/}
-          <div className="mx-1/2 container flex flex-col space-y-8 rounded-md border-4 text-left">
+          <div className="mx-1/2 container flex flex-col space-y-8 rounded-md border-2 text-left">
             <h1 className="mb-4 text-lg font-medium">
               Shipping informations data:
             </h1>
