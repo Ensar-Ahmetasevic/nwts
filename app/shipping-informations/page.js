@@ -5,11 +5,15 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 
+import useCreateShippingInformationsMutation from "../../requests/requests-for-shipping-information/use-create-shipping-informations-mutation";
+import useShippingInformationQuery from "../../requests/requests-for-shipping-information/use-shipping-informations-query";
+
 function ShippingInformations() {
   const [showContainerProfile, setshowContainerProfile] = useState(false);
-  const [isMouseDown, setIsMouseDown] = useState(false);
 
-  const router = useRouter();
+  // const { data } = useShippingInformationQuery();
+
+  // console.log("I am comming from frontend page:", data);
 
   const {
     register,
@@ -18,27 +22,35 @@ function ShippingInformations() {
     formState: { errors },
   } = useForm();
 
+  const createShippingInformationsMutation =
+    useCreateShippingInformationsMutation();
+
+  function isShippingFormSubmit(data) {
+    const name = data.name.trim(); // Remove leading and trailing whitespace
+
+    if (name === "") {
+      reset();
+      return;
+    }
+
+    createShippingInformationsMutation.mutateAsync({ name });
+
+    reset();
+  }
+
   function toggleContainerProfileHandler() {
     setshowContainerProfile(!showContainerProfile);
   }
 
   function isFormSubmit(data) {
-    console.log(data.example);
-    console.log(errors.example);
+    // console.log(data.quantity);
+    // console.log(data.locationOrigin);
+    // console.log(data.wasteProfile);
+    // console.log(data.containerType);
 
     setshowContainerProfile(false);
     reset();
   }
-
-  const handleMouseDown = () => {
-    setIsMouseDown(true);
-    console.log("isMouseDown - true");
-  };
-
-  const handleMouseUp = () => {
-    setIsMouseDown(false);
-    console.log("isMouseDown - false");
-  };
 
   return (
     <>
@@ -47,17 +59,27 @@ function ShippingInformations() {
           <div className="mx-1/2 container flex flex-col space-y-8 rounded-md border-2 text-center">
             <div className="flex flex-row items-center justify-center space-x-6">
               <h2>Crate New Shipping Informations</h2>
-              <button
-                className="btnCancel"
-                onClick={() => toggleContainerProfileHandler()}
-                disabled={showContainerProfile}
-              >
-                Create
-              </button>
+              <form onSubmit={handleSubmit(isShippingFormSubmit)}>
+                <input
+                  className="input input-bordered input-md px-2"
+                  type="text"
+                  placeholder="Name"
+                  {...register("name", {
+                    required: true,
+                  })}
+                />
+                <button
+                  className="btnCancel"
+                  type="submit"
+                  disabled={showContainerProfile}
+                >
+                  Create
+                </button>
+              </form>
             </div>
 
             <div>
-              <h3>Name: ID Numer + Date</h3> <h3>Created: Time and Date</h3>
+              <h3>Shiping name: 001 29.01.2024</h3>
             </div>
 
             {/* {data ? (
@@ -69,33 +91,38 @@ function ShippingInformations() {
             {/* Add Container Profiles Data  */}
             {showContainerProfile ? (
               <form
-                className="flex flex-col items-center space-y-3"
+                className="flex flex-col items-start space-y-4"
                 onSubmit={handleSubmit(isFormSubmit)}
               >
-                <label className="form-control w-full max-w-xs">
-                  <div className="label">
-                    <span className="label-text">Quantity:</span>
-                  </div>
+                <div className="flex flex-col space-y-2">
+                  <label className="text-left text-sm">Quantity:</label>
                   <input
-                    className="input input-bordered w-full max-w-xs"
+                    className="input input-bordered input-md px-2"
                     type="number"
                     placeholder="Type here"
-                    {...register("example", {
+                    {...register("quantity", {
                       required: true,
                       min: 1,
                     })}
                   />
                   {errors.example && <p>This is required</p>}
-                </label>
+                </div>
 
-                <label htmlFor="location-origin">
-                  Please select location origin
-                  <select
-                    className="select select-bordered w-full max-w-xs"
-                    id="location-origin"
-                    label="Favorite Animal"
-                    {...register("gender")}
+                {/* Location origin */}
+                <div className="flex w-64 flex-col space-y-2">
+                  <label
+                    className="text-left text-sm"
+                    htmlFor="location-origin"
                   >
+                    Please select location origin
+                  </label>
+
+                  <select
+                    className="select select-bordered select-md px-2"
+                    id="location-origin"
+                    {...register("locationOrigin")}
+                  >
+                    <option>---</option>
                     <option value="Zwischenlager Brokdorf">
                       Zwischenlager Brokdorf
                     </option>
@@ -103,15 +130,48 @@ function ShippingInformations() {
                       Zwischenlager Ahaus
                     </option>
                   </select>
-                </label>
+                </div>
+
+                {/* Waste profile */}
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm" htmlFor="waste-profile">
+                    Please select waste profile
+                  </label>
+
+                  <select
+                    className="select select-bordered select-md px-2"
+                    id="waste-profile"
+                    {...register("wasteProfile")}
+                  >
+                    <option>---</option>
+                    <option value="M001">M001</option>
+                    <option value="M002">M002</option>
+                  </select>
+                </div>
+
+                {/* Container type */}
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm" htmlFor="container-type">
+                    Please select container type
+                  </label>
+
+                  <select
+                    className="select select-bordered select-md px-2"
+                    id="container-type"
+                    {...register("containerType")}
+                  >
+                    <option>---</option>
+                    <option value="Concrete container">
+                      Concrete container
+                    </option>
+                    <option value="Strengthened steel container">
+                      Strengthened steel container
+                    </option>
+                  </select>
+                </div>
 
                 <div>
-                  <button
-                    className={`border-2 border-red-500 p-2 ${isMouseDown ? "scale-95 rounded-md shadow-lg transition duration-200 ease-in-out" : ""}`}
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                    type="submit"
-                  >
+                  <button className="btnSave" type="submit">
                     Save
                   </button>
                 </div>
