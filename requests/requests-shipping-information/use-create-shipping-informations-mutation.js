@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 function useCreateShippingInformationsMutation() {
   const queryClient = useQueryClient();
 
-  const createShippingInformationsMutation = async (name) => {
+  const createShippingInformationsMutation = async () => {
     try {
-      const response = await axios.post("/api/submit", name);
+      const response = await axios.post("/api/shipping-informations");
 
       return response;
     } catch (error) {

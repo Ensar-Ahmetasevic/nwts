@@ -27,7 +27,6 @@ model UserProfile {
 model ShippingInformation {
   id                Int                @id @default(autoincrement())
   createdAt         DateTime           @default(now())
-  name              String
   containerProfiles ContainerProfile[]
   userProfileId     Int?               @unique
   userProfile       UserProfile?       @relation(fields: [userProfileId], references: [id], onDelete: Cascade)

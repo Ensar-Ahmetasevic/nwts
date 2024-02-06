@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const FetchshippingInformationData = async () => {
-  const response = await axios.get("/api/submit");
+  const response = await axios.get("/api/shipping-informations");
 
-  console.log("i am comming from query", response.data);
+  const data = response.data;
 
-  return response.data;
+  return data;
 };
 
 const useShippingInformationQuery = () => {
