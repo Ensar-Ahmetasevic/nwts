@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import useCreateLocationOriginMutation from "../../../../requests/requests-container-profile/requests-location-origin/use-create-location-origin-mutation";
+import useCreateContainerTypeMutation from "../../../../requests/request-container-profile/request-container-type/use-create-container-type-mutation";
 
 function FormContainerType({ cancelContainerTypeForm }) {
   const {
@@ -9,7 +9,7 @@ function FormContainerType({ cancelContainerTypeForm }) {
     formState: { errors },
   } = useForm();
 
-  const createLocationOriginMutation = useCreateLocationOriginMutation();
+  const createContainerTypeMutation = useCreateContainerTypeMutation();
 
   function isFormSubmit({
     name,
@@ -39,7 +39,7 @@ function FormContainerType({ cancelContainerTypeForm }) {
       footprint,
       description: trimmeddescription,
     };
-    createLocationOriginMutation.mutateAsync({ formData });
+    createContainerTypeMutation.mutateAsync({ formData });
 
     cancelContainerTypeForm(null);
     reset();
@@ -78,6 +78,7 @@ function FormContainerType({ cancelContainerTypeForm }) {
           <input
             className="input input-bordered input-md px-2"
             type="number"
+            step=".01"
             placeholder="Type here"
             {...register("volume", {
               required: true,
@@ -91,6 +92,7 @@ function FormContainerType({ cancelContainerTypeForm }) {
           <input
             className="input input-bordered input-md px-2"
             type="number"
+            step=".01"
             placeholder="Type here"
             {...register("carryingCapacity", {
               required: true,
@@ -128,6 +130,7 @@ function FormContainerType({ cancelContainerTypeForm }) {
           <input
             className="input input-bordered input-md px-2"
             type="number"
+            step=".01"
             placeholder="Type here"
             {...register("footprint", {
               required: true,

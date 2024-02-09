@@ -76,11 +76,11 @@ model ContainerType {
   id                 Int                @id @default(autoincrement())
   name               String
   material           String
-  volume             Int
-  carryingCapacity   Int
+  volume             Float
+  carryingCapacity   Float
   radioactivityLevel String
   physicalProperties String
-  footprint          Int
+  footprint          Float
   description        String
   containerProfiles  ContainerProfile[]
 }

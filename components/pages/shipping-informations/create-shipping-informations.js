@@ -1,8 +1,8 @@
 "use client";
 
 import AllShippingInformations from "./all-shipping-informations";
-import useCreateShippingInformationsMutation from "../../../requests/requests-shipping-information/use-create-shipping-informations-mutation";
-import useShippingInformationQuery from "../../../requests/requests-shipping-information/use-fetch-shipping-informations";
+import useShippingInformationQuery from "../../../requests/request-shipping-information/use-fetch-shipping-informations";
+import useCreateShippingInformationsMutation from "./../../../requests/request-shipping-information/use-create-shipping-informations-mutation";
 
 function CreateShippingInformations() {
   //Fetching data

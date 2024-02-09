@@ -6,25 +6,50 @@ const prisma = new PrismaClient();
 // Createing  data
 export async function POST(req, res) {
   const formData = await req.json();
-  const { name, address, origin } = formData;
+  const {
+    name,
+    material,
+    volume,
+    carryingCapacity,
+    radioactivityLevel,
+    physicalProperties,
+    footprint,
+    description,
+  } = formData;
 
   if (!formData) {
     return NextResponse.json(
-      { message: "Backend: `Did not recive data from Location Origin form`" },
+      { message: "Backend: `Did not receive data from Container Type form`" },
       { status: 200 },
     );
   }
 
   try {
-    await prisma.locationOrigin.create({ data: { name, address, origin } });
+    // Parse volume to float
+    const parsedVolume = parseFloat(volume);
+    const parsedCarryingCapacity = parseFloat(carryingCapacity);
+    const parsedFootprint = parseFloat(footprint);
+
+    await prisma.containerType.create({
+      data: {
+        name,
+        material,
+        volume: parsedVolume,
+        carryingCapacity: parsedCarryingCapacity,
+        radioactivityLevel,
+        physicalProperties,
+        footprint: parsedFootprint,
+        description,
+      },
+    });
 
     return NextResponse.json(
-      { message: "New Location Origin added successfully." },
+      { message: "New Container Type added successfully." },
       { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to create Location Origin" },
+      { message: "Failed to create Container Type" },
       { status: 500 },
       { error: `${error.message}` },
     );
@@ -34,11 +59,11 @@ export async function POST(req, res) {
 // Fetch data
 export async function GET() {
   try {
-    const locationOriginData = await prisma.locationOrigin.findMany({
+    const containerTypeData = await prisma.containerType.findMany({
       orderBy: { id: "desc" },
     });
 
-    return NextResponse.json({ locationOriginData }, { status: 200 });
+    return NextResponse.json({ containerTypeData }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to to catch Location Origin Data." },

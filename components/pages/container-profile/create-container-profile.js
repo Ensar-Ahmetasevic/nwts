@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import FormLocationOrigin from "./../location-origin/form-location-origin";
-import FormContainerType from "./../container-type/form-container-type";
+import FormLocationOrigin from "./location-origin/form-location-origin";
+import FormContainerType from "./container-type/form-container-type";
+import FormWasteProfile from "./waste-profile/form-waste-profile";
 
 function CreateContainerProfile() {
   const [activeButton, setActiveButton] = useState(null);
@@ -57,6 +58,10 @@ function CreateContainerProfile() {
 
           {activeButton === "Container type" ? (
             <FormContainerType cancelContainerTypeForm={setActiveButton} />
+          ) : null}
+
+          {activeButton === "Waste profile" ? (
+            <FormWasteProfile cancelWasteProfileForm={setActiveButton} />
           ) : null}
         </div>
       </div>

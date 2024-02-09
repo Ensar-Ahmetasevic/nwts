@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
-import useLocationOriginQuery from "./../../../requests/requests-container-profile/requests-location-origin/use-fetch-location-origin";
+import useLocationOriginQuery from "../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
+import useWasteProfileQuery from "../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
+import useContainerTypeQuery from "../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
+import useCreateContainerProfileMutation from "./../../../requests/request-container-profile/use-create-container-profile-mutation";
 
 function FormContainerProfile({ toggleContainerProfileForm }) {
   const {
@@ -9,16 +12,23 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
     formState: { errors },
   } = useForm();
 
-  const { data } = useLocationOriginQuery();
+  const createContainerProfileMutation = useCreateContainerProfileMutation();
 
-  console.log(data);
+  const { data: resLocationOriginData } = useLocationOriginQuery();
+  const locationOriginData = resLocationOriginData?.locationOriginData;
 
-  const locationOriginData = data?.locationOriginData;
+  const { data: resWasteProfileData } = useWasteProfileQuery();
+  const wasteProfileData = resWasteProfileData?.wasteProfileData;
+
+  const { data: resContainerTypeData } = useContainerTypeQuery();
+  const containerTypeData = resContainerTypeData?.containerTypeData;
 
   function isFormSubmit(data) {
-    console.log(data);
+    console.log(data.quantity);
     // Toggle the state in the parent component -> AllShippingInformations()
     toggleContainerProfileForm();
+
+    createContainerProfileMutation.mutateAsync(data.quantity);
 
     reset();
   }
@@ -75,8 +85,12 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
             {...register("wasteProfile", { required: true })}
           >
             <option value="">---</option>
-            <option value="M001">M001</option>
-            <option value="M002">M002</option>
+
+            {wasteProfileData?.map((waste) => (
+              <option key={waste.id} value={waste.name}>
+                {waste.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -92,10 +106,12 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
             {...register("containerType", { required: true })}
           >
             <option value="">---</option>
-            <option value="Concrete container">Concrete container</option>
-            <option value="Strengthened steel container">
-              Strengthened steel container
-            </option>
+
+            {containerTypeData?.map((container) => (
+              <option key={container.id} value={container.name}>
+                {container.name}
+              </option>
+            ))}
           </select>
         </div>
 
