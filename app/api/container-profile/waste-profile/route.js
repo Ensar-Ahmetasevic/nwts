@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 // Createing  data
 export async function POST(req, res) {
   const formData = await req.json();
+
   const {
     name,
     typeOfWaste,

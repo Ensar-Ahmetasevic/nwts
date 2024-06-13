@@ -25,25 +25,28 @@ model UserProfile {
 // Setep 1 Shipping Informations
 
 model ShippingInformation {
-  id                Int                @id @default(autoincrement())
-  createdAt         DateTime           @default(now())
-  containerProfiles ContainerProfile[]
-  userProfileId     Int?               @unique
-  userProfile       UserProfile?       @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
+  id                 Int                @id @default(autoincrement())
+  createdAt          DateTime           @default(now())
+  companyName        String
+  driverName         String
+  registrationPlates String
+  containerProfiles  ContainerProfile[]
+  userProfileId      Int?               @unique
+  userProfile        UserProfile?       @relation(fields: [userProfileId], references: [id], onDelete: Cascade)
 }
 
 model ContainerProfile {
-  id                    Int                 @id @default(autoincrement())
-  createdAt             DateTime            @default(now())
+  id                    Int                  @id @default(autoincrement())
+  createdAt             DateTime             @default(now())
   quantity              Int
-  shippingInformationId Int                 @unique
-  shippingInformation   ShippingInformation @relation(fields: [shippingInformationId], references: [id], onDelete: Cascade)
-  locationOriginId      Int                 @unique
-  locationOrigin        LocationOrigin      @relation(fields: [locationOriginId], references: [id], onDelete: Cascade)
-  wasteProfileId        Int                 @unique
-  wasteProfile          WasteProfile        @relation(fields: [wasteProfileId], references: [id], onDelete: Cascade)
-  containerTypeId       Int                 @unique
-  containerType         ContainerType       @relation(fields: [containerTypeId], references: [id], onDelete: Cascade)
+  shippingInformationId Int?                 @unique
+  shippingInformation   ShippingInformation? @relation(fields: [shippingInformationId], references: [id], onDelete: Cascade)
+  locationOriginId      Int                  @unique
+  locationOrigin        LocationOrigin       @relation(fields: [locationOriginId], references: [id], onDelete: Cascade)
+  wasteProfileId        Int                  @unique
+  wasteProfile          WasteProfile         @relation(fields: [wasteProfileId], references: [id], onDelete: Cascade)
+  containerTypeId       Int                  @unique
+  containerType         ContainerType        @relation(fields: [containerTypeId], references: [id], onDelete: Cascade)
 }
 
 model LocationOrigin {

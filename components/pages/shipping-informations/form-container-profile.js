@@ -23,12 +23,23 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
   const { data: resContainerTypeData } = useContainerTypeQuery();
   const containerTypeData = resContainerTypeData?.containerTypeData;
 
-  function isFormSubmit(data) {
-    console.log(data.quantity);
+  function isFormSubmit({
+    quantity,
+    locationOrigin,
+    wasteProfile,
+    containerType,
+  }) {
+    const formData = {
+      quantity,
+      locationOriginId: locationOrigin,
+      wasteProfileId: wasteProfile,
+      containerTypeId: containerType,
+    };
+
     // Toggle the state in the parent component -> AllShippingInformations()
     toggleContainerProfileForm();
 
-    createContainerProfileMutation.mutateAsync(data.quantity);
+    createContainerProfileMutation.mutateAsync({ formData });
 
     reset();
   }
@@ -66,7 +77,7 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
             <option value="">---</option>
 
             {locationOriginData?.map((origin) => (
-              <option key={origin.id} value={origin.name}>
+              <option key={origin.id} value={origin.id}>
                 {origin.name}
               </option>
             ))}
@@ -87,7 +98,7 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
             <option value="">---</option>
 
             {wasteProfileData?.map((waste) => (
-              <option key={waste.id} value={waste.name}>
+              <option key={waste.id} value={waste.id}>
                 {waste.name}
               </option>
             ))}
@@ -108,7 +119,7 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
             <option value="">---</option>
 
             {containerTypeData?.map((container) => (
-              <option key={container.id} value={container.name}>
+              <option key={container.id} value={container.id}>
                 {container.name}
               </option>
             ))}

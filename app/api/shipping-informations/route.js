@@ -3,10 +3,26 @@ import { NextResponse } from "next/server";
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// Createing  data
-export async function POST() {
+// Creating  data
+export async function POST(req, res) {
+  const formData = await req.json();
+
+  const { companyName, driverName, registrationPlates } = formData;
+
+  if (!formData) {
+    return NextResponse.json(
+      {
+        message:
+          "Backend: `Did not receive data from Shipping Informations form`",
+      },
+      { status: 200 },
+    );
+  }
+
   try {
-    await prisma.shippingInformation.create({});
+    await prisma.shippingInformation.create({
+      data: { companyName, driverName, registrationPlates },
+    });
 
     return NextResponse.json(
       { message: "New Shipping Information added successfully." },

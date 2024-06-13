@@ -24,12 +24,12 @@ export async function POST(req, res) {
     );
   }
 
-  try {
-    // Parse volume to float
-    const parsedVolume = parseFloat(volume);
-    const parsedCarryingCapacity = parseFloat(carryingCapacity);
-    const parsedFootprint = parseFloat(footprint);
+  // Parse data from string to float
+  const parsedVolume = parseFloat(volume);
+  const parsedCarryingCapacity = parseFloat(carryingCapacity);
+  const parsedFootprint = parseFloat(footprint);
 
+  try {
     await prisma.containerType.create({
       data: {
         name,

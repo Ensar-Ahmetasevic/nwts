@@ -2,12 +2,21 @@ import { useState } from "react";
 import dayjs from "dayjs";
 
 import FormContainerProfile from "./form-container-profile";
-import useDeleteShippingInformationsMutations from "./../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
+import ContainerProfileById from "./container-profile-by-id ";
 
-function AllShippingInformations({ data }) {
+import useDeleteShippingInformationsMutations from "./../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
+import useContainerProfileQuery from "./../../../requests/request-container-profile/use-fetch-container-profile";
+
+function AllShippingInformations({
+  data: { id, createdAt, companyName, driverName, registrationPlates },
+}) {
   const [showContainerProfileForm, setshowContainerProfileForm] =
     useState(false);
 
+  //Fetching data
+  const { data: containerProfileData } = useContainerProfileQuery();
+
+  //Delete data
   const deleteShippingInformationsMutations =
     useDeleteShippingInformationsMutations();
 
@@ -15,13 +24,42 @@ function AllShippingInformations({ data }) {
   function toggleContainerProfileFormHandler() {
     setshowContainerProfileForm(!showContainerProfileForm);
   }
+
   return (
     <li>
-      <div className="m-2 flex flex-row  p-2">
+      <div className="m-2 flex flex-row p-2">
         <div className=" w-1/2 space-y-2 rounded-md border">
           <h2>Shipping Informations Data:</h2>
-          <p>ID: {data.id}</p>
-          <p>Created At: {dayjs(data.createdAt).format("DD/MM/YYYY")}</p>
+
+          {/* Shipping Id */}
+          <div className="flex flex-col">
+            <p className="font-bold">Shipping ID:</p>
+            <p>{id}</p>
+          </div>
+
+          {/* Created At */}
+          <div className="flex flex-col">
+            <p className="font-bold">Created At:</p>
+            <p>{dayjs(createdAt).format("DD/MM/YYYY, HH:mm")}</p>
+          </div>
+          {/* Company Name */}
+          <div className="flex flex-col">
+            <p className="font-bold">Company Name:</p>
+            <p>{companyName}</p>
+          </div>
+
+          {/* Driver Name */}
+          <div className="flex flex-col">
+            <p className="font-bold">Driver Name:</p>
+            <p>{driverName}</p>
+          </div>
+
+          {/* Registration Plates */}
+          <div className="flex flex-col">
+            <p className="font-bold">Registration Plates:</p>
+            <p>{registrationPlates}</p>
+          </div>
+
           <button
             className="btnDelete"
             disabled={showContainerProfileForm}
@@ -54,16 +92,8 @@ function AllShippingInformations({ data }) {
             )}
           </div>
         </div>
-        <div className="w-1/2 space-y-2 rounded-md border p-2">
-          <h2>Container Profile Data:</h2>
-          <ul>
-            <li>Container Profile: ID 00202</li>
-            <li>Quantity: 15</li>
-            <li>Location origin: Zwischenlager Brokdorf</li>
-            <li>Waste profile: M001</li>
-            <li>Container type: Strengthened steel</li>
-          </ul>
-        </div>
+
+        <ContainerProfileById data={containerProfileData} />
       </div>
     </li>
   );

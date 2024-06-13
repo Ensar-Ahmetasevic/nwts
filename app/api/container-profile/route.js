@@ -6,7 +6,9 @@ const prisma = new PrismaClient();
 // Createing  data
 export async function POST(req, res) {
   const formData = await req.json();
-  const { quantity } = formData;
+
+  const { quantity, locationOriginId, wasteProfileId, containerTypeId } =
+    formData;
 
   if (!formData) {
     return NextResponse.json(
@@ -15,13 +17,19 @@ export async function POST(req, res) {
     );
   }
 
-  try {
-    // Parse quantity to float
-    const parsedQuantity = parseInt(quantity);
+  // Parse data from sting to intiger
+  const parsedQuantity = parseInt(quantity);
+  const parsedLocationOriginId = parseInt(locationOriginId);
+  const parsedWasteProfileId = parseInt(wasteProfileId);
+  const parsedContainerTypeId = parseInt(containerTypeId);
 
+  try {
     await prisma.containerProfile.create({
       data: {
         quantity: parsedQuantity,
+        locationOriginId: parsedLocationOriginId,
+        wasteProfileId: parsedWasteProfileId,
+        containerTypeId: parsedContainerTypeId,
       },
     });
 

@@ -5,14 +5,13 @@ import { toast } from "react-toastify";
 function useCreateShippingInformationsMutation() {
   const queryClient = useQueryClient();
 
-  const createShippingInformationsMutation = async () => {
+  const createShippingInformationsMutation = async ({ formData }) => {
     try {
-      const response = await axios.post("/api/shipping-informations");
-
+      const response = await axios.post("/api/shipping-informations", formData);
       return response;
     } catch (error) {
       console.error("Failed to create new Shipping Informations data", error);
-      toast.error(`Error: ${error}`);
+      toast.error(`Failed to create new Shipping Informations data: ${error}`);
       throw error;
     }
   };
