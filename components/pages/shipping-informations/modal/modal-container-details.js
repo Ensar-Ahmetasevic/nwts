@@ -1,18 +1,20 @@
 function ModalContainerDetails({ htmlFor }) {
   return (
     <>
-      <input type="checkbox" id={htmlFor} className="modal-toggle" />
-      <div className="modal" role="dialog">
+      <dialog id={htmlFor} className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <h3 className="text-lg font-bold">Hello!</h3>
-          <p className="py-4">This modal works with a hidden checkbox!</p>
+          <p className="py-4">
+            Press ESC key or click the button below to close
+          </p>
           <div className="modal-action">
-            <label htmlFor={htmlFor} className="btn">
-              Close!
-            </label>
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
           </div>
         </div>
-      </div>
+      </dialog>
     </>
   );
 }
