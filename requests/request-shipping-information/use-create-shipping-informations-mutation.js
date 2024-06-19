@@ -11,7 +11,7 @@ function useCreateShippingInformationsMutation() {
       return response;
     } catch (error) {
       console.error("Failed to create new Shipping Informations data", error);
-      toast.error(`Failed to create new Shipping Informations data: ${error}`);
+      toast.error(`Error: ${error.response?.data?.message || error.message}`);
       throw error;
     }
   };

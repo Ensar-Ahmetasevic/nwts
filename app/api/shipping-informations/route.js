@@ -38,18 +38,39 @@ export async function POST(req, res) {
 }
 
 // Fetch data
+
 export async function GET() {
   try {
-    const shippingData = await prisma.shippingInformation.findMany({
-      orderBy: { id: "desc" },
+    const shippingData = await prisma.shippingInformation.findFirst({
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        containerProfiles: {
+          include: {
+            locationOrigin: true,
+            wasteProfile: true,
+            containerType: true,
+          },
+        },
+      },
     });
+
+    if (!shippingData) {
+      return NextResponse.json(
+        { shippingData: null, message: "No shipping information available" },
+        { status: 200 },
+      );
+    }
 
     return NextResponse.json({ shippingData }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to to catch Shipping Informations Data." },
+      {
+        message: "Failed to fetch Shipping Information Data.",
+        error: error.message,
+      },
       { status: 500 },
-      { error: error.message },
     );
   }
 }

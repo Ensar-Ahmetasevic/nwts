@@ -4,7 +4,7 @@ import FormLocationOrigin from "./location-origin/form-location-origin";
 import FormContainerType from "./container-type/form-container-type";
 import FormWasteProfile from "./waste-profile/form-waste-profile";
 
-function CreateContainerProfile() {
+function CreateContainerProfileDetails() {
   const [activeButton, setActiveButton] = useState(null);
 
   const handleButtonClick = (button) => {
@@ -69,4 +69,4 @@ function CreateContainerProfile() {
   );
 }
 
-export default CreateContainerProfile;
+export default CreateContainerProfileDetails;

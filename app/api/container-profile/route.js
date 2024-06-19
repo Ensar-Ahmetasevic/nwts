@@ -3,45 +3,61 @@ import { NextResponse } from "next/server";
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-// Createing  data
+// Creating  data
 export async function POST(req, res) {
-  const formData = await req.json();
-
-  const { quantity, locationOriginId, wasteProfileId, containerTypeId } =
-    formData;
-
-  if (!formData) {
-    return NextResponse.json(
-      { message: "Backend: `Did not receive data from Waste Profile form`" },
-      { status: 200 },
-    );
-  }
-
-  // Parse data from sting to intiger
-  const parsedQuantity = parseInt(quantity);
-  const parsedLocationOriginId = parseInt(locationOriginId);
-  const parsedWasteProfileId = parseInt(wasteProfileId);
-  const parsedContainerTypeId = parseInt(containerTypeId);
-
   try {
-    await prisma.containerProfile.create({
+    const formData = await req.json();
+
+    const {
+      quantity,
+      locationOriginId,
+      wasteProfileId,
+      containerTypeId,
+      shippingInformationId,
+    } = formData;
+
+    if (
+      !quantity ||
+      !locationOriginId ||
+      !wasteProfileId ||
+      !containerTypeId ||
+      !shippingInformationId
+    ) {
+      return NextResponse.json(
+        { message: "All fields are required" },
+        { status: 400 },
+      );
+    }
+
+    // Parse data from string to integer
+    const parsedQuantity = parseInt(quantity);
+    const parsedLocationOriginId = parseInt(locationOriginId);
+    const parsedWasteProfileId = parseInt(wasteProfileId);
+    const parsedContainerTypeId = parseInt(containerTypeId);
+    const parsedShippingInformationId = parseInt(shippingInformationId);
+
+    const newContainerProfile = await prisma.containerProfile.create({
       data: {
         quantity: parsedQuantity,
         locationOriginId: parsedLocationOriginId,
         wasteProfileId: parsedWasteProfileId,
         containerTypeId: parsedContainerTypeId,
+        shippingInformationId: parsedShippingInformationId,
       },
     });
 
     return NextResponse.json(
-      { message: "New Container Profile added successfully." },
+      {
+        message: "New Container Profile added successfully.",
+        newContainerProfile,
+      },
       { status: 200 },
     );
   } catch (error) {
+    console.error("Error creating Container Profile:", error);
     return NextResponse.json(
-      { message: "Failed to create Container Profile" },
+      { message: "Failed to create Container Profile", error: error.message },
       { status: 500 },
-      { error: `${error.message}` },
     );
   }
 }
@@ -69,18 +85,20 @@ export async function DELETE(req) {
   const { id } = await req.json();
 
   try {
-    await prisma.wasteProfile.delete({
-      where: { id: id },
+    await prisma.containerProfile.delete({
+      where: { id: parseInt(id) },
     });
     return NextResponse.json(
-      { message: "Waste Profile deleted successfully." },
+      { message: "Container Profile deleted successfully." },
       { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to to catch Waste Profile data." },
+      {
+        message: "Failed to delete Container Profile data.",
+        error: error.message,
+      },
       { status: 500 },
-      { error: error.message },
     );
   }
 }

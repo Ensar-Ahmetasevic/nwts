@@ -1,24 +1,44 @@
 import { useState } from "react";
 import dayjs from "dayjs";
 
-import FormContainerProfile from "./form-container-profile";
-import ContainerProfileById from "./container-profile-by-id ";
+import FormContainerProfile from "./forms/form-container-profile";
+import ContainerDetails from "./container-details";
 
 import useDeleteShippingInformationsMutations from "./../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
-import useContainerProfileQuery from "./../../../requests/request-container-profile/use-fetch-container-profile";
+import useShippingInformationQuery from "./../../../requests/request-shipping-information/use-fetch-shipping-informations";
 
-function AllShippingInformations({
-  data: { id, createdAt, companyName, driverName, registrationPlates },
-}) {
+function AllShippingInformations() {
   const [showContainerProfileForm, setshowContainerProfileForm] =
     useState(false);
 
-  //Fetching data
-  const { data: containerProfileData } = useContainerProfileQuery();
+  // Fetching data
+  const { data, isLoading, error } = useShippingInformationQuery();
 
   //Delete data
   const deleteShippingInformationsMutations =
     useDeleteShippingInformationsMutations();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading data</div>;
+  }
+
+  if (!data || !data.shippingData) {
+    return <div>No data available</div>;
+  }
+
+  // Destructure the necessary data
+  const {
+    id,
+    createdAt,
+    companyName,
+    driverName,
+    registrationPlates,
+    containerProfiles,
+  } = data?.shippingData;
 
   // Toggle
   function toggleContainerProfileFormHandler() {
@@ -26,76 +46,86 @@ function AllShippingInformations({
   }
 
   return (
-    <li>
-      <div className="m-2 flex flex-row p-2">
-        <div className=" w-1/2 space-y-2 rounded-md border">
-          <h2>Shipping Informations Data:</h2>
+    <ul>
+      <li>
+        <div className="m-2 flex flex-row p-2">
+          <div className=" w-1/2 space-y-2 rounded-md border">
+            <h2>Latest Shipping Data:</h2>
 
-          {/* Shipping Id */}
-          <div className="flex flex-col">
-            <p className="font-bold">Shipping ID:</p>
-            <p>{id}</p>
-          </div>
+            {/* Created At */}
+            <div className="flex flex-col">
+              <p className="font-bold">Created At:</p>
+              <p>{dayjs(createdAt).format("DD/MM/YYYY, HH:mm")}</p>
+            </div>
+            {/* Company Name */}
+            <div className="flex flex-col">
+              <p className="font-bold">Company Name:</p>
+              <p>{companyName}</p>
+            </div>
 
-          {/* Created At */}
-          <div className="flex flex-col">
-            <p className="font-bold">Created At:</p>
-            <p>{dayjs(createdAt).format("DD/MM/YYYY, HH:mm")}</p>
-          </div>
-          {/* Company Name */}
-          <div className="flex flex-col">
-            <p className="font-bold">Company Name:</p>
-            <p>{companyName}</p>
-          </div>
+            {/* Driver Name */}
+            <div className="flex flex-col">
+              <p className="font-bold">Driver Name:</p>
+              <p>{driverName}</p>
+            </div>
 
-          {/* Driver Name */}
-          <div className="flex flex-col">
-            <p className="font-bold">Driver Name:</p>
-            <p>{driverName}</p>
-          </div>
+            {/* Registration Plates */}
+            <div className="flex flex-col">
+              <p className="font-bold">Registration Plates:</p>
+              <p>{registrationPlates}</p>
+            </div>
 
-          {/* Registration Plates */}
-          <div className="flex flex-col">
-            <p className="font-bold">Registration Plates:</p>
-            <p>{registrationPlates}</p>
-          </div>
+            <button
+              className="btnDelete"
+              disabled={showContainerProfileForm}
+              onClick={() =>
+                deleteShippingInformationsMutations.mutateAsync(
+                  data.shippingData.id,
+                )
+              }
+            >
+              Delete
+            </button>
 
-          <button
-            className="btnDelete"
-            disabled={showContainerProfileForm}
-            onClick={() =>
-              deleteShippingInformationsMutations.mutateAsync(data.id)
-            }
-          >
-            Delete Shipping Information
-          </button>
+            <div className=" flex flex-col space-y-2 ">
+              <p>Creat Container Profile</p>
+              <div className="space-x-2">
+                <button
+                  className="btnAdd"
+                  disabled={showContainerProfileForm}
+                  onClick={() => toggleContainerProfileFormHandler()}
+                >
+                  Add Details
+                </button>
+              </div>
+            </div>
 
-          <div className=" flex flex-col space-y-2 ">
-            <p>Creat Container Profile</p>
-            <div className="space-x-2">
-              <button
-                className="btnAdd"
-                disabled={showContainerProfileForm}
-                onClick={() => toggleContainerProfileFormHandler()}
-              >
-                Add Container Profile
-              </button>
+            {/* Container Profile Form */}
+            <div>
+              {showContainerProfileForm && (
+                <FormContainerProfile
+                  toggleContainerProfileForm={toggleContainerProfileFormHandler}
+                  shippingInformationId={id}
+                />
+              )}
             </div>
           </div>
 
-          {/* Container Profile Form */}
-          <div>
-            {showContainerProfileForm && (
-              <FormContainerProfile
-                toggleContainerProfileForm={toggleContainerProfileFormHandler}
-              />
+          {/* Shipping Details */}
+
+          <div className="w-1/2 space-y-2 rounded-md border">
+            <h2>Details:</h2>
+            {containerProfiles && containerProfiles.length > 0 ? (
+              containerProfiles.map((profile) => (
+                <ContainerDetails key={profile.id} data={profile} />
+              ))
+            ) : (
+              <p>No container profiles available.</p>
             )}
           </div>
         </div>
-
-        <ContainerProfileById data={containerProfileData} />
-      </div>
-    </li>
+      </li>
+    </ul>
   );
 }
 

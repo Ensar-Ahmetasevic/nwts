@@ -39,13 +39,13 @@ model ContainerProfile {
   id                    Int                  @id @default(autoincrement())
   createdAt             DateTime             @default(now())
   quantity              Int
-  shippingInformationId Int?                 @unique
+  shippingInformationId Int //  foreign key
   shippingInformation   ShippingInformation? @relation(fields: [shippingInformationId], references: [id], onDelete: Cascade)
-  locationOriginId      Int                  @unique
+  locationOriginId      Int
   locationOrigin        LocationOrigin       @relation(fields: [locationOriginId], references: [id], onDelete: Cascade)
-  wasteProfileId        Int                  @unique
+  wasteProfileId        Int
   wasteProfile          WasteProfile         @relation(fields: [wasteProfileId], references: [id], onDelete: Cascade)
-  containerTypeId       Int                  @unique
+  containerTypeId       Int
   containerType         ContainerType        @relation(fields: [containerTypeId], references: [id], onDelete: Cascade)
 }
 

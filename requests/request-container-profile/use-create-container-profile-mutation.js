@@ -5,14 +5,15 @@ import { toast } from "react-toastify";
 function useCreateContainerProfileMutation() {
   const queryClient = useQueryClient();
 
-  const createContainerProfileMutation = async ({ formData }) => {
-    // console.log("createContainerProfileMutation: ", formData);
+  const createContainerProfileMutation = async (formData) => {
+    // console.log("comming from useCreateContainerProfileMutation:", formData);
+
     try {
       const response = await axios.post("/api/container-profile", formData);
-      return response;
+      return response.data;
     } catch (error) {
       console.error("Failed to create new Container Profile data", error);
-      toast.error(`Error: ${error}`);
+      toast.error(`Error: ${error.response?.data?.message || error.message}`);
       throw error;
     }
   };

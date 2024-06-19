@@ -1,10 +1,14 @@
 import { useForm } from "react-hook-form";
-import useLocationOriginQuery from "../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
-import useWasteProfileQuery from "../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
-import useContainerTypeQuery from "../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
-import useCreateContainerProfileMutation from "./../../../requests/request-container-profile/use-create-container-profile-mutation";
 
-function FormContainerProfile({ toggleContainerProfileForm }) {
+import useLocationOriginQuery from "./../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
+import useWasteProfileQuery from "./../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
+import useCreateContainerProfileMutation from "./../../../../requests/request-container-profile/use-create-container-profile-mutation";
+import useContainerTypeQuery from "./../../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
+
+function FormContainerProfile({
+  toggleContainerProfileForm,
+  shippingInformationId,
+}) {
   const {
     register,
     handleSubmit,
@@ -29,20 +33,28 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
     wasteProfile,
     containerType,
   }) {
+    // Trim whitespace from each field
     const formData = {
-      quantity,
-      locationOriginId: locationOrigin,
-      wasteProfileId: wasteProfile,
-      containerTypeId: containerType,
+      quantity: quantity.trim(),
+      locationOriginId: locationOrigin.trim(),
+      wasteProfileId: wasteProfile.trim(),
+      containerTypeId: containerType.trim(),
     };
 
-    // Toggle the state in the parent component -> AllShippingInformations()
-    toggleContainerProfileForm();
+    try {
+      // Toggle the state in the parent component -> AllShippingInformations()
+      toggleContainerProfileForm();
 
-    createContainerProfileMutation.mutateAsync({ formData });
-
-    reset();
+      createContainerProfileMutation.mutateAsync({
+        ...formData,
+        shippingInformationId,
+      });
+      reset();
+    } catch (error) {
+      console.error("Error creating Container Profile:", error);
+    }
   }
+
   return (
     <>
       <form
@@ -52,7 +64,7 @@ function FormContainerProfile({ toggleContainerProfileForm }) {
         <div className="flex flex-col space-y-2">
           <label className="text-left text-sm">Quantity:</label>
           <input
-            className="input input-bordered input-md px-2"
+            className="input input-md input-bordered px-2"
             type="number"
             placeholder="Type here"
             {...register("quantity", {

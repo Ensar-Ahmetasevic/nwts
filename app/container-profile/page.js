@@ -1,8 +1,7 @@
-"use client";
-import CreateContainerProfile from "../../components/pages/container-profile/create-container-profile";
+import CreateContainerProfileDetails from "./../../components/pages/container-profile-details/create-container-profile-details";
 
 function ContainerProfile() {
-  return <CreateContainerProfile />;
+  return <CreateContainerProfileDetails />;
 }
 
 export default ContainerProfile;
