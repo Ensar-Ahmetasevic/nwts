@@ -39,16 +39,14 @@ function FormContainerProfile({
       locationOriginId: locationOrigin.trim(),
       wasteProfileId: wasteProfile.trim(),
       containerTypeId: containerType.trim(),
+      shippingInformationId: shippingInformationId,
     };
 
     try {
       // Toggle the state in the parent component -> AllShippingInformations()
       toggleContainerProfileForm();
 
-      createContainerProfileMutation.mutateAsync({
-        ...formData,
-        shippingInformationId,
-      });
+      createContainerProfileMutation.mutateAsync(formData);
       reset();
     } catch (error) {
       console.error("Error creating Container Profile:", error);
@@ -62,6 +60,7 @@ function FormContainerProfile({
         onSubmit={handleSubmit(isFormSubmit)}
       >
         <div className="flex flex-col space-y-2">
+          {/* Quantity */}
           <label className="text-left text-sm">Quantity:</label>
           <input
             className="input input-md input-bordered px-2"

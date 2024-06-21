@@ -6,8 +6,6 @@ function useCreateContainerProfileMutation() {
   const queryClient = useQueryClient();
 
   const createContainerProfileMutation = async (formData) => {
-    // console.log("comming from useCreateContainerProfileMutation:", formData);
-
     try {
       const response = await axios.post("/api/container-profile", formData);
       return response.data;
@@ -24,7 +22,9 @@ function useCreateContainerProfileMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["containerProfileQueryKey"],
+        queryKey: ["shippingInformationQueryKey"],
       });
+
       // Toast a success message
       toast.success("Container Profile data created successfully.", {
         autoClose: 2000,

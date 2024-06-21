@@ -6,6 +6,8 @@ const FetchContainerProfileData = async () => {
 
   const data = response.data;
 
+  console.log("useContainerProfileQuery: ", data);
+
   return data;
 };
 

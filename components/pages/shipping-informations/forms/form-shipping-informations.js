@@ -32,9 +32,11 @@ function FormShippingInformations() {
         className="flex flex-col space-y-8 rounded-md border-2 text-center"
         onSubmit={handleSubmit(isFormSubmit)}
       >
-        <div className="flex flex-row items-center justify-center space-x-6">
+        <div>
           <h2>Crate New Shipping Informations</h2>
+        </div>
 
+        <div className="flex flex-col items-center justify-center space-y-6 md:flex-row md:space-x-3 md:space-y-0">
           <div className="flex w-64 flex-col space-y-2">
             <label className="text-left text-sm">Company Name:</label>
             <input
@@ -70,11 +72,13 @@ function FormShippingInformations() {
               })}
             />
           </div>
-
+        </div>
+        <div>
           <button className="btnAdd" type="submit">
             Create
           </button>
         </div>
+
         <h1>Filter data by date or company name:</h1>
       </form>
     </>
