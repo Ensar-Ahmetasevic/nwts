@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdOutlineExpandMore } from "react-icons/md";
 
 import ModalContainerDetails from "./modal/modal-container-details";
@@ -6,6 +6,7 @@ import ModalContainerDetails from "./modal/modal-container-details";
 function ContainerDetails({ data }) {
   const [modalContenData, setModalContentData] = useState(null);
   const [title, setTitle] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!data) {
     return <p>No data available.</p>;
@@ -15,7 +16,9 @@ function ContainerDetails({ data }) {
 
   const containerDetails = [
     { title: "Waste Profile", name: wasteProfile.name, details: wasteProfile },
+    //
     { title: "Quantity", name: quantity, details: { quantity } },
+    //
     {
       title: "Location Origin",
       name: locationOrigin.name,
@@ -31,7 +34,7 @@ function ContainerDetails({ data }) {
   const handleModal = (detail) => {
     setModalContentData(detail.details);
     setTitle(detail.title);
-    document.getElementById("my_modal_4").showModal();
+    setIsModalOpen(true);
   };
 
   return (
@@ -42,7 +45,7 @@ function ContainerDetails({ data }) {
             <p className="font-bold">{detail.title}</p>
             <p>{detail.name}</p>
             <button
-              className="rounded border-2  border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-400"
+              className="rounded border-2 border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-400"
               onClick={() => handleModal(detail)}
             >
               <MdOutlineExpandMore />
@@ -50,8 +53,13 @@ function ContainerDetails({ data }) {
           </li>
         ))}
       </ul>
-
-      <ModalContainerDetails modalContenData={modalContenData} title={title} />
+      {isModalOpen && (
+        <ModalContainerDetails
+          modalContenData={modalContenData}
+          title={title}
+          closeModal={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
