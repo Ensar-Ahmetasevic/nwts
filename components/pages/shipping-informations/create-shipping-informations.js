@@ -1,6 +1,6 @@
 "use client";
 
-import AllShippingInformations from "./all-shipping-informations";
+import LatestShippingData from "./latestShippingData";
 import FormShippingInformations from "./forms/form-shipping-informations";
 
 function CreateShippingInformations() {
@@ -8,7 +8,7 @@ function CreateShippingInformations() {
     <section id="shippingInformations">
       <div className="container mx-auto flex-col items-center rounded-md border-2 pt-20">
         <FormShippingInformations />
-        <AllShippingInformations />
+        <LatestShippingData />
       </div>
     </section>
   );

@@ -5,38 +5,38 @@ const prisma = new PrismaClient();
 
 // Creating  data
 export async function POST(req, res) {
+  const formData = await req.json();
+
+  const {
+    quantity,
+    locationOriginId,
+    wasteProfileId,
+    containerTypeId,
+    shippingInformationId,
+  } = formData;
+
+  if (
+    !quantity ||
+    !locationOriginId ||
+    !wasteProfileId ||
+    !containerTypeId ||
+    !shippingInformationId
+  ) {
+    return NextResponse.json(
+      { message: "All fields are required" },
+      { status: 400 },
+    );
+  }
+
+  // Parse data from string to integer
+  const parsedQuantity = parseInt(quantity);
+  const parsedLocationOriginId = parseInt(locationOriginId);
+  const parsedWasteProfileId = parseInt(wasteProfileId);
+  const parsedContainerTypeId = parseInt(containerTypeId);
+  const parsedShippingInformationId = parseInt(shippingInformationId);
+
   try {
-    const formData = await req.json();
-
-    const {
-      quantity,
-      locationOriginId,
-      wasteProfileId,
-      containerTypeId,
-      shippingInformationId,
-    } = formData;
-
-    if (
-      !quantity ||
-      !locationOriginId ||
-      !wasteProfileId ||
-      !containerTypeId ||
-      !shippingInformationId
-    ) {
-      return NextResponse.json(
-        { message: "All fields are required" },
-        { status: 400 },
-      );
-    }
-
-    // Parse data from string to integer
-    const parsedQuantity = parseInt(quantity);
-    const parsedLocationOriginId = parseInt(locationOriginId);
-    const parsedWasteProfileId = parseInt(wasteProfileId);
-    const parsedContainerTypeId = parseInt(containerTypeId);
-    const parsedShippingInformationId = parseInt(shippingInformationId);
-
-    const newContainerProfile = await prisma.containerProfile.create({
+    await prisma.containerProfile.create({
       data: {
         quantity: parsedQuantity,
         locationOriginId: parsedLocationOriginId,
@@ -49,7 +49,6 @@ export async function POST(req, res) {
     return NextResponse.json(
       {
         message: "New Container Profile added successfully.",
-        newContainerProfile,
       },
       { status: 200 },
     );

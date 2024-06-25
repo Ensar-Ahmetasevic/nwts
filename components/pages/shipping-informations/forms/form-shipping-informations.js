@@ -74,7 +74,7 @@ function FormShippingInformations() {
           </div>
         </div>
         <div>
-          <button className="btnAdd" type="submit">
+          <button className="btnCreate" type="submit">
             Create
           </button>
         </div>

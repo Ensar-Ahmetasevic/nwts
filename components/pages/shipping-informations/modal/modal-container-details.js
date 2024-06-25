@@ -1,15 +1,13 @@
-import { useEffect } from "react";
-
 function ModalContainerDetails({ modalContenData, title, closeModal }) {
-  useEffect(() => {
-    console.log(modalContenData);
-    document.getElementById("my_modal_4").showModal();
-  }, [modalContenData]);
-
   return (
     <>
-      <dialog id="my_modal_4" className="modal">
-        <div className="modal-box w-11/12 max-w-5xl">
+      <input
+        type="checkbox"
+        id="modal_container_details"
+        className="modal-toggle"
+      />
+      <div className="modal" role="dialog">
+        <div className="modal-box">
           <h3 className="text-lg font-bold">{title}</h3>
           {modalContenData ? (
             <ul>
@@ -23,16 +21,18 @@ function ModalContainerDetails({ modalContenData, title, closeModal }) {
           ) : (
             <p>No details available</p>
           )}
+
           <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn" onClick={closeModal}>
-                Close
-              </button>
-            </form>
+            <label
+              htmlFor="modal_container_details"
+              className="btn"
+              onClick={closeModal}
+            >
+              Close
+            </label>
           </div>
         </div>
-      </dialog>
+      </div>
     </>
   );
 }

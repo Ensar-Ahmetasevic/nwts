@@ -4,10 +4,10 @@ import dayjs from "dayjs";
 import FormContainerProfile from "./forms/form-container-profile";
 import ContainerDetails from "./container-details";
 
-import useDeleteShippingInformationsMutations from "./../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
-import useShippingInformationQuery from "./../../../requests/request-shipping-information/use-fetch-shipping-informations";
+import useDeleteShippingInformationsMutations from "../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
+import useShippingInformationQuery from "../../../requests/request-shipping-information/use-fetch-shipping-informations";
 
-function AllShippingInformations() {
+function LatestShippingData() {
   const [showContainerProfileForm, setshowContainerProfileForm] =
     useState(false);
 
@@ -17,6 +17,11 @@ function AllShippingInformations() {
   //Delete data
   const deleteShippingInformationsMutations =
     useDeleteShippingInformationsMutations();
+
+  // Toggle
+  function toggleContainerProfileFormHandler() {
+    setshowContainerProfileForm(!showContainerProfileForm);
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -39,11 +44,6 @@ function AllShippingInformations() {
     registrationPlates,
     containerProfiles,
   } = data?.shippingData;
-
-  // Toggle
-  function toggleContainerProfileFormHandler() {
-    setshowContainerProfileForm(!showContainerProfileForm);
-  }
 
   return (
     <ul>
@@ -87,17 +87,16 @@ function AllShippingInformations() {
               Delete
             </button>
 
-            <div className=" flex flex-col space-y-2 ">
+            <div className="flex flex-row space-x-2">
               <p>Creat Container Profile</p>
-              <div className="space-x-2">
-                <button
-                  className="btnAdd"
-                  disabled={showContainerProfileForm}
-                  onClick={() => toggleContainerProfileFormHandler()}
-                >
-                  Add Details
-                </button>
-              </div>
+
+              <button
+                className="btnAdd"
+                disabled={showContainerProfileForm}
+                onClick={() => toggleContainerProfileFormHandler()}
+              >
+                Add
+              </button>
             </div>
 
             {/* Container Profile Form */}
@@ -116,9 +115,12 @@ function AllShippingInformations() {
           <div className="w-1/2 space-y-2 rounded-md border">
             <h2>Details:</h2>
             {containerProfiles && containerProfiles.length > 0 ? (
-              containerProfiles.map((profile) => (
-                <ContainerDetails key={profile.id} data={profile} />
-              ))
+              containerProfiles
+                .slice()
+                .reverse()
+                .map((profile) => (
+                  <ContainerDetails key={profile.id} data={profile} />
+                ))
             ) : (
               <p>No container profiles available.</p>
             )}
@@ -129,4 +131,4 @@ function AllShippingInformations() {
   );
 }
 
-export default AllShippingInformations;
+export default LatestShippingData;
