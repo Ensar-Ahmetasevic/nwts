@@ -1,14 +1,12 @@
 import { useForm } from "react-hook-form";
 
-import useLocationOriginQuery from "./../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
-import useWasteProfileQuery from "./../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
-import useContainerTypeQuery from "./../../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
-import useCreateContainerProfileMutation from "./../../../../requests/request-container-profile/use-create-container-profile-mutation";
+import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
+import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
+import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
+import useCreateContainerProfileMutation from "../../../../../requests/request-container-profile/use-create-container-profile-mutation";
+import useShippingInformationQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-informations";
 
-function FormContainerProfile({
-  toggleContainerProfileForm,
-  shippingInformationId,
-}) {
+function FormContainerProfile({ closeModal }) {
   const {
     register,
     handleSubmit,
@@ -18,6 +16,7 @@ function FormContainerProfile({
 
   const createContainerProfileMutation = useCreateContainerProfileMutation();
 
+  // Fetching data
   const { data: resLocationOriginData } = useLocationOriginQuery();
   const locationOriginData = resLocationOriginData?.locationOriginData;
 
@@ -26,6 +25,9 @@ function FormContainerProfile({
 
   const { data: resContainerTypeData } = useContainerTypeQuery();
   const containerTypeData = resContainerTypeData?.containerTypeData;
+
+  const { data: resShippingInformationId } = useShippingInformationQuery();
+  const shippingInformationId = resShippingInformationId?.shippingData.id;
 
   function isFormSubmit({
     quantity,
@@ -43,11 +45,9 @@ function FormContainerProfile({
     };
 
     try {
-      // Toggle the state in the parent component -> AllShippingInformations()
-      toggleContainerProfileForm();
-
       createContainerProfileMutation.mutateAsync(formData);
       reset();
+      closeModal();
     } catch (error) {
       console.error("Error creating Container Profile:", error);
     }
@@ -140,16 +140,6 @@ function FormContainerProfile({
         <div className=" space-x-2">
           <button className="btnSave" type="submit">
             Save
-          </button>
-
-          <button
-            className="btnCancel"
-            onClick={() => {
-              toggleContainerProfileForm();
-              reset();
-            }}
-          >
-            Cancel
           </button>
         </div>
       </form>

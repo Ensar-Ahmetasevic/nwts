@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 
-import useWasteProfileQuery from "./../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
-import useLocationOriginQuery from "./../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
-import useContainerTypeQuery from "../../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
+import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
+import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
+import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
 
 export default function ModalContainerProfilUpdate({
   modalContainerProfilData,
@@ -26,7 +26,6 @@ export default function ModalContainerProfilUpdate({
 
   const isFormSubmit = (formData) => {
     // onSubmit({ ...formData, id: data.id });
-    // reset();
     console.log(formData);
     closeModal();
   };

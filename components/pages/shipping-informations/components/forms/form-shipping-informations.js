@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import useCreateShippingInformationsMutation from "./../../../../requests/request-shipping-information/use-create-shipping-informations-mutation";
+import useCreateShippingInformationsMutation from "../../../../../requests/request-shipping-information/use-create-shipping-informations-mutation";
 
 function FormShippingInformations() {
   const {

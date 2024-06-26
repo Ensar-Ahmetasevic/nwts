@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import useDeleteContainerProfileMutations from "./../../../requests/request-container-profile/use-delete-container-profile-mutation";
 
-import ModalContainerDetails from "./modal/modal-container-details";
-import ModalContainerProfilUpdate from "./modal/modal-container-profile-update";
+import ModalContainerDetails from "./components/modal/modal-container-details";
+import ModalContainerProfilUpdate from "./components/modal/modal-container-profile-update";
 
 import { MdOutlineExpandMore } from "react-icons/md";
 import { MdDeleteSweep } from "react-icons/md";
@@ -81,7 +81,7 @@ function ContainerDetails({ data }) {
           <div className="tooltip" data-tip="Edit">
             <label
               htmlFor="update_modal"
-              className="btnUpdate flex items-center"
+              className="btnUpdate"
               onClick={() => handleModalUpdate()}
             >
               <CiEdit />

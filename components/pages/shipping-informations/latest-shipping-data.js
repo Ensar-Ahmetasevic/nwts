@@ -1,27 +1,17 @@
-import { useState } from "react";
 import dayjs from "dayjs";
 
-import FormContainerProfile from "./forms/form-container-profile";
 import ContainerDetails from "./container-details";
 
 import useDeleteShippingInformationsMutations from "../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
 import useShippingInformationQuery from "../../../requests/request-shipping-information/use-fetch-shipping-informations";
 
 function LatestShippingData() {
-  const [showContainerProfileForm, setshowContainerProfileForm] =
-    useState(false);
-
   // Fetching data
   const { data, isLoading, error } = useShippingInformationQuery();
 
   //Delete data
   const deleteShippingInformationsMutations =
     useDeleteShippingInformationsMutations();
-
-  // Toggle
-  function toggleContainerProfileFormHandler() {
-    setshowContainerProfileForm(!showContainerProfileForm);
-  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -37,7 +27,6 @@ function LatestShippingData() {
 
   // Destructure the necessary data
   const {
-    id,
     createdAt,
     companyName,
     driverName,
@@ -77,7 +66,6 @@ function LatestShippingData() {
 
             <button
               className="btnDelete"
-              disabled={showContainerProfileForm}
               onClick={() =>
                 deleteShippingInformationsMutations.mutateAsync(
                   data.shippingData.id,
@@ -86,28 +74,6 @@ function LatestShippingData() {
             >
               Delete
             </button>
-
-            <div className="flex flex-row space-x-2">
-              <p>Creat Container Profile</p>
-
-              <button
-                className="btnAdd"
-                disabled={showContainerProfileForm}
-                onClick={() => toggleContainerProfileFormHandler()}
-              >
-                Add
-              </button>
-            </div>
-
-            {/* Container Profile Form */}
-            <div>
-              {showContainerProfileForm && (
-                <FormContainerProfile
-                  toggleContainerProfileForm={toggleContainerProfileFormHandler}
-                  shippingInformationId={id}
-                />
-              )}
-            </div>
           </div>
 
           {/* Shipping Details */}
