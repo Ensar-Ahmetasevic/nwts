@@ -3,12 +3,8 @@ import dayjs from "dayjs";
 import ContainerDetails from "./container-details";
 
 import useDeleteShippingInformationsMutations from "../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
-import useShippingInformationQuery from "../../../requests/request-shipping-information/use-fetch-shipping-informations";
 
-function LatestShippingData() {
-  // Fetching data
-  const { data, isLoading, error } = useShippingInformationQuery();
-
+function LatestShippingData({ data, isLoading, error }) {
   //Delete data
   const deleteShippingInformationsMutations =
     useDeleteShippingInformationsMutations();
@@ -22,7 +18,7 @@ function LatestShippingData() {
   }
 
   if (!data || !data.shippingData) {
-    return <div>No data available</div>;
+    return <div>{data.message}</div>;
   }
 
   // Destructure the necessary data
@@ -80,16 +76,14 @@ function LatestShippingData() {
 
           <div className="w-1/2 space-y-2 rounded-md border">
             <h2>Details:</h2>
-            {containerProfiles && containerProfiles.length > 0 ? (
-              containerProfiles
-                .slice()
-                .reverse()
-                .map((profile) => (
-                  <ContainerDetails key={profile.id} data={profile} />
-                ))
-            ) : (
-              <p>No container profiles available.</p>
-            )}
+            {containerProfiles && containerProfiles.length > 0
+              ? containerProfiles
+                  .slice()
+                  .reverse()
+                  .map((profile) => (
+                    <ContainerDetails key={profile.id} data={profile} />
+                  ))
+              : null}
           </div>
         </div>
       </li>

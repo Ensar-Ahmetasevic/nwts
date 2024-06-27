@@ -9,13 +9,13 @@ export async function POST(req, res) {
 
   const { companyName, driverName, registrationPlates } = formData;
 
-  if (!formData) {
+  if (!companyName || !driverName || !registrationPlates) {
     return NextResponse.json(
       {
         message:
-          "Backend: `Did not receive data from Shipping Informations form`",
+          "All fields are required: companyName, driverName, registrationPlates",
       },
-      { status: 200 },
+      { status: 400 },
     );
   }
 
