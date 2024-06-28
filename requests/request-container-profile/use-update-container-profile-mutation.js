@@ -2,13 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-function useUpdateContainerProfileMutation() {
+export default function useUpdateContainerProfileMutation() {
   const queryClient = useQueryClient();
 
-  const updateContainerProfileMutations = async (id) => {
+  const updateContainerProfileMutations = async (preparedData) => {
     try {
-      const response = await axios.delete("/api/container-profile", {
-        data: { id },
+      const response = await axios.put("/api/container-profile", {
+        preparedData,
       });
       return response.data;
     } catch (error) {
@@ -35,5 +35,3 @@ function useUpdateContainerProfileMutation() {
 
   return mutation;
 }
-
-export default useUpdateContainerProfileMutation;

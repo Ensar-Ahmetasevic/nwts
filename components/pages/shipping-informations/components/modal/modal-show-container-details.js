@@ -1,4 +1,8 @@
-function ModalContainerDetails({ modalContenData, title, closeModal }) {
+export default function ModalShowContainerDetails({
+  modalContenData,
+  title,
+  closeModal,
+}) {
   return (
     <>
       <input
@@ -9,6 +13,7 @@ function ModalContainerDetails({ modalContenData, title, closeModal }) {
       <div className="modal" role="dialog">
         <div className="modal-box">
           <h3 className="text-lg font-bold">{title}</h3>
+
           {modalContenData ? (
             <ul>
               {Object.entries(modalContenData).map(([key, value]) => (
@@ -36,5 +41,3 @@ function ModalContainerDetails({ modalContenData, title, closeModal }) {
     </>
   );
 }
-
-export default ModalContainerDetails;

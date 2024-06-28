@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-import useDeleteContainerProfileMutations from "./../../../requests/request-container-profile/use-delete-container-profile-mutation";
+import useDeleteContainerProfileMutations from "../../../requests/request-container-profile/use-delete-container-profile-mutation";
 
-import ModalContainerDetails from "./components/modal/modal-container-details";
+import ModalShowContainerDetails from "./components/modal/modal-show-container-details";
 import ModalContainerProfilUpdate from "./components/modal/modal-container-profile-update";
 
 import { MdOutlineExpandMore } from "react-icons/md";
 import { MdDeleteSweep } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 
-function ContainerDetails({ data }) {
+export default function showContainerDetails({ data }) {
   const [modalContenData, setModalContentData] = useState(null);
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
@@ -18,7 +18,7 @@ function ContainerDetails({ data }) {
   //Delete data
   const deleteContainerProfileMutations = useDeleteContainerProfileMutations();
 
-  // TODO ITEM MUTATIOS;
+  // MUTATIOS;
   function deleteHandler(id) {
     deleteContainerProfileMutations.mutateAsync(id);
   }
@@ -52,9 +52,7 @@ function ContainerDetails({ data }) {
     setOpenModalDetails(true);
   };
 
-  const handleModalUpdate = (detail) => {
-    console.log("update--- done...");
-
+  const handleModalUpdate = () => {
     setOpenModalUpdate(true);
   };
 
@@ -66,14 +64,13 @@ function ContainerDetails({ data }) {
             <p className="font-bold">{detail.title}</p>
             <p>{detail.name}</p>
             <div className="tooltip mt-1" data-tip="Extend">
-              <button
+              <label
+                htmlFor="modal_container_details"
                 className="btnExtend"
                 onClick={() => handleModalDetails(detail)}
               >
-                <label htmlFor="modal_container_details">
-                  <MdOutlineExpandMore />
-                </label>
-              </button>
+                <MdOutlineExpandMore />
+              </label>
             </div>
           </li>
         ))}
@@ -98,22 +95,20 @@ function ContainerDetails({ data }) {
         </div>
       </ul>
 
-      {openModalDetails && (
-        <ModalContainerDetails
+      {openModalDetails ? (
+        <ModalShowContainerDetails
           closeModal={() => setOpenModalDetails(false)}
           modalContenData={modalContenData}
           title={title}
         />
-      )}
+      ) : null}
 
-      {openModalUpdate && (
+      {openModalUpdate ? (
         <ModalContainerProfilUpdate
           closeModal={() => setOpenModalUpdate(false)}
           modalContainerProfilData={data}
         />
-      )}
+      ) : null}
     </div>
   );
 }
-
-export default ContainerDetails;

@@ -30,61 +30,67 @@ function FormLocationOrigin({ cancelLocationOriginForm }) {
   }
 
   return (
-    <form
-      className="flex flex-col items-start space-y-4"
-      onSubmit={handleSubmit(isFormSubmit)}
-    >
-      <div className="flex w-64 flex-col space-y-2">
-        <div className="flex w-64 flex-col space-y-2">
-          <label className="text-left text-sm">Name:</label>
-          <input
-            className="input input-bordered input-md px-2"
-            type="text"
-            placeholder="Type here"
-            {...register("name", {
-              required: true,
-            })}
-          />
-        </div>
-        <div className="flex w-64 flex-col space-y-2">
-          <label className="text-left text-sm">Address:</label>
-          <input
-            className="input input-bordered input-md px-2"
-            type="text"
-            placeholder="Type here"
-            {...register("address", {
-              required: true,
-            })}
-          />
-        </div>
-        <div className="flex w-64 flex-col space-y-2">
-          <label className="text-left text-sm">Origin:</label>
-          <input
-            className="input input-bordered input-md px-2"
-            type="text"
-            placeholder="Type here"
-            {...register("origin", {
-              required: true,
-            })}
-          />
-        </div>
-      </div>
+    <>
+      <div className="flex flex-col space-y-4">
+        <h1 className="text-xl font-bold">Add new "Location origin"</h1>
 
-      <div className=" space-x-2">
-        <button className="btnSave" type="submit">
-          Save
-        </button>
-        <button
-          className="btnCancel"
-          onClick={() => {
-            cancelLocationOriginForm(null);
-            reset();
-          }}
+        <form
+          className="flex flex-col items-start space-y-4 pb-4"
+          onSubmit={handleSubmit(isFormSubmit)}
         >
-          Cancel
-        </button>
+          <div className="flex w-64 flex-col space-y-2">
+            <div className="flex w-64 flex-col space-y-2">
+              <label className="text-left text-sm">Name:</label>
+              <input
+                className="input input-md input-bordered px-2"
+                type="text"
+                placeholder="Type here"
+                {...register("name", {
+                  required: true,
+                })}
+              />
+            </div>
+            <div className="flex w-64 flex-col space-y-2">
+              <label className="text-left text-sm">Address:</label>
+              <input
+                className="input input-md input-bordered px-2"
+                type="text"
+                placeholder="Type here"
+                {...register("address", {
+                  required: true,
+                })}
+              />
+            </div>
+            <div className="flex w-64 flex-col space-y-2">
+              <label className="text-left text-sm">Origin:</label>
+              <input
+                className="input input-md input-bordered px-2"
+                type="text"
+                placeholder="Type here"
+                {...register("origin", {
+                  required: true,
+                })}
+              />
+            </div>
+          </div>
+
+          <div className=" space-x-2">
+            <button className="btnSave" type="submit">
+              Save
+            </button>
+            <button
+              className="btnCancel"
+              onClick={() => {
+                cancelLocationOriginForm(null);
+                reset();
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
+    </>
   );
 }
 

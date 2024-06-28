@@ -5,6 +5,7 @@ import Providers from "./providers";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Navbar from "./../components/navbar/navbar";
 
 const rubik = Rubik({
   subsets: ["latin"],
@@ -15,7 +16,7 @@ const rubik = Rubik({
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${rubik.variable} scroll-smooth`}>
-      <body className="font-rubik overflow-x-hidden">
+      <body className="overflow-x-hidden font-rubik">
         <Providers>
           <ToastContainer
             position="top-right"
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
             toastClassName="bg-gray-900 text-white"
             bodyClassName="text-sm"
           />
+          <Navbar />
           {children}
         </Providers>
       </body>

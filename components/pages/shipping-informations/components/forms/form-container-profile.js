@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
 import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
-import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
+import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type";
 import useCreateContainerProfileMutation from "../../../../../requests/request-container-profile/use-create-container-profile-mutation";
 import useShippingInformationQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-informations";
 
@@ -24,7 +24,7 @@ function FormContainerProfile({ closeModal }) {
   const wasteProfileData = resWasteProfileData?.wasteProfileData;
 
   const { data: resContainerTypeData } = useContainerTypeQuery();
-  const containerTypeData = resContainerTypeData?.containerTypeData;
+  const containerTypeData = resContainerTypeData;
 
   const { data: resShippingInformationId } = useShippingInformationQuery();
   const shippingInformationId = resShippingInformationId?.shippingData.id;

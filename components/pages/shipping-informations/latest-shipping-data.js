@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import ContainerDetails from "./container-details";
+import ContainerDetails from "./show-container-details";
 
 import useDeleteShippingInformationsMutations from "../../../requests/request-shipping-information/use-delete-shipping-informations-mutation";
 

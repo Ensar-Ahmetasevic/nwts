@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 
 import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
 import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
-import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-location-origin";
+import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type";
+import useUpdateContainerProfileMutation from "./../../../../../requests/request-container-profile/use-update-container-profile-mutation";
 
 export default function ModalContainerProfilUpdate({
   modalContainerProfilData,
@@ -22,16 +23,27 @@ export default function ModalContainerProfilUpdate({
   const wasteProfileData = resWasteProfileData?.wasteProfileData;
 
   const { data: resContainerTypeData } = useContainerTypeQuery();
-  const containerTypeData = resContainerTypeData?.containerTypeData;
+  const containerTypeData = resContainerTypeData;
 
-  const isFormSubmit = (formData) => {
-    // onSubmit({ ...formData, id: data.id });
-    console.log(formData);
-    closeModal();
-  };
+  const updateContainerProfileMutation = useUpdateContainerProfileMutation();
 
   const { quantity, locationOrigin, wasteProfile, containerType, id } =
     modalContainerProfilData;
+
+  const isFormSubmit = async (formData) => {
+    try {
+      const preparedData = {
+        ...formData,
+        id,
+      };
+
+      await updateContainerProfileMutation.mutateAsync(preparedData);
+
+      closeModal();
+    } catch (error) {
+      console.error("Error updating Container Profile:", error);
+    }
+  };
 
   return (
     <>

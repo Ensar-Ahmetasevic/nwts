@@ -3,8 +3,7 @@ import axios from "axios";
 
 const FetchContaierTypeData = async () => {
   const response = await axios.get("/api/container-profile/container-type");
-
-  const data = response.data;
+  const data = response.data.containerTypeData;
 
   return data;
 };

@@ -113,3 +113,42 @@ export async function DELETE(req) {
     );
   }
 }
+
+// Update container profile
+
+export async function PUT(req) {
+  const { preparedData } = await req.json();
+
+  const { id, quantity, locationOrigin, wasteProfile, containerType } =
+    preparedData;
+
+  if (!id || !quantity || !locationOrigin || !wasteProfile || !containerType) {
+    return NextResponse.json(
+      { message: "All fields are required" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const updatedProfile = await prisma.containerProfile.update({
+      where: { id: parseInt(id) },
+      data: {
+        quantity: parseInt(quantity),
+        locationOriginId: parseInt(locationOrigin),
+        wasteProfileId: parseInt(wasteProfile),
+        containerTypeId: parseInt(containerType),
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Container Profile updated successfully.", updatedProfile },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error updating Container Profile:", error);
+    return NextResponse.json(
+      { message: "Failed to update Container Profile", error: error.message },
+      { status: 500 },
+    );
+  }
+}

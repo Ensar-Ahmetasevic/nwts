@@ -63,12 +63,24 @@ export async function GET() {
       orderBy: { id: "desc" },
     });
 
+    if (!containerTypeData) {
+      return NextResponse.json(
+        {
+          containerProfileData: null,
+          message: "No Container Type information available",
+        },
+        { status: 200 },
+      );
+    }
+
     return NextResponse.json({ containerTypeData }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to to catch Location Origin Data." },
+      {
+        message: "Failed to fetch Shipping Information Data.",
+        error: error.message,
+      },
       { status: 500 },
-      { error: error.message },
     );
   }
 }
