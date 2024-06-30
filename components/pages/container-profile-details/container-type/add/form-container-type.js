@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import useCreateContainerTypeMutation from "../../../../requests/request-container-profile/request-container-type/use-create-container-type-mutation";
+import useCreateContainerTypeMutation from "./../../../../../requests/request-container-profile/request-container-type/use-create-container-type-mutation";
 
-function FormContainerType({ cancelContainerTypeForm }) {
+function FormContainerType({ OnCancel }) {
   const {
     register,
     handleSubmit,
@@ -41,7 +41,7 @@ function FormContainerType({ cancelContainerTypeForm }) {
     };
     createContainerTypeMutation.mutateAsync({ formData });
 
-    cancelContainerTypeForm(null);
+    OnCancel(null);
     reset();
   }
 
@@ -162,7 +162,7 @@ function FormContainerType({ cancelContainerTypeForm }) {
             <button
               className="btnCancel"
               onClick={() => {
-                cancelContainerTypeForm(null);
+                OnCancel(null);
                 reset();
               }}
             >

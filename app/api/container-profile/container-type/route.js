@@ -91,18 +91,79 @@ export async function DELETE(req) {
   const { id } = await req.json();
 
   try {
-    await prisma.locationOrigin.delete({
+    await prisma.containerType.delete({
       where: { id: id },
     });
     return NextResponse.json(
-      { message: "Location Origin deleted successfully." },
+      { message: "Container Type deleted successfully." },
       { status: 200 },
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to to catch Location Origin data." },
+      { message: "Faild to update Container Type: ", error: error.message },
       { status: 500 },
-      { error: error.message },
+    );
+  }
+}
+
+// Update container type
+
+export async function PUT(req, res) {
+  const { preparedData } = await req.json();
+
+  const {
+    name,
+    material,
+    volume,
+    carryingCapacity,
+    radioactivityLevel,
+    physicalProperties,
+    footprint,
+    description,
+    id,
+  } = preparedData;
+
+  if (
+    (!name,
+    !material,
+    !volume,
+    !carryingCapacity,
+    !radioactivityLevel,
+    !physicalProperties,
+    !footprint,
+    !description,
+    !id)
+  ) {
+    return NextResponse.json(
+      { message: "All fields are required" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const updateContainerType = await prisma.containerType.update({
+      where: { id: parseInt(id) },
+      data: {
+        name: name,
+        material: material,
+        volume: parseInt(volume),
+        carryingCapacity: parseInt(carryingCapacity),
+        radioactivityLevel: radioactivityLevel,
+        physicalProperties: physicalProperties,
+        footprint: parseInt(footprint),
+        description: description,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Container Type updated successfully", updateContainerType },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error updating Container Type: ", error);
+    return NextResponse.json(
+      { message: "Faild to update Container Type: ", error: error.message },
+      { status: 500 },
     );
   }
 }

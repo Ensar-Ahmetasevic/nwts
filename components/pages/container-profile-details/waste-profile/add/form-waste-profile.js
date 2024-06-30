@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import useCreateWasteProfileMutation from "../../../../requests/request-container-profile/request-waste-profile/use-create-waste-profile-mutation";
+import useCreateWasteProfileMutation from "../../../../../requests/request-container-profile/request-waste-profile/use-create-waste-profile-mutation";
 
 function FormWasteProfile({ cancelWasteProfileForm }) {
   const {

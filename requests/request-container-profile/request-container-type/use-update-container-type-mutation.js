@@ -2,32 +2,34 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-function useDeleteContainerProfileMutations() {
+export default function useUpdateContainerTypeMutation() {
   const queryClient = useQueryClient();
 
-  const deleteContainerProfileMutations = async (id) => {
+  const updateContainerTypeMutation = async (preparedData) => {
     try {
-      const response = await axios.delete("/api/container-profile", {
-        data: { id },
-      });
+      const response = await axios.put(
+        "/api/container-profile/container-type",
+        {
+          preparedData,
+        },
+      );
       return response.data;
     } catch (error) {
-      console.error("Failed to DELETE shipping data: ", error);
+      console.error("Failed to UPDATE Container Type informations: ", error);
       toast.error(`Error: ${error.response.data.message}`);
       throw error; // Throw the error to trigger onError callback
     }
   };
 
   const mutation = useMutation({
-    mutationFn: deleteContainerProfileMutations,
+    mutationFn: updateContainerTypeMutation,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["containerProfileQueryKey"],
-        queryKey: ["shippingInformationQueryKey"],
+        queryKey: ["containerTypeQueryKey"],
       });
       // Toast a success message
-      toast.success("Container Profile data DELETED successfully.", {
+      toast.success("Container Type UPDATED successfully.", {
         autoClose: 2000,
       });
     },
@@ -35,5 +37,3 @@ function useDeleteContainerProfileMutations() {
 
   return mutation;
 }
-
-export default useDeleteContainerProfileMutations;

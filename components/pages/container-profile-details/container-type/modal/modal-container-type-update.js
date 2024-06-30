@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
-
 import { useEffect } from "react";
+
+import useUpdateContainerTypeMutation from "./../../../../../requests/request-container-profile/request-container-type/use-update-container-type-mutation";
 
 export default function ModalContainerTypeUpdate({
   modalContainerTypeData,
@@ -13,8 +14,9 @@ export default function ModalContainerTypeUpdate({
     formState: { errors },
   } = useForm({});
 
+  const updateContainerTypeMutation = useUpdateContainerTypeMutation();
+
   useEffect(() => {
-    console.log(modalContainerTypeData);
     document.getElementById("modal_update_container_type").showModal();
   }, [modalContainerTypeData]);
 
@@ -31,16 +33,13 @@ export default function ModalContainerTypeUpdate({
   } = modalContainerTypeData;
 
   const isFormSubmit = async (formData) => {
-    console.log("test: ", formData);
     try {
       const preparedData = {
         ...formData,
         id,
       };
 
-      console.log(preparedData);
-
-      // await updateContainerProfileMutation.mutateAsync(preparedData);
+      await updateContainerTypeMutation.mutateAsync(preparedData);
 
       closeModal();
     } catch (error) {
@@ -179,7 +178,7 @@ export default function ModalContainerTypeUpdate({
               </div>
 
               <div className="space-x-2">
-                <button className="btnSave" type="submit" onClick={closeModal}>
+                <button className="btnSave" type="submit">
                   Save
                 </button>
               </div>
