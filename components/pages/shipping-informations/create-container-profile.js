@@ -10,7 +10,7 @@ export default function CreateContainerProfile() {
   return (
     <>
       <div className="flex flex-row space-x-2">
-        <p>Create Container Profile</p>
+        <p>Create Container</p>
 
         <label
           className="btnAdd"

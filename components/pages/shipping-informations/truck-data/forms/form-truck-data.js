@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import useCreateShippingInformationsMutation from "../../../../../requests/request-shipping-information/use-create-shipping-informations-mutation";
 
-function FormShippingInformations() {
+export default function FormTruckData({ closeModal }) {
   const {
     register,
     handleSubmit,
@@ -24,12 +24,13 @@ function FormShippingInformations() {
     createShippingInformationsMutation.mutateAsync({ formData: trimmedData });
 
     reset();
+    closeModal();
   }
 
   return (
     <>
       <form
-        className="flex flex-col space-y-8 rounded-md border-2 text-center"
+        className="flex flex-col space-y-8 text-center"
         onSubmit={handleSubmit(isFormSubmit)}
       >
         <div>
@@ -75,14 +76,10 @@ function FormShippingInformations() {
         </div>
         <div>
           <button className="btnCreate" type="submit">
-            Create
+            Next
           </button>
         </div>
-
-        <h1>Filter data by date or company name:</h1>
       </form>
     </>
   );
 }
-
-export default FormShippingInformations;

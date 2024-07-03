@@ -21,7 +21,7 @@ export async function POST(req, res) {
 
   try {
     await prisma.shippingInformation.create({
-      data: { companyName, driverName, registrationPlates },
+      data: { companyName, driverName, registrationPlates, status: "IN" },
     });
 
     return NextResponse.json(
@@ -43,7 +43,7 @@ export async function GET() {
   try {
     const shippingData = await prisma.shippingInformation.findFirst({
       orderBy: {
-        createdAt: "desc",
+        entryDateTime: "desc",
       },
       include: {
         containerProfiles: {

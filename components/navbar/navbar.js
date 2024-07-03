@@ -8,13 +8,21 @@ export default function Navbar() {
           Nuclear Waste Tracking System
         </Link>
       </div>
+
       <div className="flex-none">
-        <ul className="menu menu-horizontal space-x-3 px-1">
+        <ul className="menu menu-horizontal px-1">
           <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/shipping-informations">Shipping Informations</Link>
+            <details>
+              <summary>Shipping Data</summary>
+              <ul className="rounded-t-none bg-base-100 p-2">
+                <li>
+                  <Link href="/shipping-informations">Add New</Link>
+                </li>
+                <li>
+                  <Link href="/">See All</Link>
+                </li>
+              </ul>
+            </details>
           </li>
           <li>
             <Link href="/container-profile">Container Details</Link>

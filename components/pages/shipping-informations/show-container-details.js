@@ -23,10 +23,6 @@ export default function showContainerDetails({ data }) {
     deleteContainerProfileMutations.mutateAsync(id);
   }
 
-  if (!data) {
-    return <p>No data available.</p>;
-  }
-
   const { quantity, locationOrigin, wasteProfile, containerType, id } = data;
 
   const containerDetails = [
@@ -57,43 +53,48 @@ export default function showContainerDetails({ data }) {
   };
 
   return (
-    <div className="mx-2 space-y-2 rounded-md border object-left p-2">
-      <ul>
-        {containerDetails.map((detail, index) => (
-          <li key={index} className="flex space-x-3">
-            <p className="font-bold">{detail.title}</p>
-            <p>{detail.name}</p>
-            <div className="tooltip mt-1" data-tip="Extend">
+    <div className="mx-2 space-y-2 p-2">
+      <div className="pb-4 pt-2">
+        <h2 className=" text-xl font-bold ">Details:</h2>
+      </div>
+      <div>
+        <ul>
+          {containerDetails.map((detail, index) => (
+            <li key={index} className="flex space-x-3">
+              <p className="font-bold">{detail.title}</p>
+              <p>{detail.name}</p>
+              <div className="tooltip mt-1" data-tip="Extend">
+                <label
+                  htmlFor="modal_container_details"
+                  className="btnExtend"
+                  onClick={() => handleModalDetails(detail)}
+                >
+                  <MdOutlineExpandMore />
+                </label>
+              </div>
+            </li>
+          ))}
+          <div className="mt-4 flex justify-end space-x-2">
+            <div className="tooltip" data-tip="Edit">
               <label
-                htmlFor="modal_container_details"
-                className="btnExtend"
-                onClick={() => handleModalDetails(detail)}
+                htmlFor="update_modal"
+                className="btnUpdate"
+                onClick={() => handleModalUpdate()}
               >
-                <MdOutlineExpandMore />
+                <CiEdit />
               </label>
             </div>
-          </li>
-        ))}
-        <div className="mt-2 flex justify-end space-x-2">
-          <div className="tooltip" data-tip="Edit">
-            <label
-              htmlFor="update_modal"
-              className="btnUpdate"
-              onClick={() => handleModalUpdate()}
-            >
-              <CiEdit />
-            </label>
+            <div className="tooltip" data-tip="Delete">
+              <button
+                className="btnDelete flex items-center"
+                onClick={() => deleteHandler(id)}
+              >
+                <MdDeleteSweep />
+              </button>
+            </div>
           </div>
-          <div className="tooltip" data-tip="Delete">
-            <button
-              className="btnDelete flex items-center"
-              onClick={() => deleteHandler(id)}
-            >
-              <MdDeleteSweep />
-            </button>
-          </div>
-        </div>
-      </ul>
+        </ul>
+      </div>
 
       {openModalDetails ? (
         <ModalShowContainerDetails
@@ -102,7 +103,6 @@ export default function showContainerDetails({ data }) {
           title={title}
         />
       ) : null}
-
       {openModalUpdate ? (
         <ModalContainerProfilUpdate
           closeModal={() => setOpenModalUpdate(false)}
