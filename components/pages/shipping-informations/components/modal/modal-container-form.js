@@ -18,7 +18,7 @@ export default function ModalContainerForm({ closeModal }) {
               className="btn"
               onClick={closeModal}
             >
-              Close
+              Cancel
             </label>
           </div>
         </div>

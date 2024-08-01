@@ -10,15 +10,14 @@ export default function CreateContainerProfile() {
   return (
     <>
       <div className="flex flex-row space-x-2">
-        <p>Create Container</p>
-
         <label
           className="btnAdd"
           onClick={openModal}
           htmlFor="modal_container_form"
         >
-          Add
+          +
         </label>
+        <p>Containers</p>
 
         {isOpen && <ModalContainerForm closeModal={closeModal} />}
       </div>

@@ -2,12 +2,14 @@ import { useRouter } from "next/navigation";
 
 import FormTruckData from "./../forms/form-truck-data";
 
-export default function ModalTruckDataForm({ closeModal, isModalOpen }) {
+export default function ModalTruckDataForm({ closeModal, onSubmitForm }) {
   const router = useRouter();
 
-  const handleClose = () => {
+  const handleClose = (submitted) => {
     closeModal();
-    router.push("/");
+    if (!submitted) {
+      router.push("/");
+    }
   };
 
   return (
@@ -16,19 +18,19 @@ export default function ModalTruckDataForm({ closeModal, isModalOpen }) {
         type="checkbox"
         id="modal_truck_data"
         className="modal-toggle"
-        checked={isModalOpen}
+        checked="true"
         readOnly
       />
       <div className="modal" role="dialog">
         <div className="modal-box w-11/12 max-w-5xl">
-          <FormTruckData closeModal={closeModal} />
+          <FormTruckData onSubmitForm={onSubmitForm} />
           <div className="modal-action">
             <label
               htmlFor="modal_truck_data"
               className="btn"
-              onClick={() => handleClose()}
+              onClick={() => handleClose(false)}
             >
-              Close
+              Cancel
             </label>
           </div>
         </div>

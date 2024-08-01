@@ -61,39 +61,43 @@ function LatestShippingData({ data, isLoading, error }) {
               </div>
             </div>
 
+            {/* Company Name */}
+            <div className="flex flex-row">
+              <p>Transport data for:</p>
+              <p className="ml-4 font-bold">{companyName}</p>
+            </div>
+
             {/* entryDateTime */}
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <p className="font-bold">Entry Date:</p>
               <p>{dayjs(entryDateTime).format("DD/MM/YYYY, HH:mm")}</p>
-            </div>
-            {/* Company Name */}
-            <div className="flex flex-col">
-              <p className="font-bold">Company Name:</p>
-              <p>{companyName}</p>
-            </div>
+            </div> */}
 
             {/* Driver Name */}
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <p className="font-bold">Driver Name:</p>
               <p>{driverName}</p>
-            </div>
+            </div> */}
 
             {/* Registration Plates */}
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <p className="font-bold">Registration Plates:</p>
               <p>{registrationPlates}</p>
-            </div>
+            </div> */}
 
-            <button
-              className="btnDelete"
-              onClick={() =>
-                deleteShippingInformationsMutations.mutateAsync(
-                  data.shippingData.id,
-                )
-              }
-            >
-              Delete
-            </button>
+            <div className=" flex flex-row space-x-2">
+              <button
+                className="btnDelete"
+                onClick={() =>
+                  deleteShippingInformationsMutations.mutateAsync(
+                    data.shippingData.id,
+                  )
+                }
+              >
+                D
+              </button>
+              <p>Delete</p>
+            </div>
           </div>
 
           {/* Shipping Details */}

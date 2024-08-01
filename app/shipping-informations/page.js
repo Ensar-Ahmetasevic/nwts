@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import LatestShippingData from "../../components/pages/shipping-informations/latest-shipping-data";
 import CreateContainerProfile from "../../components/pages/shipping-informations/create-container-profile";
@@ -10,21 +10,41 @@ import useShippingInformationQuery from "./../../requests/request-shipping-infor
 
 function ShippingInformations() {
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  // Fetching LatestShippingData
-  const { data, isLoading, error } = useShippingInformationQuery();
+  // Fetching LatestShippingData only if the form is submitted
+  const { data, isLoading, error, status } = useShippingInformationQuery({
+    enabled: isFormSubmitted,
+  });
+
+  console.log(status);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setIsFormSubmitted(false); // Disable fetching data when modal is open
+    }
+    console.log("prvi useEffect", data);
+  }, [isModalOpen]);
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  const onSubmitForm = () => {
+    setIsModalOpen(false);
+    setIsFormSubmitted(true);
+  };
+
   return (
     <>
       {isModalOpen ? (
-        <ModalTruckDataForm closeModal={closeModal} isModalOpen={isModalOpen} />
+        <ModalTruckDataForm
+          closeModal={closeModal}
+          onSubmitForm={onSubmitForm}
+        />
       ) : null}
 
-      {!isModalOpen ? (
+      {!isModalOpen && isFormSubmitted ? (
         <div className="items-centerpt-20 container mx-auto flex-col">
           <div className="px-20">
             <LatestShippingData

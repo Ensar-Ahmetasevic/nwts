@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import useCreateShippingInformationsMutation from "../../../../../requests/request-shipping-information/use-create-shipping-informations-mutation";
 
-export default function FormTruckData({ closeModal }) {
+export default function FormTruckData({ onSubmitForm }) {
   const {
     register,
     handleSubmit,
@@ -24,7 +24,7 @@ export default function FormTruckData({ closeModal }) {
     createShippingInformationsMutation.mutateAsync({ formData: trimmedData });
 
     reset();
-    closeModal();
+    onSubmitForm();
   }
 
   return (

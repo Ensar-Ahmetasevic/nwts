@@ -7,10 +7,11 @@ const FetchshippingInformationData = async () => {
   return data;
 };
 
-const useShippingInformationQuery = () => {
+const useShippingInformationQuery = (options = {}) => {
   const query = useQuery({
     queryKey: ["shippingInformationQueryKey"],
     queryFn: FetchshippingInformationData,
+    ...options,
   });
 
   return query;
