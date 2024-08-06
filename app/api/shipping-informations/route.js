@@ -96,3 +96,40 @@ export async function DELETE(req) {
     );
   }
 }
+
+// Update truck data profile
+
+export async function PUT(req) {
+  const { updatedTruckData } = await req.json();
+
+  const { id, companyName, driverName, registrationPlates } = updatedTruckData;
+
+  if (!id || !companyName || !driverName || !registrationPlates) {
+    return NextResponse.json(
+      { message: "All fields are required" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const updateTruckData = await prisma.shippingInformation.update({
+      where: { id: parseInt(id) },
+      data: {
+        companyName,
+        driverName,
+        registrationPlates,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Truck Data updated successfully.", updateTruckData },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error updating Truck Data:", error);
+    return NextResponse.json(
+      { message: "Failed to update Truck Data", error: error.message },
+      { status: 500 },
+    );
+  }
+}

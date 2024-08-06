@@ -47,7 +47,11 @@ export default function ModalContainerProfilUpdate({
 
   return (
     <>
-      <input type="checkbox" id="update_modal" className="modal-toggle" />
+      <input
+        type="checkbox"
+        id="update_modal_container_profile"
+        className="modal-toggle"
+      />
       <div className="modal" role="dialog">
         <div className="modal-box">
           <form
@@ -130,8 +134,8 @@ export default function ModalContainerProfilUpdate({
             </div>
 
             <div className=" space-x-2">
-              <button className="btnSave" type="submit">
-                Save
+              <button className="btnUpdate" type="submit">
+                Update
               </button>
             </div>
           </form>

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 
 import LatestShippingData from "../../components/pages/shipping-informations/latest-shipping-data";
-import CreateContainerProfile from "../../components/pages/shipping-informations/create-container-profile";
 import ModalTruckDataForm from "./../../components/pages/shipping-informations/truck-data/modal/modal-truck-data-form";
 
 import useShippingInformationQuery from "./../../requests/request-shipping-information/use-fetch-shipping-informations";
@@ -17,13 +16,10 @@ function ShippingInformations() {
     enabled: isFormSubmitted,
   });
 
-  console.log(status);
-
   useEffect(() => {
     if (isModalOpen) {
       setIsFormSubmitted(false); // Disable fetching data when modal is open
     }
-    console.log("prvi useEffect", data);
   }, [isModalOpen]);
 
   const closeModal = () => {
@@ -52,9 +48,6 @@ function ShippingInformations() {
               isLoading={isLoading}
               error={error}
             />
-            {!isLoading && data?.shippingData ? (
-              <CreateContainerProfile />
-            ) : null}
           </div>
         </div>
       ) : null}

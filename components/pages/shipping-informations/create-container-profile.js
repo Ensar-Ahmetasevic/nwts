@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import ModalContainerForm from "./components/modal/modal-container-form";
+import { GrAdd } from "react-icons/gr";
 
 export default function CreateContainerProfile() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,14 +12,16 @@ export default function CreateContainerProfile() {
   return (
     <>
       <div className="flex flex-row space-x-2">
-        <label
-          className="btnAdd"
-          onClick={openModal}
-          htmlFor="modal_container_form"
-        >
-          +
-        </label>
-        <p>Containers</p>
+        <div className="tooltip" data-tip="Add Containers">
+          <label
+            id="addButton"
+            className="btnAdd"
+            htmlFor="modal_container_form"
+            onClick={openModal}
+          >
+            <GrAdd />
+          </label>
+        </div>
 
         {isOpen && <ModalContainerForm closeModal={closeModal} />}
       </div>
