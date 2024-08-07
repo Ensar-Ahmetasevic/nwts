@@ -12,7 +12,7 @@ function ShippingInformations() {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   // Fetching LatestShippingData only if the form is submitted
-  const { data, isLoading, error, status } = useShippingInformationQuery({
+  const { data, isLoading, error } = useShippingInformationQuery({
     enabled: isFormSubmitted,
   });
 

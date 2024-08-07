@@ -133,3 +133,38 @@ export async function PUT(req) {
     );
   }
 }
+
+// Update Shipping STATUS
+
+export async function PATCH(req) {
+  const { shippingStatusData } = await req.json();
+
+  const { id, status } = shippingStatusData;
+
+  if (!id || !status) {
+    return NextResponse.json(
+      { message: "All fields are required" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const updateTruckData = await prisma.shippingInformation.update({
+      where: { id: parseInt(id) },
+      data: {
+        status,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Shipping Status updated successfully.", updateTruckData },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Error updating Shipping Status:", error);
+    return NextResponse.json(
+      { message: "Failed to update Shipping Status", error: error.message },
+      { status: 500 },
+    );
+  }
+}

@@ -2,31 +2,31 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useUpdateTruckDataMutation() {
+export default function useUpdateShippingStatusMutation() {
   const queryClient = useQueryClient();
 
-  const updateTruckDataMutations = async (updatedTruckData) => {
+  const updateShippingStatusMutations = async (shippingStatusData) => {
     try {
-      const response = await axios.put("/api/shipping-informations", {
-        updatedTruckData,
+      const response = await axios.patch("/api/shipping-informations", {
+        shippingStatusData,
       });
       return response.data;
     } catch (error) {
-      console.error("Failed to UPDATE Truck Data informations: ", error);
+      console.error("Failed to UPDATE Shipping Status: ", error);
       toast.error(`Error: ${error.response.data.message}`);
       throw error; // Throw the error to trigger onError callback
     }
   };
 
   const mutation = useMutation({
-    mutationFn: updateTruckDataMutations,
+    mutationFn: updateShippingStatusMutations,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["shippingInformationQueryKey"],
       });
       // Toast a success message
-      toast.success("Truck Data UPDATED successfully.", {
+      toast.success("Shipping Status UPDATED successfully.", {
         autoClose: 2000,
       });
     },
