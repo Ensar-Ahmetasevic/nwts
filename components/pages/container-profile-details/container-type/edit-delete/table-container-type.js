@@ -1,5 +1,5 @@
 import ShowContainerType from "./show-container-type";
-import useContainerTypeQuery from "./../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type";
+import useContainerTypeQuery from "./../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
 
 export default function TableContainerType({ OnCancel }) {
   const { data: containerTypeData } = useContainerTypeQuery();

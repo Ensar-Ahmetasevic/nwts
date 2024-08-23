@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import useCreateShippingInformationsMutation from "../../../../../requests/request-shipping-information/use-create-shipping-informations-mutation";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 export default function FormTruckData({ onSubmitForm }) {
   const {
@@ -10,10 +11,18 @@ export default function FormTruckData({ onSubmitForm }) {
     formState: { errors },
   } = useForm();
 
-  const createShippingInformationsMutation =
-    useCreateShippingInformationsMutation();
+  const {
+    mutateAsync: createShippingInformationsMutation,
+    isPending,
+    isSuccess,
+    isError,
+  } = useCreateShippingInformationsMutation();
 
-  function isFormSubmit({ companyName, driverName, registrationPlates }) {
+  const isFormSubmit = async ({
+    companyName,
+    driverName,
+    registrationPlates,
+  }) => {
     // Trim whitespace from each field
     const trimmedData = {
       companyName: companyName.trim(),
@@ -21,11 +30,13 @@ export default function FormTruckData({ onSubmitForm }) {
       registrationPlates: registrationPlates.trim(),
     };
 
-    createShippingInformationsMutation.mutateAsync({ formData: trimmedData });
+    await createShippingInformationsMutation({
+      formData: trimmedData,
+    });
 
     reset();
-    onSubmitForm();
-  }
+    onSubmitForm(isSuccess);
+  };
 
   return (
     <>
@@ -75,8 +86,8 @@ export default function FormTruckData({ onSubmitForm }) {
           </div>
         </div>
         <div>
-          <button className="btnCreate" type="submit">
-            Next
+          <button className="btnCreate" type="submit" disabled={isPending}>
+            {isPending ? <LoadingSpinnerButton /> : "Next"}
           </button>
         </div>
       </form>

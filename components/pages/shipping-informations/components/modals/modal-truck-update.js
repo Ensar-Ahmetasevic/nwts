@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 
-import useUpdateTruckDataMutation from "./../../../../../requests/request-shipping-information/use-update-truck-data-mutation";
+import useUpdateTruckDataMutation from "../../../../../requests/request-shipping-information/use-update-truck-data-mutation";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 export default function ModalTruckUpdate({ modalTruckFormData, closeModal }) {
   const {
@@ -10,7 +11,12 @@ export default function ModalTruckUpdate({ modalTruckFormData, closeModal }) {
     formState: { errors },
   } = useForm({});
 
-  const updateTruckDataMutation = useUpdateTruckDataMutation();
+  const {
+    mutateAsync: updateMutateAsync,
+    isSuccess: successfullyUpdated,
+    isPending: updateLoading,
+    isError: updateError,
+  } = useUpdateTruckDataMutation();
 
   const { companyName, driverName, registrationPlates, id } =
     modalTruckFormData;
@@ -22,7 +28,7 @@ export default function ModalTruckUpdate({ modalTruckFormData, closeModal }) {
         id,
       };
 
-      await updateTruckDataMutation.mutateAsync(updatedTruckData);
+      await updateMutateAsync(updatedTruckData);
 
       closeModal();
     } catch (error) {
@@ -92,8 +98,12 @@ export default function ModalTruckUpdate({ modalTruckFormData, closeModal }) {
               </div>
             </div>
             <div>
-              <button className="btnUpdate" type="submit">
-                Update
+              <button
+                className="btnUpdate"
+                type="submit"
+                disabled={updateLoading}
+              >
+                {updateLoading ? <LoadingSpinnerButton /> : "Update"}
               </button>
             </div>
           </form>

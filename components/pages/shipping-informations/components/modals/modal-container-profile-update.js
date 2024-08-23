@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 
-import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
-import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
-import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type";
+import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile-query,";
+import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin-query";
+import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
 import useUpdateContainerProfileMutation from "./../../../../../requests/request-container-profile/use-update-container-profile-mutation";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 export default function ModalContainerProfilUpdate({
   modalContainerProfilData,
@@ -27,6 +28,13 @@ export default function ModalContainerProfilUpdate({
 
   const updateContainerProfileMutation = useUpdateContainerProfileMutation();
 
+  const {
+    mutateAsync: updateMutateAsync,
+    isSuccess: successfullyUpdated,
+    isPending: updateLoading,
+    isError: updateError,
+  } = useUpdateContainerProfileMutation();
+
   const { quantity, locationOrigin, wasteProfile, containerType, id } =
     modalContainerProfilData;
 
@@ -37,7 +45,7 @@ export default function ModalContainerProfilUpdate({
         id,
       };
 
-      await updateContainerProfileMutation.mutateAsync(preparedData);
+      await updateMutateAsync(preparedData);
 
       closeModal();
     } catch (error) {
@@ -134,8 +142,12 @@ export default function ModalContainerProfilUpdate({
             </div>
 
             <div className=" space-x-2">
-              <button className="btnUpdate" type="submit">
-                Update
+              <button
+                className="btnUpdate"
+                type="submit"
+                disabled={updateLoading}
+              >
+                {updateLoading ? <LoadingSpinnerButton /> : "Update"}
               </button>
             </div>
           </form>

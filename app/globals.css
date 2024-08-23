@@ -6,8 +6,13 @@
   @apply btn btn-xs rounded-sm border-2 border-blue-400 bg-transparent text-blue-400 hover:border-blue-600 hover:bg-blue-600 hover:text-white;
 }
 .btnCreate {
-  @apply btn btn-sm rounded-sm border-2 border-green-500 bg-transparent text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white;
+  @apply btn btn-xs rounded-sm border-2 border-green-500 bg-transparent text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white;
 }
+
+.btnNeutral {
+  @apply btn btn-sm rounded-sm border-2 border-gray-500 bg-transparent text-gray-500 hover:border-gray-500 hover:bg-gray-500 hover:text-white;
+}
+
 .btnAdd {
   @apply btn btn-xs rounded-sm border-2 border-blue-700 bg-transparent text-blue-500 hover:border-blue-500 hover:bg-blue-500 hover:text-white;
 }
@@ -29,4 +34,8 @@
 
 .btnExtend {
   @apply btn btn-xs rounded border border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400;
+}
+
+.btnSearch {
+  @apply btn btn-sm rounded-sm border-2 border-blue-700 bg-transparent text-blue-500 hover:border-blue-500 hover:bg-blue-500 hover:text-white;
 }

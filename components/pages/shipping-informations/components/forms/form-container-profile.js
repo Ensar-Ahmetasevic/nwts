@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 
-import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin";
-import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile";
-import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type";
+import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin-query";
+import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile-query,";
+import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
 import useCreateContainerProfileMutation from "../../../../../requests/request-container-profile/use-create-container-profile-mutation";
-import useShippingInformationQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-informations";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
-function FormContainerProfile({ closeModal }) {
+export default function FormContainerProfile({ closeModal, shippingID }) {
   const {
     register,
     handleSubmit,
@@ -14,7 +14,12 @@ function FormContainerProfile({ closeModal }) {
     formState: { errors },
   } = useForm();
 
-  const createContainerProfileMutation = useCreateContainerProfileMutation();
+  const {
+    mutateAsync: createContainerProfileMutation,
+    isPending,
+    isError,
+    isSuccess,
+  } = useCreateContainerProfileMutation();
 
   // Fetching data
   const { data: resLocationOriginData } = useLocationOriginQuery();
@@ -26,32 +31,29 @@ function FormContainerProfile({ closeModal }) {
   const { data: resContainerTypeData } = useContainerTypeQuery();
   const containerTypeData = resContainerTypeData;
 
-  const { data: resShippingInformationId } = useShippingInformationQuery();
-  const shippingInformationId = resShippingInformationId?.shippingData.id;
-
-  function isFormSubmit({
+  const isFormSubmit = async ({
     quantity,
     locationOrigin,
     wasteProfile,
     containerType,
-  }) {
+  }) => {
     // Trim whitespace from each field
     const formData = {
       quantity: quantity.trim(),
       locationOriginId: locationOrigin.trim(),
       wasteProfileId: wasteProfile.trim(),
       containerTypeId: containerType.trim(),
-      shippingInformationId: shippingInformationId,
+      shippingInformationId: shippingID,
     };
 
     try {
-      createContainerProfileMutation.mutateAsync(formData);
+      await createContainerProfileMutation(formData);
       reset();
       closeModal();
     } catch (error) {
       console.error("Error creating Container Profile:", error);
     }
-  }
+  };
 
   return (
     <>
@@ -138,13 +140,11 @@ function FormContainerProfile({ closeModal }) {
         </div>
 
         <div className=" space-x-2">
-          <button className="btnSave" type="submit">
-            Save
+          <button className="btnSave" type="submit" disabled={isPending}>
+            {isPending ? <LoadingSpinnerButton /> : "Save"}
           </button>
         </div>
       </form>
     </>
   );
 }
-
-export default FormContainerProfile;

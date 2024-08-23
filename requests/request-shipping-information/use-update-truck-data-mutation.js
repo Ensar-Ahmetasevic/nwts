@@ -24,6 +24,7 @@ export default function useUpdateTruckDataMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["shippingInformationQueryKey"],
+        queryKey: ["shippingInformationIDQueryKey"],
       });
       // Toast a success message
       toast.success("Truck Data UPDATED successfully.", {

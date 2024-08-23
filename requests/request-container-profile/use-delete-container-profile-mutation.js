@@ -24,7 +24,7 @@ function useDeleteContainerProfileMutations() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["containerProfileQueryKey"],
-        queryKey: ["shippingInformationQueryKey"],
+        queryKey: ["shippingInformationIDQueryKey"],
       });
       // Toast a success message
       toast.success("Container Profile data DELETED successfully.", {

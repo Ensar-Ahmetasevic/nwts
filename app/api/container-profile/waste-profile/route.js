@@ -48,6 +48,7 @@ export async function POST(req, res) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Failed to create Waste Profile: ", error);
     return NextResponse.json(
       { message: "Failed to create Waste Profile" },
       { status: 500 },
@@ -65,8 +66,9 @@ export async function GET() {
 
     return NextResponse.json({ wasteProfileData }, { status: 200 });
   } catch (error) {
+    console.error("Failed to catch Waste Profile Data: ", error);
     return NextResponse.json(
-      { message: "Failed to to catch Waste Profile Data." },
+      { message: "Failed to catch Waste Profile Data." },
       { status: 500 },
       { error: error.message },
     );
@@ -87,8 +89,9 @@ export async function DELETE(req) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Failed to delete Waste Profile: ", error);
     return NextResponse.json(
-      { message: "Failed to to catch Waste Profile data." },
+      { message: "Failed to delete Waste Profile data." },
       { status: 500 },
       { error: error.message },
     );

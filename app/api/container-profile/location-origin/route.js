@@ -23,6 +23,7 @@ export async function POST(req, res) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Failed to create Location Origin: ", error);
     return NextResponse.json(
       { message: "Failed to create Location Origin" },
       { status: 500 },
@@ -40,8 +41,9 @@ export async function GET() {
 
     return NextResponse.json({ locationOriginData }, { status: 200 });
   } catch (error) {
+    console.error("Failed to fetch Location Origin Data: ", error);
     return NextResponse.json(
-      { message: "Failed to to catch Location Origin Data." },
+      { message: "Failed to fetch Location Origin Data." },
       { status: 500 },
       { error: error.message },
     );
@@ -62,8 +64,9 @@ export async function DELETE(req) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Failed to delete Location Origin Data: ", error);
     return NextResponse.json(
-      { message: "Failed to to catch Location Origin data." },
+      { message: "Failed to delete Location Origin data." },
       { status: 500 },
       { error: error.message },
     );

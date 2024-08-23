@@ -1,6 +1,6 @@
 import FormContainerProfile from "./../forms/form-container-profile";
 
-export default function ModalContainerForm({ closeModal }) {
+export default function ModalContainerForm({ closeModal, shippingID }) {
   return (
     <>
       <input
@@ -10,7 +10,10 @@ export default function ModalContainerForm({ closeModal }) {
       />
       <div className="modal" role="dialog">
         <div className="modal-box">
-          <FormContainerProfile closeModal={closeModal} />
+          <FormContainerProfile
+            closeModal={closeModal}
+            shippingID={shippingID}
+          />
 
           <div className="modal-action">
             <label

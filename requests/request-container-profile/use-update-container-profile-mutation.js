@@ -24,7 +24,7 @@ export default function useUpdateContainerProfileMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["containerProfileQueryKey"],
-        queryKey: ["shippingInformationQueryKey"],
+        queryKey: ["shippingInformationIDQueryKey"],
       });
       // Toast a success message
       toast.success("Container Profile data UPDATED successfully.", {

@@ -48,6 +48,7 @@ export async function POST(req, res) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Faild to create Container Type: ", error);
     return NextResponse.json(
       { message: "Failed to create Container Type" },
       { status: 500 },
@@ -75,9 +76,10 @@ export async function GET() {
 
     return NextResponse.json({ containerTypeData }, { status: 200 });
   } catch (error) {
+    console.error("Faild to fetch Container Type: ", error);
     return NextResponse.json(
       {
-        message: "Failed to fetch Shipping Information Data.",
+        message: "Failed to fetch Container Type Data.",
         error: error.message,
       },
       { status: 500 },
@@ -99,8 +101,9 @@ export async function DELETE(req) {
       { status: 200 },
     );
   } catch (error) {
+    console.error("Faild to delete Container Type: ", error);
     return NextResponse.json(
-      { message: "Faild to update Container Type: ", error: error.message },
+      { message: "Faild to delete Container Type: ", error: error.message },
       { status: 500 },
     );
   }
@@ -160,7 +163,7 @@ export async function PUT(req, res) {
       { status: 200 },
     );
   } catch (error) {
-    console.error("Error updating Container Type: ", error);
+    console.error("Faild to update Container Type: ", error);
     return NextResponse.json(
       { message: "Faild to update Container Type: ", error: error.message },
       { status: 500 },

@@ -24,6 +24,7 @@ export default function useUpdateShippingStatusMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["shippingInformationQueryKey"],
+        queryKey: ["shippingInformationIDQueryKey"],
       });
       // Toast a success message
       toast.success("Shipping Status UPDATED successfully.", {

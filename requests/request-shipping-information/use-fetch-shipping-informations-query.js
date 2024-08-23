@@ -10,8 +10,8 @@ const FetchshippingInformationData = async () => {
 const useShippingInformationQuery = (options = {}) => {
   const query = useQuery({
     queryKey: ["shippingInformationQueryKey"],
-    queryFn: FetchshippingInformationData,
-    ...options,
+    queryFn: () => FetchshippingInformationData(),
+    ...options, // Allows passing additional options like refetchInterval, etc.
   });
 
   return query;

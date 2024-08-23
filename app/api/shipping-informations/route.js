@@ -41,7 +41,7 @@ export async function POST(req, res) {
 
 export async function GET() {
   try {
-    const shippingData = await prisma.shippingInformation.findFirst({
+    const shippingData = await prisma.shippingInformation.findMany({
       orderBy: {
         entryDateTime: "desc",
       },
@@ -139,13 +139,10 @@ export async function PUT(req) {
 export async function PATCH(req) {
   const { shippingStatusData } = await req.json();
 
-  const { id, status } = shippingStatusData;
+  const { id, status, exitDateTime } = shippingStatusData;
 
   if (!id || !status) {
-    return NextResponse.json(
-      { message: "All fields are required" },
-      { status: 400 },
-    );
+    return res.status(400).json({ message: "ID and status are required" });
   }
 
   try {
@@ -153,6 +150,7 @@ export async function PATCH(req) {
       where: { id: parseInt(id) },
       data: {
         status,
+        exitDateTime,
       },
     });
 
