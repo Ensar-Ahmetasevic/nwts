@@ -72,3 +72,40 @@ export async function DELETE(req) {
     );
   }
 }
+
+// Update
+
+export async function PUT(req, res) {
+  const { dataForUpdate } = await req.json();
+
+  const { name, address, origin, id } = dataForUpdate;
+
+  if ((!name, !address, !origin, !id)) {
+    return NextResponse.json(
+      { message: "All fields are required" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const updateLocationOrigin = await prisma.locationOrigin.update({
+      where: { id: parseInt(id) },
+      data: {
+        name,
+        address,
+        origin,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Location Origin updated successfully", updateLocationOrigin },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Faild to update Location Origin: ", error);
+    return NextResponse.json(
+      { message: "Faild to update Location Origin: ", error: error.message },
+      { status: 500 },
+    );
+  }
+}

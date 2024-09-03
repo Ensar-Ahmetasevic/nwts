@@ -2,34 +2,34 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useDeleteContainerTypeMutation() {
+export default function useDeleteLocationOriginMutation() {
   const queryClient = useQueryClient();
 
-  const deleteContainerTypeMutation = async (id) => {
+  const deleteLocationOriginMutation = async (id) => {
     try {
       const response = await axios.delete(
-        "/api/container-profile/container-type",
+        "/api/container-profile/location-origin",
         {
           data: { id },
         },
       );
       return response.data;
     } catch (error) {
-      console.error("Failed to DELETE Container Type data: ", error);
+      console.error("Failed to DELETE Location Origin data: ", error);
       toast.error(`Error: ${error.response.data.message}`);
       throw error; // Throw the error to trigger onError callback
     }
   };
 
   const mutation = useMutation({
-    mutationFn: deleteContainerTypeMutation,
+    mutationFn: deleteLocationOriginMutation,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["containerTypeQueryKey"],
+        queryKey: ["locationOriginQueryKey"],
       });
       // Toast a success message
-      toast.success("Container Type data DELETED successfully.", {
+      toast.success("Location Origin data DELETED successfully.", {
         autoClose: 2000,
       });
     },

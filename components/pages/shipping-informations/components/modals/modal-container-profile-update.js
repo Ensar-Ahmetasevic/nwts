@@ -17,14 +17,11 @@ export default function ModalContainerProfilUpdate({
     formState: { errors },
   } = useForm({});
 
-  const { data: resLocationOriginData } = useLocationOriginQuery();
-  const locationOriginData = resLocationOriginData?.locationOriginData;
+  const { data: locationOriginData } = useLocationOriginQuery();
 
-  const { data: resWasteProfileData } = useWasteProfileQuery();
-  const wasteProfileData = resWasteProfileData?.wasteProfileData;
+  const { data: wasteProfileData } = useWasteProfileQuery();
 
-  const { data: resContainerTypeData } = useContainerTypeQuery();
-  const containerTypeData = resContainerTypeData;
+  const { data: containerTypeData } = useContainerTypeQuery();
 
   const updateContainerProfileMutation = useUpdateContainerProfileMutation();
 

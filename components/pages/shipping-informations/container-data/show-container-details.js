@@ -4,6 +4,7 @@ import useDeleteContainerProfileMutations from "./../../../../requests/request-c
 
 import ModalShowContainerDetails from "./../components/modals/modal-show-container-details";
 import ModalContainerProfilUpdate from "./../components/modals/modal-container-profile-update";
+import ModalShowContainerTypeDetails from "./../components/modals/modal-show-container-type-details";
 
 import { MdOutlineExpandMore } from "react-icons/md";
 import { MdDeleteSweep } from "react-icons/md";
@@ -15,6 +16,8 @@ export default function ShowContainerDetails({ data }) {
   const [modalContenData, setModalContentData] = useState(null);
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [openModalContainerType, setOpenModalContainerType] = useState(false);
+
   const [title, setTitle] = useState("");
 
   //Delete data
@@ -51,6 +54,12 @@ export default function ShowContainerDetails({ data }) {
     setModalContentData(detail.details);
     setTitle(detail.title);
     setOpenModalDetails(true);
+  };
+
+  const handelModalContainerTypeDetails = (detail) => {
+    setModalContentData(detail.details);
+    setTitle(detail.title);
+    setOpenModalContainerType(true);
   };
 
   const handleModalUpdateContainerProfile = () => {
@@ -92,9 +101,19 @@ export default function ShowContainerDetails({ data }) {
 
                       <div className="tooltip mt-1" data-tip="Extend">
                         <label
-                          htmlFor="modal_container_details"
+                          htmlFor={
+                            detail.title === "Container Type"
+                              ? "modal_container_type_details"
+                              : "modal_container_details"
+                          }
                           className="btnExtend"
-                          onClick={() => handleModalDetails(detail)}
+                          onClick={() => {
+                            if (detail.title === "Container Type") {
+                              handelModalContainerTypeDetails(detail);
+                            } else {
+                              handleModalDetails(detail);
+                            }
+                          }}
                         >
                           <MdOutlineExpandMore />
                         </label>
@@ -135,6 +154,14 @@ export default function ShowContainerDetails({ data }) {
         {openModalDetails ? (
           <ModalShowContainerDetails
             closeModal={() => setOpenModalDetails(false)}
+            modalContenData={modalContenData}
+            title={title}
+          />
+        ) : null}
+
+        {openModalContainerType ? (
+          <ModalShowContainerTypeDetails
+            closeModal={() => setOpenModalContainerType(false)}
             modalContenData={modalContenData}
             title={title}
           />

@@ -97,3 +97,71 @@ export async function DELETE(req) {
     );
   }
 }
+
+// Update container type
+
+export async function PUT(req, res) {
+  const { dataForUpdate } = await req.json();
+
+  const {
+    name,
+    typeOfWaste,
+    wasteDescription,
+    risksAndHazards,
+    processingMethods,
+    physicalProperties,
+    chemicalProperties,
+    biologicalProperties,
+    collectionProcedures,
+    recommendationsForTransport,
+    id,
+  } = dataForUpdate;
+
+  if (
+    (!name,
+    !typeOfWaste,
+    !wasteDescription,
+    !risksAndHazards,
+    !processingMethods,
+    !chemicalProperties,
+    !physicalProperties,
+    !biologicalProperties,
+    !collectionProcedures,
+    !recommendationsForTransport,
+    !id)
+  ) {
+    return NextResponse.json(
+      { message: "All fields are required" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const updateWasteProfile = await prisma.wasteProfile.update({
+      where: { id: parseInt(id) },
+      data: {
+        name,
+        typeOfWaste,
+        wasteDescription,
+        risksAndHazards,
+        processingMethods,
+        physicalProperties,
+        chemicalProperties,
+        biologicalProperties,
+        collectionProcedures,
+        recommendationsForTransport,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Waste Profile updated successfully", updateWasteProfile },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Faild to update Waste Profile: ", error);
+    return NextResponse.json(
+      { message: "Faild to update Waste Profile: ", error: error.message },
+      { status: 500 },
+    );
+  }
+}

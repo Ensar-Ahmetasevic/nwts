@@ -4,7 +4,7 @@ import axios from "axios";
 const FetchLocationOriginData = async () => {
   const response = await axios.get("/api/container-profile/location-origin");
 
-  const data = response.data;
+  const data = response.data.locationOriginData;
 
   return data;
 };

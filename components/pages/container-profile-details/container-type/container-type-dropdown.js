@@ -4,8 +4,19 @@ import { PiCursorClickBold } from "react-icons/pi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 
-export default function ContainerTypeOptions({ OnActiveButton, activeButton }) {
+export default function ContainerTypeDropdown({
+  OnActiveButton,
+  activeButton,
+}) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleAddClick = () => {
+    OnActiveButton("Container type Form"), setIsOpen(false);
+  };
+
+  const handleEditDeleteClick = () => {
+    OnActiveButton("Container type Table"), setIsOpen(false);
+  };
 
   return (
     <>
@@ -13,8 +24,8 @@ export default function ContainerTypeOptions({ OnActiveButton, activeButton }) {
         <div
           tabIndex={0}
           role="button"
-          className={`btn m-1 ${["Container type Form", "Container type Tabel"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
-          onClick={() => setIsOpen(!isOpen)}
+          className={`btn m-1 ${["Container type Form", "Container type Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
+          onClick={() => setIsOpen(true)}
         >
           Container type <PiCursorClickBold />
         </div>
@@ -25,29 +36,18 @@ export default function ContainerTypeOptions({ OnActiveButton, activeButton }) {
             className="menu dropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
           >
             <li>
-              <button
-                onClick={() => {
-                  OnActiveButton("Container type Form");
-                  setIsOpen(!isOpen);
-                }}
-              >
+              <button onClick={() => handleAddClick()}>
                 Add <IoMdAddCircleOutline />
               </button>
             </li>
             <li>
-              <button
-                onClick={() => {
-                  OnActiveButton("Container type Tabel");
-                  setIsOpen(!isOpen);
-                }}
-              >
+              <button onClick={() => handleEditDeleteClick()}>
                 Edit/Delete <CiEdit />
               </button>
             </li>
           </ul>
         ) : null}
       </div>
-      <div></div>
     </>
   );
 }

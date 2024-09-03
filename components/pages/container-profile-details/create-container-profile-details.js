@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import ContainerTypeOptions from "./container-type/container-type-options ";
+import ContainerTypeDropdown from "./container-type/container-type-dropdown";
 import DynamicFormDisplay from "./dynamic-form-display";
 import WasteProfileOptions from "./waste-profile/waste-profile-options";
 import LocationOriginOptions from "./location-origin/location-origin-options";
@@ -27,7 +27,8 @@ export default function CreateContainerProfileDetails() {
           </h3>
         </div>
 
-        {/* Buttons */}
+        {/* Dropdown Buttons */}
+
         <div className="m-6 flex flex-row justify-center space-x-3">
           {/* Location Origin Options*/}
           <LocationOriginOptions
@@ -42,7 +43,7 @@ export default function CreateContainerProfileDetails() {
           />
 
           {/* Container type Options*/}
-          <ContainerTypeOptions
+          <ContainerTypeDropdown
             activeButton={activeButton}
             OnActiveButton={handleButtonClick}
           />

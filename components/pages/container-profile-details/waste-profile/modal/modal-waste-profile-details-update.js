@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-import useUpdateContainerTypeMutation from "./../../../../../requests/request-container-profile/request-container-type/use-update-container-type-mutation";
+import useUpdateWasteProfileMutation from "./../../../../../requests/request-container-profile/request-waste-profile/use-update-waste-profile-mutation";
 
-export default function ModalContainerTypeUpdate({
+export default function ModalWasteProfileDetailsUpdate({
   modalContainerTypeData,
   closeModal,
 }) {
@@ -14,42 +14,44 @@ export default function ModalContainerTypeUpdate({
     formState: { errors },
   } = useForm({});
 
-  const updateContainerTypeMutation = useUpdateContainerTypeMutation();
+  const updateWasteProfileMutation = useUpdateWasteProfileMutation();
 
   useEffect(() => {
-    document.getElementById("modal_update_container_type").showModal();
+    document.getElementById("modal_update_waste_profile").showModal();
   }, [modalContainerTypeData]);
 
   const {
     name,
-    material,
-    volume,
-    carryingCapacity,
-    radioactivityLevel,
+    typeOfWaste,
+    wasteDescription,
+    risksAndHazards,
+    processingMethods,
     physicalProperties,
-    footprint,
-    description,
+    chemicalProperties,
+    biologicalProperties,
+    collectionProcedures,
+    recommendationsForTransport,
     id,
   } = modalContainerTypeData;
 
   const isFormSubmit = async (formData) => {
     try {
-      const preparedData = {
+      const dataForUpdate = {
         ...formData,
         id,
       };
 
-      await updateContainerTypeMutation.mutateAsync(preparedData);
+      await updateWasteProfileMutation.mutateAsync(dataForUpdate);
 
       closeModal();
     } catch (error) {
-      console.error("Error updating Container Profile:", error);
+      console.error("Error updating Waste Profile:", error);
     }
   };
 
   return (
     <>
-      <dialog id="modal_update_container_type" className="modal">
+      <dialog id="modal_update_waste_profile" className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">Edit Container Details</h3>
 
@@ -65,67 +67,22 @@ export default function ModalContainerTypeUpdate({
                   <input
                     className="input input-md input-bordered px-2"
                     type="text"
-                    defaultValue={name}
                     placeholder="Type here"
+                    defaultValue={name}
                     {...register("name", {
                       required: true,
                     })}
                   />
                 </div>
+
                 <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">Material:</label>
+                  <label className="text-left text-sm">Type Of Waste:</label>
                   <input
                     className="input input-md input-bordered px-2"
                     type="text"
-                    defaultValue={material}
                     placeholder="Type here"
-                    {...register("material", {
-                      required: true,
-                    })}
-                  />
-                </div>
-                <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">Volume:</label>
-                  <input
-                    className="input input-md input-bordered px-2"
-                    type="number"
-                    step=".01"
-                    defaultValue={volume}
-                    placeholder="Type here"
-                    {...register("volume", {
-                      required: true,
-                      min: 1,
-                    })}
-                  />
-                </div>
-
-                <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">
-                    Carrying capacity:
-                  </label>
-                  <input
-                    className="input input-md input-bordered px-2"
-                    type="number"
-                    step=".01"
-                    defaultValue={carryingCapacity}
-                    placeholder="Type here"
-                    {...register("carryingCapacity", {
-                      required: true,
-                      min: 1,
-                    })}
-                  />
-                </div>
-
-                <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">
-                    Radioactivity Level:
-                  </label>
-                  <input
-                    className="input input-md input-bordered px-2"
-                    type="text"
-                    defaultValue={radioactivityLevel}
-                    placeholder="Type here"
-                    {...register("radioactivityLevel", {
+                    defaultValue={typeOfWaste}
+                    {...register("typeOfWaste", {
                       required: true,
                     })}
                   />
@@ -133,13 +90,58 @@ export default function ModalContainerTypeUpdate({
 
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">
-                    Physical properties:
+                    Waste Description:
                   </label>
                   <input
                     className="input input-md input-bordered px-2"
                     type="text"
+                    placeholder="Type here"
+                    defaultValue={wasteDescription}
+                    {...register("wasteDescription", {
+                      required: true,
+                    })}
+                  />
+                </div>
+
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">
+                    Risks And Hazards:
+                  </label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here"
+                    defaultValue={risksAndHazards}
+                    {...register("risksAndHazards", {
+                      required: true,
+                    })}
+                  />
+                </div>
+
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">
+                    Processing Methods:
+                  </label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here"
+                    defaultValue={processingMethods}
+                    {...register("processingMethods", {
+                      required: true,
+                    })}
+                  />
+                </div>
+
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">
+                    Physical Properties:
+                  </label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here"
                     defaultValue={physicalProperties}
-                    placeholder="Type here"
                     {...register("physicalProperties", {
                       required: true,
                     })}
@@ -147,34 +149,64 @@ export default function ModalContainerTypeUpdate({
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">Footprint:</label>
+                  <label className="text-left text-sm">
+                    Chemical Properties:
+                  </label>
                   <input
                     className="input input-md input-bordered px-2"
-                    type="number"
-                    step=".01"
-                    defaultValue={footprint}
+                    type="text"
                     placeholder="Type here"
-                    {...register("footprint", {
+                    defaultValue={chemicalProperties}
+                    {...register("chemicalProperties", {
                       required: true,
-                      min: 1,
                     })}
                   />
                 </div>
-              </div>
 
-              <div className="flex w-full flex-col space-y-2">
-                <label className="text-left text-sm">Description:</label>
-                <textarea
-                  className="textarea textarea-bordered"
-                  rows={8}
-                  cols={50}
-                  type="text"
-                  defaultValue={description}
-                  placeholder="Type here"
-                  {...register("description", {
-                    required: true,
-                  })}
-                />
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">
+                    Biological Properties:
+                  </label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here"
+                    defaultValue={biologicalProperties}
+                    {...register("biologicalProperties", {
+                      required: true,
+                    })}
+                  />
+                </div>
+
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">
+                    Collection Procedures:
+                  </label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here"
+                    defaultValue={collectionProcedures}
+                    {...register("collectionProcedures", {
+                      required: true,
+                    })}
+                  />
+                </div>
+
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">
+                    Recommendations For Transport:
+                  </label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here"
+                    defaultValue={recommendationsForTransport}
+                    {...register("recommendationsForTransport", {
+                      required: true,
+                    })}
+                  />
+                </div>
               </div>
 
               <div className="space-x-2">

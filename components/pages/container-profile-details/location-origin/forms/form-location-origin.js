@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import useCreateLocationOriginMutation from "../../../../../requests/request-container-profile/request-location-origin/use-create-location-origin-mutation";
 
-function FormLocationOrigin({ cancelLocationOriginForm }) {
+function FormLocationOrigin({ OnCancel }) {
   const {
     register,
     handleSubmit,
@@ -25,21 +25,21 @@ function FormLocationOrigin({ cancelLocationOriginForm }) {
     };
     createLocationOriginMutation.mutateAsync({ formData });
 
-    cancelLocationOriginForm(null);
+    OnCancel(null);
     reset();
   }
 
   return (
     <>
-      <div className="flex flex-col space-y-4">
+      <div className="mt-10 flex flex-col items-center space-y-12 rounded-md border-2 border-red-500 bg-gray-900 p-5 px-12">
         <h1 className="text-xl font-bold">Add new "Location origin"</h1>
 
         <form
-          className="flex flex-col items-start space-y-4 pb-4"
+          className="flex flex-col items-end space-y-8 pb-4"
           onSubmit={handleSubmit(isFormSubmit)}
         >
-          <div className="flex w-64 flex-col space-y-2">
-            <div className="flex w-64 flex-col space-y-2">
+          <div className="flex flex-col space-y-6">
+            <div className="flex flex-col space-y-2">
               <label className="text-left text-sm">Name:</label>
               <input
                 className="input input-md input-bordered px-2"
@@ -81,7 +81,7 @@ function FormLocationOrigin({ cancelLocationOriginForm }) {
             <button
               className="btnCancel"
               onClick={() => {
-                cancelLocationOriginForm(null);
+                OnCancel(null);
                 reset();
               }}
             >

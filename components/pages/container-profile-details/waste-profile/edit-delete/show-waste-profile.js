@@ -1,30 +1,30 @@
 import { useState } from "react";
 
-import useDeleteContainerTypeMutation from "./../../../../../requests/request-container-profile/request-container-type/use-delete-container-type-mutation";
+import useDeleteWasteProfileMutation from "./../../../../../requests/request-container-profile/request-waste-profile/use-delete-waste-profile-mutation";
 
-import ModalShowContainerTypeDetails from "./../modal/modal-show-container-type-details";
-import ModalContainerTypeDetailsUpdate from "./../modal/modal-container-type-details-update";
+import ModalShowWasteProfileDetails from "./../modal/modal-show-waste-profile-details";
+import ModalWasteProfileDetailsUpdate from "./../modal/modal-waste-profile-details-update";
 
 import { MdDeleteSweep } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineExpandMore } from "react-icons/md";
 
-export default function ShowContainerType({ containerData }) {
+export default function ShowWasteProfile({ wasteData }) {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
 
-  const deleteContainerTypeMutation = useDeleteContainerTypeMutation();
+  const deleteWasteProfileMutation = useDeleteWasteProfileMutation();
 
   return (
     <>
       {/* row */}
       <tr>
         <th></th>
-        <td>{containerData?.name}</td>
+        <td>{wasteData?.name}</td>
         <td>
           <div className="tooltip" data-tip="Details">
             <label
-              htmlFor="modal_container_details"
+              htmlFor="modal_waste_details"
               className="btnExtend"
               onClick={() => setOpenModalDetails(true)}
             >
@@ -47,8 +47,7 @@ export default function ShowContainerType({ containerData }) {
             <label
               className="btnDelete flex items-center"
               onClick={() => {
-                console.log(containerData.id),
-                  deleteContainerTypeMutation.mutateAsync(containerData.id);
+                deleteWasteProfileMutation.mutateAsync(wasteData.id);
               }}
             >
               <MdDeleteSweep />
@@ -57,17 +56,19 @@ export default function ShowContainerType({ containerData }) {
         </td>
       </tr>
 
+      {/* Show Details */}
       {openModalDetails ? (
-        <ModalShowContainerTypeDetails
+        <ModalShowWasteProfileDetails
           closeModal={() => setOpenModalDetails(false)}
-          modalContenData={containerData}
+          modalContenData={wasteData}
         />
       ) : null}
 
+      {/* Update */}
       {openModalUpdate ? (
-        <ModalContainerTypeDetailsUpdate
+        <ModalWasteProfileDetailsUpdate
           closeModal={() => setOpenModalUpdate(false)}
-          modalContainerTypeData={containerData}
+          modalContainerTypeData={wasteData}
         />
       ) : null}
     </>

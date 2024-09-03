@@ -3,8 +3,7 @@ import axios from "axios";
 
 const FetchWasteProfileData = async () => {
   const response = await axios.get("/api/container-profile/waste-profile");
-
-  const data = response.data;
+  const data = response.data.wasteProfileData;
 
   return data;
 };

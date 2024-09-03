@@ -13,8 +13,8 @@ export default function WasteProfileOptions({ OnActiveButton, activeButton }) {
         <div
           tabIndex={0}
           role="button"
-          className={`btn m-1 ${["Waste profile Form", "Waste profile Type"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
-          onClick={() => setIsOpen(!isOpen)}
+          className={`btn m-1 ${["Waste profile Form", "Waste profile Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
+          onClick={() => setIsOpen(true)}
         >
           Waste profile <PiCursorClickBold />
         </div>
@@ -28,7 +28,7 @@ export default function WasteProfileOptions({ OnActiveButton, activeButton }) {
               <button
                 onClick={() => {
                   OnActiveButton("Waste profile Form");
-                  setIsOpen(!isOpen);
+                  setIsOpen(false);
                 }}
               >
                 Add <IoMdAddCircleOutline />
@@ -37,8 +37,8 @@ export default function WasteProfileOptions({ OnActiveButton, activeButton }) {
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Waste profile Type");
-                  setIsOpen(!isOpen);
+                  OnActiveButton("Waste profile Table");
+                  setIsOpen(false);
                 }}
               >
                 Edit/Delete <CiEdit />

@@ -22,14 +22,11 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
   } = useCreateContainerProfileMutation();
 
   // Fetching data
-  const { data: resLocationOriginData } = useLocationOriginQuery();
-  const locationOriginData = resLocationOriginData?.locationOriginData;
+  const { data: locationOriginData } = useLocationOriginQuery();
 
-  const { data: resWasteProfileData } = useWasteProfileQuery();
-  const wasteProfileData = resWasteProfileData?.wasteProfileData;
+  const { data: wasteProfileData } = useWasteProfileQuery();
 
-  const { data: resContainerTypeData } = useContainerTypeQuery();
-  const containerTypeData = resContainerTypeData;
+  const { data: containerTypeData } = useContainerTypeQuery();
 
   const isFormSubmit = async ({
     quantity,

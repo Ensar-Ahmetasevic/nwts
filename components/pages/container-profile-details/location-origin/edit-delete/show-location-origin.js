@@ -1,30 +1,30 @@
 import { useState } from "react";
 
-import useDeleteContainerTypeMutation from "./../../../../../requests/request-container-profile/request-container-type/use-delete-container-type-mutation";
+import useDeleteLocationOriginMutation from "./../../../../../requests/request-container-profile/request-location-origin/use-delete-location-origin-mutation";
 
-import ModalShowContainerTypeDetails from "./../modal/modal-show-container-type-details";
-import ModalContainerTypeDetailsUpdate from "./../modal/modal-container-type-details-update";
+import ModalLocationOriginDetailsUpdate from "./../modal/modal-location-origin-details-update";
+import ModalShowLocationOriginDetails from "./../modal/modal-show-location-origin-details";
 
 import { MdDeleteSweep } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineExpandMore } from "react-icons/md";
 
-export default function ShowContainerType({ containerData }) {
+export default function ShowLocationOrigin({ originData }) {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
 
-  const deleteContainerTypeMutation = useDeleteContainerTypeMutation();
+  const deleteLocationOriginMutation = useDeleteLocationOriginMutation();
 
   return (
     <>
       {/* row */}
       <tr>
         <th></th>
-        <td>{containerData?.name}</td>
+        <td>{originData?.name}</td>
         <td>
           <div className="tooltip" data-tip="Details">
             <label
-              htmlFor="modal_container_details"
+              htmlFor="modal_origin_details"
               className="btnExtend"
               onClick={() => setOpenModalDetails(true)}
             >
@@ -47,8 +47,7 @@ export default function ShowContainerType({ containerData }) {
             <label
               className="btnDelete flex items-center"
               onClick={() => {
-                console.log(containerData.id),
-                  deleteContainerTypeMutation.mutateAsync(containerData.id);
+                deleteLocationOriginMutation.mutateAsync(originData.id);
               }}
             >
               <MdDeleteSweep />
@@ -57,17 +56,19 @@ export default function ShowContainerType({ containerData }) {
         </td>
       </tr>
 
+      {/* Show Details */}
       {openModalDetails ? (
-        <ModalShowContainerTypeDetails
+        <ModalShowLocationOriginDetails
           closeModal={() => setOpenModalDetails(false)}
-          modalContenData={containerData}
+          modalContenData={originData}
         />
       ) : null}
 
+      {/* Update */}
       {openModalUpdate ? (
-        <ModalContainerTypeDetailsUpdate
+        <ModalLocationOriginDetailsUpdate
           closeModal={() => setOpenModalUpdate(false)}
-          modalContainerTypeData={containerData}
+          modalContainerTypeData={originData}
         />
       ) : null}
     </>

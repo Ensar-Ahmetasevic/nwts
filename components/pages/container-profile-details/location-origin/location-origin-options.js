@@ -16,8 +16,8 @@ export default function LocationOriginOptions({
         <div
           tabIndex={0}
           role="button"
-          className={`btn m-1 ${["Location origin Form", "Location origin Type"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
-          onClick={() => setIsOpen(!isOpen)}
+          className={`btn m-1 ${["Location origin Form", "Location origin Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
+          onClick={() => setIsOpen(true)}
         >
           Location Origin <PiCursorClickBold />
         </div>
@@ -31,7 +31,7 @@ export default function LocationOriginOptions({
               <button
                 onClick={() => {
                   OnActiveButton("Location origin Form");
-                  setIsOpen(!isOpen);
+                  setIsOpen(false);
                 }}
               >
                 Add <IoMdAddCircleOutline />
@@ -40,8 +40,8 @@ export default function LocationOriginOptions({
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Location origin Type");
-                  setIsOpen(!isOpen);
+                  OnActiveButton("Location origin Table");
+                  setIsOpen(false);
                 }}
               >
                 Edit/Delete <CiEdit />
