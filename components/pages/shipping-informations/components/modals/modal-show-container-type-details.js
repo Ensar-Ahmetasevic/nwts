@@ -12,7 +12,11 @@ export default function ModalShowContainerTypeDetails({
       />
       <div className="modal" role="dialog">
         <div className="modal-box">
-          <h3 className="text-lg font-bold">{title}</h3>
+          <div className="mb-6 flex flex-row space-x-4">
+            <h3 className="text-lg font-bold">Details for:</h3>
+            <p className="text-lg">{title} </p>
+          </div>
+
           <ul>
             {/* Carrying Capacity */}
             <li className="py-2">

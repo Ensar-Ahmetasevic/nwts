@@ -62,7 +62,7 @@ function FormContainerType({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("name", {
                     required: true,
                   })}
@@ -73,19 +73,19 @@ function FormContainerType({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("material", {
                     required: true,
                   })}
                 />
               </div>
               <div className="flex w-64 flex-col space-y-2">
-                <label className="text-left text-sm">Volume:</label>
+                <label className="text-left text-sm">{"Volume (m³) :"}</label>
                 <input
                   className="input input-md input-bordered px-2"
                   type="number"
                   step=".01"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("volume", {
                     required: true,
                     min: 1,
@@ -94,12 +94,15 @@ function FormContainerType({ OnCancel }) {
               </div>
 
               <div className="flex w-64 flex-col space-y-2">
-                <label className="text-left text-sm">Carrying capacity:</label>
+                <label className="text-left text-sm">
+                  {" "}
+                  {"Carrying capacity (tons) :"}
+                </label>
                 <input
                   className="input input-md input-bordered px-2"
                   type="number"
                   step=".01"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("carryingCapacity", {
                     required: true,
                     min: 1,
@@ -117,7 +120,7 @@ function FormContainerType({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("radioactivityLevel", {
                     required: true,
                   })}
@@ -131,7 +134,7 @@ function FormContainerType({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("physicalProperties", {
                     required: true,
                   })}
@@ -139,12 +142,15 @@ function FormContainerType({ OnCancel }) {
               </div>
 
               <div className="flex w-64 flex-col space-y-2">
-                <label className="text-left text-sm">Footprint:</label>
+                <label className="text-left text-sm">
+                  {" "}
+                  {"Footprint (m²) :"}
+                </label>
                 <input
                   className="input input-md input-bordered px-2"
                   type="number"
                   step=".01"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("footprint", {
                     required: true,
                     min: 1,
@@ -159,7 +165,7 @@ function FormContainerType({ OnCancel }) {
                   rows={4}
                   cols={50}
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("description", {
                     required: true,
                   })}

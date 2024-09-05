@@ -44,7 +44,7 @@ function FormLocationOrigin({ OnCancel }) {
               <input
                 className="input input-md input-bordered px-2"
                 type="text"
-                placeholder="Type here"
+                placeholder="Type here ..."
                 {...register("name", {
                   required: true,
                 })}
@@ -55,7 +55,7 @@ function FormLocationOrigin({ OnCancel }) {
               <input
                 className="input input-md input-bordered px-2"
                 type="text"
-                placeholder="Type here"
+                placeholder="Type here ..."
                 {...register("address", {
                   required: true,
                 })}
@@ -66,7 +66,7 @@ function FormLocationOrigin({ OnCancel }) {
               <input
                 className="input input-md input-bordered px-2"
                 type="text"
-                placeholder="Type here"
+                placeholder="Type here ..."
                 {...register("origin", {
                   required: true,
                 })}

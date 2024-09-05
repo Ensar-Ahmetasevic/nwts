@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import ContainerTypeDropdown from "./container-type/container-type-dropdown";
 import DynamicFormDisplay from "./dynamic-form-display";
-import WasteProfileOptions from "./waste-profile/waste-profile-options";
-import LocationOriginOptions from "./location-origin/location-origin-options";
+import WasteProfileDropdown from "./waste-profile/waste-profile-dropdown";
+import LocationOriginDropdown from "./location-origin/location-origin-dropdown";
 
 export default function CreateContainerProfileDetails() {
   const [activeButton, setActiveButton] = useState(null);
@@ -31,13 +31,13 @@ export default function CreateContainerProfileDetails() {
 
         <div className="m-6 flex flex-row justify-center space-x-3">
           {/* Location Origin Options*/}
-          <LocationOriginOptions
+          <LocationOriginDropdown
             activeButton={activeButton}
             OnActiveButton={handleButtonClick}
           />
 
           {/* Waste profile Options*/}
-          <WasteProfileOptions
+          <WasteProfileDropdown
             activeButton={activeButton}
             OnActiveButton={handleButtonClick}
           />

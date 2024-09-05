@@ -85,7 +85,7 @@ export default function ModalContainerTypeDetailsUpdate({
                   />
                 </div>
                 <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">Volume:</label>
+                  <label className="text-left text-sm">{"Volume (m³) :"}</label>
                   <input
                     className="input input-md input-bordered px-2"
                     type="number"
@@ -101,7 +101,7 @@ export default function ModalContainerTypeDetailsUpdate({
 
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">
-                    Carrying capacity:
+                    {"Carrying capacity (tons) :"}
                   </label>
                   <input
                     className="input input-md input-bordered px-2"
@@ -147,7 +147,9 @@ export default function ModalContainerTypeDetailsUpdate({
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">Footprint:</label>
+                  <label className="text-left text-sm">
+                    {"Footprint (m²) :"}
+                  </label>
                   <input
                     className="input input-md input-bordered px-2"
                     type="number"

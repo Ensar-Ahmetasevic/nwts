@@ -64,7 +64,7 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
           <input
             className="input input-md input-bordered px-2"
             type="number"
-            placeholder="Type here"
+            placeholder="Type here ..."
             {...register("quantity", {
               required: true,
               min: 1,

@@ -12,7 +12,7 @@ export default function ContainerTypeDropdown({
 
   const handleAddClick = () => {
     OnActiveButton("Container type Form"), setIsOpen(false);
-  };
+  }; /*  */
 
   const handleEditDeleteClick = () => {
     OnActiveButton("Container type Table"), setIsOpen(false);

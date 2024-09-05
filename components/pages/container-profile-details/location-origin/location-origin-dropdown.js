@@ -4,7 +4,10 @@ import { PiCursorClickBold } from "react-icons/pi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 
-export default function WasteProfileOptions({ OnActiveButton, activeButton }) {
+export default function LocationOriginDropdown({
+  OnActiveButton,
+  activeButton,
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -13,10 +16,10 @@ export default function WasteProfileOptions({ OnActiveButton, activeButton }) {
         <div
           tabIndex={0}
           role="button"
-          className={`btn m-1 ${["Waste profile Form", "Waste profile Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
+          className={`btn m-1 ${["Location origin Form", "Location origin Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
           onClick={() => setIsOpen(true)}
         >
-          Waste profile <PiCursorClickBold />
+          Location Origin <PiCursorClickBold />
         </div>
 
         {isOpen ? (
@@ -27,7 +30,7 @@ export default function WasteProfileOptions({ OnActiveButton, activeButton }) {
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Waste profile Form");
+                  OnActiveButton("Location origin Form");
                   setIsOpen(false);
                 }}
               >
@@ -37,7 +40,7 @@ export default function WasteProfileOptions({ OnActiveButton, activeButton }) {
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Waste profile Table");
+                  OnActiveButton("Location origin Table");
                   setIsOpen(false);
                 }}
               >

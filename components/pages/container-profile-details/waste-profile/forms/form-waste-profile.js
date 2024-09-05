@@ -72,7 +72,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("name", {
                     required: true,
                   })}
@@ -84,7 +84,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("typeOfWaste", {
                     required: true,
                   })}
@@ -96,7 +96,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("wasteDescription", {
                     required: true,
                   })}
@@ -108,7 +108,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("risksAndHazards", {
                     required: true,
                   })}
@@ -120,7 +120,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("processingMethods", {
                     required: true,
                   })}
@@ -138,7 +138,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("physicalProperties", {
                     required: true,
                   })}
@@ -152,7 +152,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("chemicalProperties", {
                     required: true,
                   })}
@@ -166,7 +166,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("biologicalProperties", {
                     required: true,
                   })}
@@ -180,7 +180,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("collectionProcedures", {
                     required: true,
                   })}
@@ -194,7 +194,7 @@ function FormWasteProfile({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="text"
-                  placeholder="Type here"
+                  placeholder="Type here ..."
                   {...register("recommendationsForTransport", {
                     required: true,
                   })}

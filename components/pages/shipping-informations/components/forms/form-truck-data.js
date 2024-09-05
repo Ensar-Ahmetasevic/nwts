@@ -54,7 +54,7 @@ export default function FormTruckData({ onSubmitForm }) {
             <input
               className="input input-md input-bordered px-2"
               type="text"
-              placeholder="Type here"
+              placeholder="Type here ..."
               {...register("companyName", {
                 required: true,
               })}
@@ -66,7 +66,7 @@ export default function FormTruckData({ onSubmitForm }) {
             <input
               className="input input-md input-bordered px-2"
               type="text"
-              placeholder="Type here"
+              placeholder="Type here ..."
               {...register("driverName", {
                 required: true,
               })}
@@ -78,7 +78,7 @@ export default function FormTruckData({ onSubmitForm }) {
             <input
               className="input input-md input-bordered px-2"
               type="text"
-              placeholder="Type here"
+              placeholder="Type here ..."
               {...register("registrationPlates", {
                 required: true,
               })}

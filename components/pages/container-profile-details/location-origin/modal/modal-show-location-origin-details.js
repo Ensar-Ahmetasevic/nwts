@@ -21,7 +21,7 @@ export default function ModalShowLocationOriginDetails({
               <ul>
                 {Object.entries(modalContenData).map(([key, value]) => (
                   <li key={key} className="py-2">
-                    <p className="font-bold">{key}:</p>
+                    <p className="font-bold">{formatKey(key)}:</p>
                     <p>{value}</p>
                   </li>
                 ))}
@@ -44,4 +44,16 @@ export default function ModalShowLocationOriginDetails({
       </div>
     </>
   );
+}
+
+// Helper function to format keys
+
+/* formatKey function: This function formats the key from the object to make it
+easier to read. Adds spaces before uppercase letters and converts first letters to
+uppercase. */
+
+function formatKey(key) {
+  return key.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
+    return str.toUpperCase();
+  });
 }
