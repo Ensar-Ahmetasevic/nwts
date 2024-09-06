@@ -4,7 +4,7 @@ import { PiCursorClickBold } from "react-icons/pi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 
-export default function LocationOriginDropdown({
+export default function PreStorageTypeDropdown({
   OnActiveButton,
   activeButton,
 }) {
@@ -16,10 +16,10 @@ export default function LocationOriginDropdown({
         <div
           tabIndex={0}
           role="button"
-          className={`btn m-1 ${["Location origin Form", "Location origin Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
+          className={`btn m-1 ${["Pre-Storage Type Form", "Pre-Storage Type Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          Location Origin <PiCursorClickBold />
+          Pre-Storage Type <PiCursorClickBold />
         </div>
 
         {isOpen ? (
@@ -30,7 +30,7 @@ export default function LocationOriginDropdown({
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Location origin Form");
+                  OnActiveButton("Pre-Storage Type Form");
                   setIsOpen(false);
                 }}
               >
@@ -40,7 +40,7 @@ export default function LocationOriginDropdown({
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Location origin Table");
+                  OnActiveButton("Pre-Storage Type Table");
                   setIsOpen(false);
                 }}
               >
@@ -50,6 +50,7 @@ export default function LocationOriginDropdown({
           </ul>
         ) : null}
       </div>
+      <div></div>
     </>
   );
 }

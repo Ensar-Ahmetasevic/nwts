@@ -107,7 +107,7 @@ model PreStorageOfWaste {
 model PreStorageType {
   id                 Int                 @id @default(autoincrement())
   name               String
-  surfaceArea        Int
+  surfaceArea        Float
   preStorageFor      String
   preStorageOfWastes PreStorageOfWaste[]
 }

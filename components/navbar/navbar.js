@@ -34,13 +34,14 @@ export default function Navbar() {
           </Link>
         </div>
 
+        {/* Shipping Check-In */}
         <div className="dropdown dropdown-hover">
-          <div tabIndex={0} role="button" className="btn">
+          <div tabIndex={0} role="button" className="btn w-40">
             Shipping Check-In
           </div>
           <ul
             tabIndex={0}
-            className="menu dropdown-content rounded-t-none bg-base-100 p-2"
+            className="menu dropdown-content rounded-t-none bg-base-100 p-2 px-1"
           >
             <li>
               <button onClick={() => openModal()}>Add New</button>
@@ -49,18 +50,15 @@ export default function Navbar() {
               <Link href="/shipping-informations">View All</Link>
             </li>
 
-            <div className="flex-none">
-              <ul className="menu menu-horizontal px-1">
-                <li>
-                  <Link href="/container-profile">Container Profile</Link>
-                </li>
-              </ul>
-            </div>
+            <li className="bg-base-200">
+              <Link href="/container-profile">Container Profil Setup</Link>
+            </li>
           </ul>
         </div>
 
+        {/* Pre-Storage */}
         <div className="dropdown dropdown-hover">
-          <div tabIndex={0} role="button" className="btn">
+          <div tabIndex={0} role="button" className="btn w-40">
             Pre-storage
           </div>
           <ul
@@ -73,7 +71,7 @@ export default function Navbar() {
               </button>
             </li>
             <li>
-              <Link href="/">View All</Link>
+              <Link href="/pre-storage">View All</Link>
               {/* Shows the current capacity of each storage facility, along with information on the types of waste
               being stored, temperature ... */}
             </li>
@@ -82,26 +80,14 @@ export default function Navbar() {
             </li>
 
             <li className="bg-base-200">
-              <details close>
-                <summary>Details Setup</summary>
-                <ul tabIndex={0}>
-                  <li>
-                    <Link href="/">Type</Link>
-                  </li>
-                  <li>
-                    <Link href="/">Location</Link>
-                  </li>
-                  <li>
-                    <Link href="/">Employee</Link>
-                  </li>
-                </ul>
-              </details>
+              <Link href="/pre-storage/setup">Pre-Storage Setup</Link>
             </li>
           </ul>
         </div>
 
+        {/* Final-Storage */}
         <div className="dropdown dropdown-hover">
-          <div tabIndex={0} role="button" className="btn">
+          <div tabIndex={0} role="button" className="btn w-40">
             Final-Storage
           </div>
           <ul
@@ -119,8 +105,9 @@ export default function Navbar() {
           </ul>
         </div>
 
+        {/* Statistics */}
         <div className="dropdown dropdown-hover">
-          <div tabIndex={0} role="button" className="btn">
+          <div tabIndex={0} role="button" className="btn w-40">
             Statistics
           </div>
           <ul
