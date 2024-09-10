@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import useCreatePreStorageTypeMutation from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-type/use-create-pre-storage-type-mutation";
+import useCreatePreStorageTypeMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-type/use-create-pre-storage-type-mutation";
 
 export default function FormPreStorageType({ OnCancel }) {
   const {

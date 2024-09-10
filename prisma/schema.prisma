@@ -98,8 +98,6 @@ model PreStorageOfWaste {
   quantity                        Int
   preStorageTypeId                Int                           @unique
   preStorageType                  PreStorageType                @relation(fields: [preStorageTypeId], references: [id], onDelete: Cascade)
-  preStorageLocationId            Int                           @unique
-  preStorageLocation              PreStorageLocation            @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
   responsibleEmployeePreStorageId Int                           @unique
   responsibleEmployeePreStorage   ResponsibleEmployeePreStorage @relation(fields: [responsibleEmployeePreStorageId], references: [id], onDelete: Cascade)
 }
@@ -112,22 +110,14 @@ model PreStorageType {
   preStorageOfWastes PreStorageOfWaste[]
 }
 
-model PreStorageLocation {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  depth              Int
-  stockroom          String
-  preStorageOfWastes PreStorageOfWaste[]
-}
-
 model ResponsibleEmployeePreStorage {
   id                 Int                 @id @default(autoincrement())
   name               String
   surname            String
-  dateOfBirth        Int
+  dateOfBirth        DateTime
   address            String
-  position           String
-  safetyTraining     Boolean
+  qualifications     String
+  safetyTraining     Boolean             @default(false)
   preStorageOfWastes PreStorageOfWaste[]
 }
 

@@ -4,7 +4,7 @@ import { PiCursorClickBold } from "react-icons/pi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 
-export default function PreStorageTypeDropdown({
+export default function PreStorageEmployeeDropdown({
   OnActiveButton,
   activeButton,
 }) {
@@ -16,10 +16,10 @@ export default function PreStorageTypeDropdown({
         <div
           tabIndex={0}
           role="button"
-          className={`btn m-1 ${["Pre-Storage_Type_Form", "Pre-Storage_Type_Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
+          className={`btn m-1 ${["Pre-Storage_Employee_Form", "Pre-Storage_Employee_Table"].includes(activeButton) ? "border-2 border-solid border-red-600" : ""}`}
           onClick={() => setIsOpen(!isOpen)}
         >
-          Pre-Storage Type <PiCursorClickBold />
+          Pre-Storage Employee <PiCursorClickBold />
         </div>
 
         {isOpen ? (
@@ -30,7 +30,7 @@ export default function PreStorageTypeDropdown({
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Pre-Storage_Type_Form");
+                  OnActiveButton("Pre-Storage_Employee_Form");
                   setIsOpen(false);
                 }}
               >
@@ -40,7 +40,7 @@ export default function PreStorageTypeDropdown({
             <li>
               <button
                 onClick={() => {
-                  OnActiveButton("Pre-Storage_Type_Table");
+                  OnActiveButton("Pre-Storage_Employee_Table");
                   setIsOpen(false);
                 }}
               >
