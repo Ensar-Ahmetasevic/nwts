@@ -10,8 +10,8 @@ export async function POST(req, res) {
   const { name, surfaceArea, preStorageFor } = formData;
 
   // Ensure surfaceArea is a valid number
-  const surfaceAreaNumber = parseFloat(surfaceArea).toFixed(2); // Store up to two decimal places
-  console.log("surfaceAreaNumber", surfaceAreaNumber);
+  const surfaceAreaNumber = parseFloat(surfaceArea).toFixed(2);
+  // Store up to two decimal places but it returns a string so befor seding to the database we need to convert it to a number again
 
   if (
     !name ||
@@ -32,7 +32,7 @@ export async function POST(req, res) {
     await prisma.preStorageType.create({
       data: {
         name,
-        surfaceArea: parseFloat(surfaceArea), // Store it as a float
+        surfaceArea: parseFloat(surfaceAreaNumber), // Store it as a float
         preStorageFor,
       },
     });
@@ -54,26 +54,26 @@ export async function POST(req, res) {
 // Fetch data
 export async function GET() {
   try {
-    const containerTypeData = await prisma.containerType.findMany({
+    const preStorageTypeData = await prisma.preStorageType.findMany({
       orderBy: { id: "desc" },
     });
 
-    if (!containerTypeData) {
+    if (!preStorageTypeData) {
       return NextResponse.json(
         {
-          containerProfileData: null,
-          message: "No Container Type information available",
+          preStorageTypeData: null,
+          message: "No Pre-Storage Type information available",
         },
         { status: 200 },
       );
     }
 
-    return NextResponse.json({ containerTypeData }, { status: 200 });
+    return NextResponse.json({ preStorageTypeData }, { status: 200 });
   } catch (error) {
-    console.error("Faild to fetch Container Type: ", error);
+    console.error("Faild to fetch Pre-Storage Type: ", error);
     return NextResponse.json(
       {
-        message: "Failed to fetch Container Type Data.",
+        message: "Failed to fetch Pre-Storage Type.",
         error: error.message,
       },
       { status: 500 },
@@ -86,18 +86,20 @@ export async function GET() {
 export async function DELETE(req) {
   const { id } = await req.json();
 
+  console.log("id", id);
+
   try {
-    await prisma.containerType.delete({
+    await prisma.preStorageType.delete({
       where: { id: id },
     });
     return NextResponse.json(
-      { message: "Container Type deleted successfully." },
+      { message: "Pre-Storage Type deleted successfully." },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Faild to delete Container Type: ", error);
+    console.error("Faild to delete Pre-Storage Type. ", error);
     return NextResponse.json(
-      { message: "Faild to delete Container Type: ", error: error.message },
+      { message: "Faild to delete Pre-Storage Type. ", error: error.message },
       { status: 500 },
     );
   }
@@ -106,60 +108,50 @@ export async function DELETE(req) {
 // Update container type
 
 export async function PUT(req, res) {
-  const { preparedData } = await req.json();
+  const { dataForUpdate } = await req.json();
 
-  const {
-    name,
-    material,
-    volume,
-    carryingCapacity,
-    radioactivityLevel,
-    physicalProperties,
-    footprint,
-    description,
-    id,
-  } = preparedData;
+  const { name, surfaceArea, preStorageFor, id } = dataForUpdate;
+
+  // Ensure surfaceArea is a valid number
+  const surfaceAreaNumber = parseFloat(parseFloat(surfaceArea).toFixed(2));
+  // Store up to two decimal places but it returns a string so befor seding to the database we need to convert it to a number again
 
   if (
-    (!name,
-    !material,
-    !volume,
-    !carryingCapacity,
-    !radioactivityLevel,
-    !physicalProperties,
-    !footprint,
-    !description,
-    !id)
+    !name ||
+    !surfaceAreaNumber ||
+    !preStorageFor ||
+    isNaN(surfaceAreaNumber)
   ) {
     return NextResponse.json(
-      { message: "All fields are required" },
+      {
+        message:
+          "Backend: All fields are required and surface area must be a valid number",
+      },
       { status: 400 },
     );
   }
 
   try {
-    const updateContainerType = await prisma.containerType.update({
+    const updatePreStorageType = await prisma.preStorageType.update({
       where: { id: parseInt(id) },
       data: {
-        name: name,
-        material: material,
-        volume: parseInt(volume),
-        carryingCapacity: parseInt(carryingCapacity),
-        radioactivityLevel: radioactivityLevel,
-        physicalProperties: physicalProperties,
-        footprint: parseInt(footprint),
-        description: description,
+        name,
+        surfaceArea: surfaceAreaNumber,
+        preStorageFor,
       },
     });
 
     return NextResponse.json(
-      { message: "Container Type updated successfully", updateContainerType },
+      {
+        message: "Pre-Storage Type updated successfully",
+        updatePreStorageType,
+      },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Faild to update Container Type: ", error);
+    console.error("Faild to update Pre-Storage Type.", error);
     return NextResponse.json(
-      { message: "Faild to update Container Type: ", error: error.message },
+      { message: "Faild to update Pre-Storage Type.", error: error.message },
       { status: 500 },
     );
   }

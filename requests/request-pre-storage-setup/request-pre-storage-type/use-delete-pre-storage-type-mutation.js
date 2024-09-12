@@ -2,34 +2,34 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useDeleteWasteProfileMutation() {
+export default function useDeletePreStorageTypeMutation() {
   const queryClient = useQueryClient();
 
-  const deleteWasteProfileMutation = async (id) => {
+  const deletePreStorageTypeMutation = async (id) => {
     try {
       const response = await axios.delete(
-        "/api/container-profile/waste-profile",
+        "/api/pre-storage-setup/pre-storage-type",
         {
           data: { id },
         },
       );
       return response.data;
     } catch (error) {
-      console.error("Failed to DELETE Waste Profile data: ", error);
+      console.error("Failed to DELETE Pre-Storage Type: ", error);
       toast.error(`Error: ${error.response.data.message}`);
       throw error; // Throw the error to trigger onError callback
     }
   };
 
   const mutation = useMutation({
-    mutationFn: deleteWasteProfileMutation,
+    mutationFn: deletePreStorageTypeMutation,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["wasteProfileQueryKey"],
+        queryKey: ["preStorageTypeQueryKey"],
       });
       // Toast a success message
-      toast.success("Waste Profile data DELETED successfully.", {
+      toast.success("Pre-Storage Type DELETED successfully.", {
         autoClose: 2000,
       });
     },

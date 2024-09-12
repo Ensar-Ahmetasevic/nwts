@@ -1,20 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const FetchWasteProfileData = async () => {
-  const response = await axios.get("/api/container-profile/waste-profile");
-  const data = response.data.wasteProfileData;
+const FetchPreStorageTypeData = async () => {
+  const response = await axios.get("/api/pre-storage-setup/pre-storage-type");
+  const data = response.data.preStorageTypeData;
 
   return data;
 };
 
-const useWasteProfileQuery = () => {
+const usePreStorageTypeQuery = () => {
   const query = useQuery({
-    queryKey: ["wasteProfileQueryKey"],
-    queryFn: FetchWasteProfileData,
+    queryKey: ["preStorageTypeQueryKey"],
+    queryFn: FetchPreStorageTypeData,
   });
 
   return query;
 };
 
-export default useWasteProfileQuery;
+export default usePreStorageTypeQuery;

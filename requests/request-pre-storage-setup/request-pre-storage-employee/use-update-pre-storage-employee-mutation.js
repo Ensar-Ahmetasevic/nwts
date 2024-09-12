@@ -2,34 +2,37 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useUpdatePreStorageTypeMutation() {
+export default function useUpdatePreStorageEmployeeMutation() {
   const queryClient = useQueryClient();
 
-  const updatePreStorageTypeMutation = async (dataForUpdate) => {
+  const updatePreStorageEmployeeMutation = async (dataForUpdate) => {
     try {
       const response = await axios.put(
-        "/api/pre-storage-setup/pre-storage-type",
+        "/api/pre-storage-setup/pre-storage-employee",
         {
           dataForUpdate,
         },
       );
       return response.data;
     } catch (error) {
-      console.error("Failed to UPDATE PreStorage Type informations: ", error);
+      console.error(
+        "Failed to UPDATE PreStorage Employee informations: ",
+        error,
+      );
       toast.error(`Error: ${error.response.data.message}`);
       throw error; // Throw the error to trigger onError callback
     }
   };
 
   const mutation = useMutation({
-    mutationFn: updatePreStorageTypeMutation,
+    mutationFn: updatePreStorageEmployeeMutation,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["preStorageTypeQueryKey"],
+        queryKey: ["preStorageEmployeeQueryKey"],
       });
       // Toast a success message
-      toast.success("PreStorage Type UPDATED successfully.", {
+      toast.success("PreStorage Employee UPDATED successfully.", {
         autoClose: 2000,
       });
     },
