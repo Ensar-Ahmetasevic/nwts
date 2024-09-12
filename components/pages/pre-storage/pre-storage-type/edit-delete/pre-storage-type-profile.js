@@ -6,7 +6,7 @@ export default function TablePreStorageType({ OnCancel }) {
   const { data: preStorageTypeData } = usePreStorageTypeQuery();
 
   return (
-    <div className="mx-auto w-2/3 pt-8">
+    <div className="mx-auto pt-8">
       <table className="table border-l-4 border-rose-500">
         <thead>
           <tr>

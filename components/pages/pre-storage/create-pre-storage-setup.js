@@ -13,9 +13,9 @@ export default function CreatePreStorageSetup() {
   };
 
   return (
-    <section id="shippingInformations">
+    <section id="preStorageSetup">
       <div className="container mx-auto flex flex-col items-center pt-10">
-        <div className="flex flex-col items-center justify-center space-y-4">
+        <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <h2>Informations on how to create Pre-Storage Setup:</h2>
           <h3>
             Each Pre-Storage have{" "}
@@ -24,25 +24,23 @@ export default function CreatePreStorageSetup() {
             available when creating Pre-Strage Profile.
           </h3>
         </div>
-        <div className="mt-12 flex flex-row">
-          {/* Dropdown Buttons */}
 
-          <div className="m-6 flex flex-row justify-center space-x-3">
-            {/* Pre-Storage Type Menu*/}
-            <PreStorageTypeDropdown
-              activeButton={activeButton}
-              OnActiveButton={handleButtonClick}
-            />
-          </div>
+        {/* Dropdown Buttons */}
 
-          <div className="m-6 flex flex-row justify-center space-x-3">
-            {/* Pre-Storage Location Menu*/}
-            <PreStorageEmployeeDropdown
-              activeButton={activeButton}
-              OnActiveButton={handleButtonClick}
-            />
-          </div>
+        <div className="m-6 flex flex-row justify-center space-x-3">
+          {/* Pre-Storage Type Menu*/}
+          <PreStorageTypeDropdown
+            activeButton={activeButton}
+            OnActiveButton={handleButtonClick}
+          />
+
+          {/* Pre-Storage Location Menu*/}
+          <PreStorageEmployeeDropdown
+            activeButton={activeButton}
+            OnActiveButton={handleButtonClick}
+          />
         </div>
+
         <div>
           {/* Dynamic Form Display */}
           <PreStorageSetupDynamicFormDisplay
