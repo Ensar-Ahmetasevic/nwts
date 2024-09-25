@@ -2,34 +2,34 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useUpdatePreStorageTypeMutation() {
+export default function useDeletePreStorageLocationMutation() {
   const queryClient = useQueryClient();
 
-  const updatePreStorageTypeMutation = async (dataForUpdate) => {
+  const deletePreStorageLocationMutation = async (id) => {
     try {
-      const response = await axios.put(
-        "/api/pre-storage-setup/pre-storage-type",
+      const response = await axios.delete(
+        "/api/pre-storage-setup/pre-storage-location",
         {
-          dataForUpdate,
+          data: { id },
         },
       );
       return response.data;
     } catch (error) {
-      console.error("Failed to UPDATE PreStorage Type informations: ", error);
+      console.error("Failed to DELETE Pre-Storage Location: ", error);
       toast.error(`Error: ${error.response.data.message}`);
       throw error; // Throw the error to trigger onError callback
     }
   };
 
   const mutation = useMutation({
-    mutationFn: updatePreStorageTypeMutation,
+    mutationFn: deletePreStorageLocationMutation,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["preStorageTypeQueryKey"],
+        queryKey: ["preStorageLocationQueryKey"],
       });
       // Toast a success message
-      toast.success("PreStorage Type UPDATED successfully.", {
+      toast.success("Pre-Storage Location DELETED successfully.", {
         autoClose: 2000,
       });
     },

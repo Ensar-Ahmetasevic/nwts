@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 
-import useCreatePreStorageTypeMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-type/use-create-pre-storage-type-mutation";
+import useCreatePreStorageLocationMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-create-pre-storage-location-mutation";
 
-export default function FormPreStorageType({ OnCancel }) {
+export default function FormPreStorageLocation({ OnCancel }) {
   const {
     register,
     handleSubmit,
@@ -10,19 +10,22 @@ export default function FormPreStorageType({ OnCancel }) {
     formState: { errors },
   } = useForm();
 
-  const createPreStorageTypeMutation = useCreatePreStorageTypeMutation();
+  const createPreStorageLocationMutation =
+    useCreatePreStorageLocationMutation();
 
-  function isFormSubmit({ name, surfaceArea, preStorageFor }) {
+  function isFormSubmit({
+    name,
+    surfaceArea,
+    containerType,
+    wasteProfile,
+    preStorageFor,
+  }) {
     // Trim the values before sending them
     const trimmedName = name.trim();
     const trimmedPreStorageFor = preStorageFor.trim();
-    const surfaceAreaNumber = parseFloat(surfaceArea); // Convert surfaceArea to a number
-
-    if (isNaN(surfaceAreaNumber) || surfaceAreaNumber <= 0) {
-      // Handle invalid number or display error to the user
-      alert("Please enter a valid positive number for surface area");
-      return;
-    }
+    const trimmedContainerType = containerType.trim();
+    const trimmedWasteProfile = wasteProfile.trim();
+    const surfaceAreaNumber = parseInt(surfaceArea);
 
     // Restrict to two decimal places if necessary
     const surfaceAreaFormatted = surfaceAreaNumber.toFixed(2);
@@ -31,9 +34,11 @@ export default function FormPreStorageType({ OnCancel }) {
     const formData = {
       name: trimmedName,
       surfaceArea: surfaceAreaFormatted,
+      containerType: trimmedContainerType,
+      wasteProfile: trimmedWasteProfile,
       preStorageFor: trimmedPreStorageFor,
     };
-    createPreStorageTypeMutation.mutateAsync({ formData });
+    createPreStorageLocationMutation.mutateAsync({ formData });
 
     OnCancel(null);
     reset();
@@ -42,13 +47,14 @@ export default function FormPreStorageType({ OnCancel }) {
   return (
     <>
       <div className="mt-10 flex flex-col items-center space-y-12 rounded-md border-2 border-red-500 bg-gray-900 p-5 px-12">
-        <h1 className="text-xl font-bold">Add new "Pre-Storage Type"</h1>
+        <h1 className="text-xl font-bold">Add new "Pre-Storage Location"</h1>
 
         <form
           className="flex flex-col items-end space-y-8 pb-4"
           onSubmit={handleSubmit(isFormSubmit)}
         >
           <div className="flex flex-col space-y-6">
+            {/* Name */}
             <div className="flex flex-col space-y-2">
               <label className="text-left text-sm">Name:</label>
               <input
@@ -69,13 +75,53 @@ export default function FormPreStorageType({ OnCancel }) {
               <input
                 className="input input-md input-bordered px-2"
                 type="number"
-                step="0.01" // Allows numbers with up to two decimal places
+                step="1" // Restrict to whole numbers
+                min="1" // Prevent 0 or negative values
                 placeholder="Type here ..."
                 {...register("surfaceArea", {
+                  required: true,
+                  min: {
+                    value: 1,
+                    message: "Please enter a valid positive number",
+                  },
+                })}
+              />
+
+              {errors.surfaceArea && (
+                <p className="text-sm text-red-500">
+                  {errors.surfaceArea.message}
+                </p>
+              )}
+            </div>
+
+            {/* Container Type */}
+            <div className="flex flex-col space-y-2">
+              <label className="text-left text-sm">Container Type:</label>
+              <input
+                className="input input-md input-bordered px-2"
+                type="text"
+                placeholder="Type here ..."
+                {...register("containerType", {
                   required: true,
                 })}
               />
             </div>
+
+            {/*   Waste Profile
+             */}
+            <div className="flex flex-col space-y-2">
+              <label className="text-left text-sm">Waste Profile:</label>
+              <input
+                className="input input-md input-bordered px-2"
+                type="text"
+                placeholder="Type here ..."
+                {...register("wasteProfile", {
+                  required: true,
+                })}
+              />
+            </div>
+
+            {/* Pre-Storage For */}
 
             <div className="flex w-64 flex-col space-y-2">
               <label className="text-left text-sm">Pre-Storage For:</label>

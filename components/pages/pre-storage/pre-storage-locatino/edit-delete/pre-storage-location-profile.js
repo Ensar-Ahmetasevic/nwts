@@ -1,9 +1,9 @@
-import usePreStorageTypeQuery from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-type/use-fetch-pre-storage-type-query,";
+import usePreStorageLocationQuery from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-fetch-pre-storage-location-query,";
 
-import ShowPreStorageType from "./show-pre-storage-type";
+import ShowPreStorageLocation from "./show-pre-storage-location";
 
-export default function TablePreStorageType({ OnCancel }) {
-  const { data: preStorageTypeData } = usePreStorageTypeQuery();
+export default function TablePreStorageLocation({ OnCancel }) {
+  const { data: preStorageLocationData } = usePreStorageLocationQuery();
 
   return (
     <div className="mx-auto pt-8">
@@ -18,8 +18,8 @@ export default function TablePreStorageType({ OnCancel }) {
           </tr>
         </thead>
         <tbody>
-          {preStorageTypeData?.map((preStorageData) => (
-            <ShowPreStorageType
+          {preStorageLocationData?.map((preStorageData) => (
+            <ShowPreStorageLocation
               key={preStorageData.id}
               isCancel={() => OnCancel(null)}
               preStorageData={preStorageData}

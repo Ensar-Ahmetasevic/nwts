@@ -66,12 +66,10 @@ export default function Navbar() {
             className="menu dropdown-content w-full rounded-t-none bg-base-100 p-2"
           >
             <li>
-              <button onClick={() => console.log("Add pre-storage")}>
-                Add New
-              </button>
+              <Link href="/pre-storage/add-new">Add New</Link>
             </li>
             <li>
-              <Link href="/pre-storage">View All</Link>
+              <Link href="/pre-storage">Capacity & Conditions</Link>
               {/* Shows the current capacity of each storage facility, along with information on the types of waste
               being stored, temperature ... */}
             </li>

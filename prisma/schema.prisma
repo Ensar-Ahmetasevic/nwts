@@ -96,17 +96,19 @@ model PreStorageOfWaste {
   id                              Int                           @id @default(autoincrement())
   createdAt                       DateTime                      @default(now())
   quantity                        Int
-  preStorageTypeId                Int                           @unique
-  preStorageType                  PreStorageType                @relation(fields: [preStorageTypeId], references: [id], onDelete: Cascade)
-  responsibleEmployeePreStorageId Int                           @unique
+  preStorageLocationId            Int
+  preStorageLocation              PreStorageLocation            @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
+  responsibleEmployeePreStorageId Int
   responsibleEmployeePreStorage   ResponsibleEmployeePreStorage @relation(fields: [responsibleEmployeePreStorageId], references: [id], onDelete: Cascade)
 }
 
-model PreStorageType {
+model PreStorageLocation {
   id                 Int                 @id @default(autoincrement())
   name               String
-  surfaceArea        Float
+  surfaceArea        Int
   preStorageFor      String
+  containerType      String
+  wasteProfile       String
   preStorageOfWastes PreStorageOfWaste[]
 }
 

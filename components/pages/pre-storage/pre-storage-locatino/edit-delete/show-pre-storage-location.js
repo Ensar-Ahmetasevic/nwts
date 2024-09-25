@@ -1,19 +1,20 @@
 import { useState } from "react";
 
-import useDeletePreStorageTypeMutation from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-type/use-delete-pre-storage-type-mutation";
+import useDeletePreStorageLocationMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-delete-pre-storage-location-mutation";
 
-import ModalShowDetailsPreStorageType from "./../modal/modal-show-details-pre-storage-type";
+import ModalShowDetailsPreStorageLocation from "../modal/modal-show-details-pre-storage-location";
 
 import { MdDeleteSweep } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineExpandMore } from "react-icons/md";
-import ModalUpdatePreStorageType from "./../modal/modal-update-pre-storage-type";
+import ModalUpdatePreStorageLocation from "../modal/modal-update-pre-storage-location";
 
-export default function ShowPreStorageType({ preStorageData }) {
+export default function ShowPreStorageLocation({ preStorageData }) {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
 
-  const deletePreStorageTypeMutation = useDeletePreStorageTypeMutation();
+  const deletePreStorageLocationMutation =
+    useDeletePreStorageLocationMutation();
 
   return (
     <>
@@ -24,7 +25,7 @@ export default function ShowPreStorageType({ preStorageData }) {
         <td>
           <div className="tooltip" data-tip="Details">
             <label
-              htmlFor="modal_details_pre_storage_type"
+              htmlFor="modal_details_pre_storage_location"
               className="btnExtend"
               onClick={() => setOpenModalDetails(true)}
             >
@@ -47,7 +48,7 @@ export default function ShowPreStorageType({ preStorageData }) {
             <label
               className="btnDelete flex items-center"
               onClick={() => {
-                deletePreStorageTypeMutation.mutateAsync(preStorageData.id);
+                deletePreStorageLocationMutation.mutateAsync(preStorageData.id);
               }}
             >
               <MdDeleteSweep />
@@ -58,7 +59,7 @@ export default function ShowPreStorageType({ preStorageData }) {
 
       {/* Show Details */}
       {openModalDetails ? (
-        <ModalShowDetailsPreStorageType
+        <ModalShowDetailsPreStorageLocation
           closeModal={() => setOpenModalDetails(false)}
           modalContenData={preStorageData}
         />
@@ -66,9 +67,9 @@ export default function ShowPreStorageType({ preStorageData }) {
 
       {/* Update */}
       {openModalUpdate ? (
-        <ModalUpdatePreStorageType
+        <ModalUpdatePreStorageLocation
           closeModal={() => setOpenModalUpdate(false)}
-          modalDataPreStorageType={preStorageData}
+          modalDataPreStorageLocation={preStorageData}
         />
       ) : null}
     </>

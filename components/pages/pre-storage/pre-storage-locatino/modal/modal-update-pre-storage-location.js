@@ -1,26 +1,34 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-import useUpdatePreStorageTypeMutation from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-type/use-update-pre-storage-type-mutation";
+import useUpdatePreStorageLocationMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-update-pre-storage-location-mutation";
 
-export default function ModalUpdatePreStorageType({
-  modalDataPreStorageType,
+export default function ModalUpdatePreStorageLocation({
+  modalDataPreStorageLocation,
   closeModal,
 }) {
+  const updatePreStorageLocationMutation =
+    useUpdatePreStorageLocationMutation();
+
+  useEffect(() => {
+    document.getElementById("modal_update_pre_storage_location").showModal();
+  }, [modalDataPreStorageLocation]);
+
+  const { name, surfaceArea, preStorageFor, containerType, wasteProfile, id } =
+    modalDataPreStorageLocation;
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({});
-
-  const updatePreStorageTypeMutation = useUpdatePreStorageTypeMutation();
-
-  useEffect(() => {
-    document.getElementById("modal_update_pre_storage_type").showModal();
-  }, [modalDataPreStorageType]);
-
-  const { name, surfaceArea, preStorageFor, id } = modalDataPreStorageType;
+  } = useForm({
+    defaultValues: {
+      surfaceArea: surfaceArea,
+      containerType: containerType,
+      wasteProfile: wasteProfile,
+    },
+  });
 
   const isFormSubmit = async (formData) => {
     try {
@@ -29,17 +37,17 @@ export default function ModalUpdatePreStorageType({
         id,
       };
 
-      await updatePreStorageTypeMutation.mutateAsync(dataForUpdate);
+      await updatePreStorageLocationMutation.mutateAsync(dataForUpdate);
 
       closeModal();
     } catch (error) {
-      console.error("Error updating Pre-Storage Type:", error);
+      console.error("Error updating Pre-Storage Location:", error);
     }
   };
 
   return (
     <>
-      <dialog id="modal_update_pre_storage_type" className="modal">
+      <dialog id="modal_update_pre_storage_location" className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">Edit Container Details</h3>
 
@@ -72,14 +80,52 @@ export default function ModalUpdatePreStorageType({
                   <input
                     className="input input-md input-bordered px-2"
                     type="number"
-                    step="0.01" // Allows numbers with up to two decimal places
+                    step="1" // Restrict to whole numbers
+                    min="1" // Prevent 0 or negative values
                     placeholder="Type here ..."
-                    defaultValue={surfaceArea}
                     {...register("surfaceArea", {
+                      required: true,
+                      min: {
+                        value: 1,
+                        message: "Please enter a valid positive number",
+                      },
+                    })}
+                  />
+                  {errors.surfaceArea && (
+                    <p className="text-sm text-red-500">
+                      {errors.surfaceArea.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Container Type */}
+                <div className="flex flex-col space-y-2">
+                  <label className="text-left text-sm">Container Type:</label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here ..."
+                    {...register("containerType", {
                       required: true,
                     })}
                   />
                 </div>
+
+                {/*   Waste Profile
+                 */}
+                <div className="flex flex-col space-y-2">
+                  <label className="text-left text-sm">Waste Profile:</label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="text"
+                    placeholder="Type here ..."
+                    {...register("wasteProfile", {
+                      required: true,
+                    })}
+                  />
+                </div>
+
+                {/* Pre-Storage For */}
 
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">Pre-Storage For:</label>

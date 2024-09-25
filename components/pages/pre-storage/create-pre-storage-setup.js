@@ -3,7 +3,7 @@
 import { useState } from "react";
 import PreStorageSetupDynamicFormDisplay from "./pre-storage-setup-dynamic-form-display";
 import PreStorageEmployeeDropdown from "./pre-storage-employee/pre-storage-employee-dropdown";
-import PreStorageTypeDropdown from "./pre-storage-type/pre-storage-type-dropdown";
+import PreStorageLocationDropdown from "./pre-storage-locatino/pre-storage-location-dropdown";
 
 export default function CreatePreStorageSetup() {
   const [activeButton, setActiveButton] = useState(null);
@@ -19,7 +19,7 @@ export default function CreatePreStorageSetup() {
           <h2>Informations on how to create Pre-Storage Setup:</h2>
           <h3>
             Each Pre-Storage have{" "}
-            <b>Pre-Storage Type and Responsible Employee.</b> <br />
+            <b>Pre-Storage Location and Responsible Employee.</b> <br />
             Create new data for each of them, and then those data will be
             available when creating Pre-Strage Profile.
           </h3>
@@ -28,8 +28,8 @@ export default function CreatePreStorageSetup() {
         {/* Dropdown Buttons */}
 
         <div className="m-6 flex flex-row justify-center space-x-3">
-          {/* Pre-Storage Type Menu*/}
-          <PreStorageTypeDropdown
+          {/* Pre-Storage Location Menu*/}
+          <PreStorageLocationDropdown
             activeButton={activeButton}
             OnActiveButton={handleButtonClick}
           />
