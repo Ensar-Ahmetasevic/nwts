@@ -1,9 +1,9 @@
+import CapacityAndConditions from "./../../components/pages/pre-storage/capacity-and-conditions";
+
 export default function PreStorage() {
   return (
-    <div>
-      <div className="hero min-h-screen bg-base-200">
-        <p>Pre-Storage Page</p>
-      </div>
+    <div className="mt-20 flex justify-center">
+      <CapacityAndConditions />
     </div>
   );
 }
