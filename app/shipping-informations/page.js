@@ -22,6 +22,7 @@ export default function ShippingInformations() {
 
   // Initialize React Hook Form
   const { register, handleSubmit, watch } = useForm();
+
   const searchQuery = watch("searchQuery", ""); // Watch the searchQuery input
 
   // Define the scrollToTop function

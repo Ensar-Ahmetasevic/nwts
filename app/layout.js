@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
             toastClassName="bg-gray-900 text-white"
             bodyClassName="text-sm"
           />
-          <Navbar />
+          <Navbar  />
           {children}
         </Providers>
       </body>

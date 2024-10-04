@@ -14,8 +14,15 @@ export default function ModalUpdatePreStorageLocation({
     document.getElementById("modal_update_pre_storage_location").showModal();
   }, [modalDataPreStorageLocation]);
 
-  const { name, surfaceArea, preStorageFor, containerType, wasteProfile, id } =
-    modalDataPreStorageLocation;
+  const {
+    name,
+    surfaceArea,
+    containerFootprint,
+    preStorageFor,
+    containerType,
+    wasteProfile,
+    id,
+  } = modalDataPreStorageLocation;
 
   const {
     register,
@@ -27,6 +34,7 @@ export default function ModalUpdatePreStorageLocation({
       surfaceArea: surfaceArea,
       containerType: containerType,
       wasteProfile: wasteProfile,
+      containerFootprint: parseInt(containerFootprint),
     },
   });
 
@@ -91,6 +99,33 @@ export default function ModalUpdatePreStorageLocation({
                       },
                     })}
                   />
+                  {errors.surfaceArea && (
+                    <p className="text-sm text-red-500">
+                      {errors.surfaceArea.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Container Footprint  */}
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">
+                    {"Container Footprint (m²)"}:
+                  </label>
+                  <input
+                    className="input input-md input-bordered px-2"
+                    type="number"
+                    step="1" // Restrict to whole numbers
+                    min="1" // Prevent 0 or negative values
+                    placeholder="Type here ..."
+                    {...register("containerFootprint", {
+                      required: true,
+                      min: {
+                        value: 1,
+                        message: "Please enter a valid positive number",
+                      },
+                    })}
+                  />
+
                   {errors.surfaceArea && (
                     <p className="text-sm text-red-500">
                       {errors.surfaceArea.message}

@@ -29,6 +29,11 @@ export default function ModalShowDetailsPreStorageLocation({
                   <p className="font-bold">Surface Area:</p>
                   <p>{`${modalContenData.surfaceArea} m²`}</p>
                 </li>
+                {/* Container Footprint */}
+                <li className="row flex flex-row space-x-2">
+                  <p className="font-bold"> Container Footprint:</p>
+                  <p>{`${modalContenData.containerFootprint} m²`}</p>
+                </li>
                 {/* Container Type */}
                 <li className="row flex flex-row space-x-2">
                   <p className="font-bold">Container Type:</p>

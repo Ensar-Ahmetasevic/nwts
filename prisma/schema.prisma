@@ -92,7 +92,19 @@ model ContainerType {
 
 // Step 2 "Pre-storage of waste"
 
-model PreStorageOfWaste {
+model PreStorageLocation {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  surfaceArea          Int
+  containerFootprint   Int
+  preStorageFor        String
+  containerType        String
+  wasteProfile         String
+  preStorageEntry      PreStorageEntry[]
+  preStorageConditions PreStorageConditions[]
+}
+
+model PreStorageEntry {
   id                              Int                           @id @default(autoincrement())
   createdAt                       DateTime                      @default(now())
   quantity                        Int
@@ -102,36 +114,31 @@ model PreStorageOfWaste {
   responsibleEmployeePreStorage   ResponsibleEmployeePreStorage @relation(fields: [responsibleEmployeePreStorageId], references: [id], onDelete: Cascade)
 }
 
-model PreStorageLocation {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  surfaceArea        Int
-  preStorageFor      String
-  containerType      String
-  wasteProfile       String
-  preStorageOfWastes PreStorageOfWaste[]
-}
-
 model ResponsibleEmployeePreStorage {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  surname            String
-  dateOfBirth        DateTime
-  address            String
-  qualifications     String
-  safetyTraining     Boolean             @default(false)
-  preStorageOfWastes PreStorageOfWaste[]
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  surname              String
+  dateOfBirth          DateTime
+  address              String
+  qualifications       String
+  safetyTraining       Boolean                @default(false)
+  preStorageEntry      PreStorageEntry[]
+  PreStorageConditions PreStorageConditions[]
 }
 
 // Step 2.1 Pre-Storage Conditions
 
 model PreStorageConditions {
-  id                       Int      @id @default(autoincrement())
-  createdAt                DateTime @default(now())
-  preStorageTemperature    Float
-  preStorageRadiationLevel Float
-  preStorageHumidity       Float
-  preStoragePressure       Int
+  id                              Int                           @id @default(autoincrement())
+  createdAt                       DateTime                      @default(now())
+  preStorageTemperature           Float
+  preStorageRadiationLevel        Float
+  preStorageHumidity              Float
+  preStoragePressure              Int
+  preStorageLocationId            Int
+  preStorageResponsibleEmployeeId Int
+  preStorageLocation              PreStorageLocation            @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
+  preStorageResponsibleEmployee   ResponsibleEmployeePreStorage @relation(fields: [preStorageResponsibleEmployeeId], references: [id], onDelete: Cascade)
 }
 
 // Step 3 "Storage of waste"

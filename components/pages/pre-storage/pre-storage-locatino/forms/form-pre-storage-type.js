@@ -16,6 +16,7 @@ export default function FormPreStorageLocation({ OnCancel }) {
   function isFormSubmit({
     name,
     surfaceArea,
+    containerFootprint,
     containerType,
     wasteProfile,
     preStorageFor,
@@ -26,17 +27,16 @@ export default function FormPreStorageLocation({ OnCancel }) {
     const trimmedContainerType = containerType.trim();
     const trimmedWasteProfile = wasteProfile.trim();
     const surfaceAreaNumber = parseInt(surfaceArea);
-
-    // Restrict to two decimal places if necessary
-    const surfaceAreaFormatted = surfaceAreaNumber.toFixed(2);
+    const containerFootprintNumber = parseInt(containerFootprint);
 
     // Create the formData object with trimmed values
     const formData = {
       name: trimmedName,
-      surfaceArea: surfaceAreaFormatted,
+      surfaceArea: surfaceAreaNumber,
       containerType: trimmedContainerType,
       wasteProfile: trimmedWasteProfile,
       preStorageFor: trimmedPreStorageFor,
+      containerFootprint: containerFootprintNumber,
     };
     createPreStorageLocationMutation.mutateAsync({ formData });
 
@@ -79,6 +79,33 @@ export default function FormPreStorageLocation({ OnCancel }) {
                 min="1" // Prevent 0 or negative values
                 placeholder="Type here ..."
                 {...register("surfaceArea", {
+                  required: true,
+                  min: {
+                    value: 1,
+                    message: "Please enter a valid positive number",
+                  },
+                })}
+              />
+
+              {errors.surfaceArea && (
+                <p className="text-sm text-red-500">
+                  {errors.surfaceArea.message}
+                </p>
+              )}
+            </div>
+
+            {/* Container Footprint  */}
+            <div className="flex w-64 flex-col space-y-2">
+              <label className="text-left text-sm">
+                {"Container Footprint (m²)"}:
+              </label>
+              <input
+                className="input input-md input-bordered px-2"
+                type="number"
+                step="1" // Restrict to whole numbers
+                min="1" // Prevent 0 or negative values
+                placeholder="Type here ..."
+                {...register("containerFootprint", {
                   required: true,
                   min: {
                     value: 1,

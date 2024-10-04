@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 .btnSave {
-  @apply btn btn-xs rounded-sm border-2 border-blue-400 bg-transparent text-blue-400 hover:border-blue-600 hover:bg-blue-600 hover:text-white;
+  @apply btn btn-sm border-2 border-blue-400 bg-transparent text-blue-400 hover:border-blue-600 hover:bg-blue-600 hover:text-white;
 }
 .btnCreate {
-  @apply btn btn-xs rounded-sm border-2 border-green-500 bg-transparent text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white;
+  @apply btn btn-sm rounded-sm border-2 border-green-500 bg-transparent text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white;
 }
 
 .btnNeutral {
@@ -14,26 +14,26 @@
 }
 
 .btnAdd {
-  @apply btn btn-xs rounded-sm border-2 border-blue-700 bg-transparent text-blue-500 hover:border-blue-500 hover:bg-blue-500 hover:text-white;
+  @apply btn btn-sm rounded-sm border-2 border-blue-700 bg-transparent text-blue-500 hover:border-blue-500 hover:bg-blue-500 hover:text-white;
 }
 .btnUpdate {
-  @apply btn btn-xs rounded-sm border-2 border-yellow-500 bg-transparent text-yellow-500 hover:border-yellow-500 hover:bg-yellow-500 hover:text-white;
+  @apply btn btn-sm rounded-sm border-2 border-yellow-500 bg-transparent text-yellow-500 hover:border-yellow-500 hover:bg-yellow-500 hover:text-white;
 }
 
 .btnCancel {
-  @apply btn btn-xs rounded-sm border-2 border-gray-500 bg-transparent text-gray-500 hover:border-gray-500 hover:bg-gray-500 hover:text-white;
+  @apply btn btn-sm rounded-sm border-2 border-gray-500 bg-transparent text-gray-500 hover:border-gray-500 hover:bg-gray-500 hover:text-white;
 }
 
 .btnDelete {
-  @apply btn btn-xs rounded-sm border-2 border-red-500 bg-transparent text-red-500 hover:border-red-500 hover:bg-red-500 hover:text-white;
+  @apply btn btn-sm rounded-sm border-2 border-red-500 bg-transparent text-red-500 hover:border-red-500 hover:bg-red-500 hover:text-white;
 }
 
 .btnInfo {
-  @apply btn btn-xs rounded-sm border-2 border-blue-400 bg-transparent text-blue-500 hover:border-blue-400 hover:bg-blue-400 hover:text-white;
+  @apply btn btn-sm rounded-sm border-2 border-blue-400 bg-transparent text-blue-500 hover:border-blue-400 hover:bg-blue-400 hover:text-white;
 }
 
 .btnExtend {
-  @apply btn btn-xs rounded border border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400;
+  @apply btn btn-sm  border border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400;
 }
 
 .btnSearch {

@@ -66,15 +66,12 @@ export default function Navbar() {
             className="menu dropdown-content w-full rounded-t-none bg-base-100 p-2"
           >
             <li>
-              <Link href="/pre-storage/add-new">Add New</Link>
-            </li>
-            <li>
               <Link href="/pre-storage">Capacity & Conditions</Link>
               {/* Shows the current capacity of each storage facility, along with information on the types of waste
               being stored, temperature ... */}
             </li>
             <li>
-              <Link href="/">Conditions</Link>
+              <Link href="/">Add Conditions</Link>
             </li>
 
             <li className="bg-base-200">

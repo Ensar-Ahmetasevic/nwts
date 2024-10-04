@@ -21,7 +21,7 @@ export default function useCreatePreStorageWasteMutation() {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["PreStorageWasteQueryKey"],
+        queryKey: ["preStorageWasteQueryKey"],
       });
 
       // Toast a success message

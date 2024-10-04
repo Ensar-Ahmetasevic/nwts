@@ -7,20 +7,22 @@ const prisma = new PrismaClient();
 export async function POST(req, res) {
   const formData = await req.json();
 
-  const { name, surfaceArea, preStorageFor, containerType, wasteProfile } =
-    formData;
-
-  // Ensure surfaceArea is a valid number
-  const surfaceAreaNumber = parseFloat(surfaceArea).toFixed(2);
-  // Store up to two decimal places but it returns a string so befor seding to the database we need to convert it to a number again
+  const {
+    name,
+    surfaceArea,
+    containerFootprint,
+    preStorageFor,
+    containerType,
+    wasteProfile,
+  } = formData;
 
   if (
     !name ||
-    !surfaceAreaNumber ||
+    !surfaceArea ||
+    !containerFootprint ||
     !containerType ||
     !wasteProfile ||
-    !preStorageFor ||
-    isNaN(surfaceAreaNumber)
+    !preStorageFor
   ) {
     return NextResponse.json(
       {
@@ -31,11 +33,17 @@ export async function POST(req, res) {
     );
   }
 
+  // Ensure surfaceArea is a valid number
+  const surfaceAreaNumber = surfaceArea.toFixed(2);
+  const containerFootprintNumber = containerFootprint.toFixed(2);
+  // Store up to two decimal places but it returns a string so befor seding to the database we need to convert it to a number again
+
   try {
     await prisma.preStorageLocation.create({
       data: {
         name,
         surfaceArea: parseInt(surfaceAreaNumber),
+        containerFootprint: parseInt(containerFootprintNumber),
         preStorageFor,
         containerType,
         wasteProfile,
@@ -61,6 +69,9 @@ export async function GET() {
   try {
     const preStorageLocationData = await prisma.preStorageLocation.findMany({
       orderBy: { id: "desc" },
+      include: {
+        preStorageEntry: true,
+      },
     });
 
     if (!preStorageLocationData) {
@@ -111,21 +122,32 @@ export async function DELETE(req) {
   }
 }
 
-// Update container Location
+// Update preStorage Location
 
 export async function PUT(req, res) {
   const { dataForUpdate } = await req.json();
 
-  const { name, surfaceArea, preStorageFor, containerType, wasteProfile, id } =
-    dataForUpdate;
+  const {
+    name,
+    surfaceArea,
+    containerFootprint,
+    preStorageFor,
+    containerType,
+    wasteProfile,
+    id,
+  } = dataForUpdate;
 
   // Ensure surfaceArea is a valid number
   const surfaceAreaNumber = parseFloat(parseFloat(surfaceArea).toFixed(2));
+  const containerFootprintNumber = parseFloat(
+    parseFloat(containerFootprint).toFixed(2),
+  );
   // Store up to two decimal places but it returns a string so befor seding to the database we need to convert it to a number again
 
   if (
     !name ||
     !surfaceAreaNumber ||
+    !containerFootprint ||
     !preStorageFor ||
     !containerType ||
     !wasteProfile ||
@@ -149,6 +171,7 @@ export async function PUT(req, res) {
         wasteProfile,
         preStorageFor,
         surfaceArea: surfaceAreaNumber,
+        containerFootprint: containerFootprintNumber,
       },
     });
 

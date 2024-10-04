@@ -2,12 +2,7 @@
 
 import { PieChart, Pie, Cell } from "recharts";
 
-const data = [
-  { name: "Free Space", value: 25 },
-  { name: "Used Space", value: 75 },
-];
-
-const COLORS = ["#02d109", "#fe0000", "#00C49F", "#FFBB28"];
+const COLORS = ["#02d109", "#fe0000"];
 
 const RADIAN = Math.PI / 180;
 
@@ -37,7 +32,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-export default function CustomPieChart() {
+export default function CustomPieChart({ data }) {
   return (
     <PieChart width={170} height={170}>
       <Pie
