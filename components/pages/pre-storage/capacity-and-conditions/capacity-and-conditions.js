@@ -40,7 +40,11 @@ export default function CapacityAndConditions({ data }) {
 
           <div className="mb-6 flex w-full flex-row items-center justify-evenly">
             <div>
-              <CustomPieChart data={dataForPieChart} />
+              <Link href={`/pre-storage/${data.id}`}>
+                <div className="transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110">
+                  <CustomPieChart data={dataForPieChart} />
+                </div>
+              </Link>
             </div>
             <div className="flex flex-col space-y-3 ">
               <div className="flex flex-row items-center space-x-3">
@@ -57,9 +61,9 @@ export default function CapacityAndConditions({ data }) {
               </div>
             </div>
           </div>
-
+          {/* CTA */}
           <Link
-            className="btn btn-outline btn-warning mb-5 w-full"
+            className="btn btn-outline btn-warning  mb-5 w-full transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
             href={`/pre-storage/${data.id}`}
           >
             DETAILS

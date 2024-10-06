@@ -2,13 +2,12 @@
 
 import { useForm } from "react-hook-form";
 
-import usePreStorageLocationQuery from "../../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-fetch-pre-storage-location-query,";
 import useCreatePreStorageWasteMutation from "./../../../../../../requests/request-pre-storage-setup/use-create-pre-storage-waste-mutation";
 import usePreStorageEmployeeQuery from "../../../../../../requests/request-pre-storage-setup/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
 
 import LoadingSpinnerButton from "../../../../../shared/loading-spiner-button";
 
-export default function ModalPreStorageForm({ isOpen, closeModal }) {
+export default function ModalPreStorageForm({ isOpen, closeModal, hallData }) {
   const {
     register,
     handleSubmit,
@@ -27,17 +26,16 @@ export default function ModalPreStorageForm({ isOpen, closeModal }) {
   // Fetching data
 
   const { data: preStorageEmployeeData } = usePreStorageEmployeeQuery();
-  const { data: preStorageLocationData } = usePreStorageLocationQuery();
 
   const isFormSubmit = async ({
     quantity,
-    preStorageLocation,
+
     responsibleEmployee,
   }) => {
     // Ensure values are numbers
     const formData = {
       quantity: parseInt(quantity),
-      preStorageLocationId: parseInt(preStorageLocation),
+      preStorageLocationId: parseInt(hallData.id),
       responsibleEmployeePreStorageId: parseInt(responsibleEmployee),
     };
 
@@ -52,7 +50,7 @@ export default function ModalPreStorageForm({ isOpen, closeModal }) {
 
   return (
     <>
-      {isOpen && (
+      {isOpen ? (
         <div className="modal modal-open">
           <div className="modal-box">
             {/* Form */}
@@ -84,33 +82,6 @@ export default function ModalPreStorageForm({ isOpen, closeModal }) {
                 )}
               </div>
 
-              {/* Pre-Storage Type */}
-              <div className="flex w-64 flex-col space-y-2">
-                <label
-                  className="text-left text-sm"
-                  htmlFor="pre-storage-location"
-                >
-                  Please select Pre-Storage Location
-                </label>
-
-                <select
-                  className="select select-bordered select-md px-2"
-                  id="pre-storage-location"
-                  {...register("preStorageLocation", { required: true })}
-                >
-                  <option value="">---</option>
-
-                  {preStorageLocationData?.map((preStorageLocation) => (
-                    <option
-                      key={preStorageLocation.id}
-                      value={preStorageLocation.id}
-                    >
-                      {preStorageLocation.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/*Responsible employee */}
               <div className="flex w-64 flex-col space-y-2">
                 <label
@@ -134,7 +105,6 @@ export default function ModalPreStorageForm({ isOpen, closeModal }) {
                   ))}
                 </select>
               </div>
-
               <div className=" space-x-2">
                 <button className="btnSave" type="submit" disabled={isPending}>
                   {isPending ? <LoadingSpinnerButton /> : "Save"}
@@ -149,7 +119,7 @@ export default function ModalPreStorageForm({ isOpen, closeModal }) {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }

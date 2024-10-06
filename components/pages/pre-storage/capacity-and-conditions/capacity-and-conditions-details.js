@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Link from "next/link";
 
 // Import dynamic from next/dynamic
 import dynamic from "next/dynamic";
@@ -63,7 +62,7 @@ export default function CapacityAndConditionsDetails({ data }) {
           <div className="w-ful mb-6 flex flex-row space-x-12">
             {/* Graf and legenda */}
             <div className="flex flex-row items-center justify-evenly">
-              <div>
+              <div className="transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110">
                 <CustomPieChart data={dataForPieChart} />
               </div>
             </div>
@@ -110,16 +109,25 @@ export default function CapacityAndConditionsDetails({ data }) {
 
           {/* CTA */}
           <button
-            className="btn btn-outline btn-info mb-5 w-full"
+            className="btn btn-outline btn-info mb-5 w-full transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
             onClick={openModal}
           >
-            Add New Containers
+            Update Hall State
           </button>
+        </div>
+
+        {/* Conditions */}
+        <div class="prose">
+          <h1>Conditions</h1>
         </div>
       </div>
 
       {/* Modal */}
-      <ModalPreStorageForm isOpen={isModalOpen} closeModal={closeModal} />
+      <ModalPreStorageForm
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        hallData={data}
+      />
     </>
   );
 }
