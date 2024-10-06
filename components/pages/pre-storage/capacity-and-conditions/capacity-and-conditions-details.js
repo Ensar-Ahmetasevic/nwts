@@ -9,16 +9,22 @@ const CustomPieChart = dynamic(
   { ssr: false },
 );
 
-import ModalPreStorageForm from "./capacity/modal/modal-pre-storage-form";
+import ModalPreStorageCapacityForm from "./capacity/modal/modal-pre-storage-capacity-form";
+import ModalPreStorageConditionsForm from "./conditions/modal/modal-pre-storage-conditions-form";
 
 export default function CapacityAndConditionsDetails({ data }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);
+  const [isModalConditionsOpen, setIsModalConditionsOpen] = useState(false);
 
-  // Function to open the modal
-  const openModal = () => setIsModalOpen(true);
+  // Function to open Capacity modal
+  const openCapacityModal = () => setIsModalCapacityOpen(true);
+  // Function to close Capacity modal
+  const closeCapacityModal = () => setIsModalCapacityOpen(false);
 
-  // Function to close the modal
-  const closeModal = () => setIsModalOpen(false);
+  // Function to open Conditions modal
+  const openConditionsModal = () => setIsModalConditionsOpen(true);
+  // Function to close Conditions modal
+  const closeConditionsModal = () => setIsModalConditionsOpen(false);
 
   const halesurface = data.surfaceArea;
   const containerFootprint = data.containerFootprint;
@@ -107,25 +113,39 @@ export default function CapacityAndConditionsDetails({ data }) {
             </div>
           </div>
 
-          {/* CTA */}
+          {/* CTA Button */}
           <button
             className="btn btn-outline btn-info mb-5 w-full transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
-            onClick={openModal}
+            onClick={openCapacityModal}
           >
-            Update Hall State
+            Update Capacity State
           </button>
         </div>
 
         {/* Conditions */}
-        <div class="prose">
+        <div className="prose space-y-4">
           <h1>Conditions</h1>
+          {/* CTA Button */}
+          <button
+            className="btn btn-outline btn-info mb-5 w-full transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
+            onClick={openConditionsModal}
+          >
+            Update Conditions
+          </button>
         </div>
       </div>
 
-      {/* Modal */}
-      <ModalPreStorageForm
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+      {/* Capacity Modal */}
+      <ModalPreStorageCapacityForm
+        isOpen={isModalCapacityOpen}
+        closeModal={closeCapacityModal}
+        hallData={data}
+      />
+
+      {/* Conditions Modal */}
+      <ModalPreStorageConditionsForm
+        isOpen={isModalConditionsOpen}
+        closeModal={closeConditionsModal}
         hallData={data}
       />
     </>

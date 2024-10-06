@@ -7,7 +7,11 @@ import usePreStorageEmployeeQuery from "../../../../../../requests/request-pre-s
 
 import LoadingSpinnerButton from "../../../../../shared/loading-spiner-button";
 
-export default function ModalPreStorageForm({ isOpen, closeModal, hallData }) {
+export default function ModalPreStorageCapacityForm({
+  isOpen,
+  closeModal,
+  hallData,
+}) {
   const {
     register,
     handleSubmit,
@@ -113,7 +117,12 @@ export default function ModalPreStorageForm({ isOpen, closeModal, hallData }) {
             </form>
 
             <div className="modal-action">
-              <button className="btn" onClick={closeModal}>
+              <button
+                className="btn"
+                onClick={() => {
+                  closeModal(), reset();
+                }}
+              >
                 Cancel
               </button>
             </div>
