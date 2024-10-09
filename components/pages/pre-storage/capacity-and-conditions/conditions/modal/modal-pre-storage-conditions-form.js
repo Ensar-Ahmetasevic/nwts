@@ -2,8 +2,8 @@
 
 import { useForm } from "react-hook-form";
 
-import useCreatePreStorageConditionsMutation from "../../../../../../requests/request-pre-storage-setup/request-pre-storage-conditions/use-create-pre-storage-conditions-mutation";
-import usePreStorageEmployeeQuery from "./../../../../../../requests/request-pre-storage-setup/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
+import useCreatePreStorageConditionsMutation from "../../../../../../requests/request-pre-storage/request-pre-storage-conditions/use-create-pre-storage-conditions-mutation";
+import usePreStorageEmployeeQuery from "../../../../../../requests/request-pre-storage/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
 
 import LoadingSpinnerButton from "./../../../../../shared/loading-spiner-button";
 

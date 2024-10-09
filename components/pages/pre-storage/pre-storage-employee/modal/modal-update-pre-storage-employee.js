@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-import useUpdatePreStorageEmployeeMutation from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-employee/use-update-pre-storage-employee-mutation";
+import useUpdatePreStorageEmployeeMutation from "../../../../../requests/request-pre-storage/request-pre-storage-employee/use-update-pre-storage-employee-mutation";
 
 import dayjs from "dayjs";
 

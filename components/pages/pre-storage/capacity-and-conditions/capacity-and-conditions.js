@@ -39,7 +39,7 @@ export default function CapacityAndConditions({ data }) {
           <div className="mb-6 flex w-full flex-row items-center justify-evenly">
             <div>
               <Link href={`/pre-storage/${data.id}`}>
-                <div className="transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110">
+                <div className="transform transition-transform duration-700 ease-in-out hover:scale-110">
                   <CustomPieChart data={dataForPieChart} />
                 </div>
               </Link>

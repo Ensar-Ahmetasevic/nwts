@@ -1,4 +1,4 @@
-import usePreStorageEmployeeQuery from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
+import usePreStorageEmployeeQuery from "../../../../../requests/request-pre-storage/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
 
 import ShowPreStorageEmployee from "./show-pre-storage-employee";
 

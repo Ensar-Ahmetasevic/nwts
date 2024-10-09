@@ -12,7 +12,11 @@ export async function GET(req, { params }) {
       where: { id: parseInt(preStorageID) },
       include: {
         preStorageEntry: true,
-        preStorageConditions: true,
+        preStorageConditions: {
+          include: {
+            preStorageResponsibleEmployee: true,
+          },
+        },
       },
     });
 

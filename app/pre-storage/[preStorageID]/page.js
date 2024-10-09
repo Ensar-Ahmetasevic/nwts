@@ -1,6 +1,6 @@
 "use client";
 
-import usePreStorageByIdQuery from "./../../../requests/request-pre-storage-setup/request-pre-storage-location/use-fetch-pre-storage-by-id-query";
+import usePreStorageByIdQuery from "../../../requests/request-pre-storage/request-pre-storage-location/use-fetch-pre-storage-by-id-query";
 
 import CapacityAndConditionsDetails from "./../../../components/pages/pre-storage/capacity-and-conditions/capacity-and-conditions-details";
 

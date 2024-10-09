@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import useCreatePreStorageLocationMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-create-pre-storage-location-mutation";
+import useCreatePreStorageLocationMutation from "../../../../../requests/request-pre-storage/request-pre-storage-location/use-create-pre-storage-location-mutation";
 
 export default function FormPreStorageLocation({ OnCancel }) {
   const {

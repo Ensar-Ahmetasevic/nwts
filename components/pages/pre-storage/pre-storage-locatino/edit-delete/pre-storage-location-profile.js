@@ -1,4 +1,4 @@
-import usePreStorageLocationQuery from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-fetch-pre-storage-location-query,";
+import usePreStorageLocationQuery from "../../../../../requests/request-pre-storage/request-pre-storage-location/use-fetch-pre-storage-location-query,";
 
 import ShowPreStorageLocation from "./show-pre-storage-location";
 

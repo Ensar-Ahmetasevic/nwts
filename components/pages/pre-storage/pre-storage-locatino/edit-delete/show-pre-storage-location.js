@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import useDeletePreStorageLocationMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-delete-pre-storage-location-mutation";
+import useDeletePreStorageLocationMutation from "../../../../../requests/request-pre-storage/request-pre-storage-location/use-delete-pre-storage-location-mutation";
 
 import ModalShowDetailsPreStorageLocation from "../modal/modal-show-details-pre-storage-location";
 

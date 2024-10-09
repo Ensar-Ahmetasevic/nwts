@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-import useUpdatePreStorageLocationMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-location/use-update-pre-storage-location-mutation";
+import useUpdatePreStorageLocationMutation from "../../../../../requests/request-pre-storage/request-pre-storage-location/use-update-pre-storage-location-mutation";
 
 export default function ModalUpdatePreStorageLocation({
   modalDataPreStorageLocation,

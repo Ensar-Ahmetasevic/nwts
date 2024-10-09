@@ -2,7 +2,7 @@
 
 import CapacityAndConditions from "../../components/pages/pre-storage/capacity-and-conditions/capacity-and-conditions";
 
-import usePreStorageLocationQuery from "./../../requests/request-pre-storage-setup/request-pre-storage-location/use-fetch-pre-storage-location-query,";
+import usePreStorageLocationQuery from "../../requests/request-pre-storage/request-pre-storage-location/use-fetch-pre-storage-location-query,";
 
 import AlertWarning from "./../../components/shared/alert-warning";
 import LoadingSpinnerPage from "./../../components/shared/loading-spiner-page";

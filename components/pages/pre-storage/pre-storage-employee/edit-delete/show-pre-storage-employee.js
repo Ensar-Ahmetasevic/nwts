@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import useDeletePreStorageEmployeeMutation from "./../../../../../requests/request-pre-storage-setup/request-pre-storage-employee/use-delete-pre-storage-employee-mutation";
+import useDeletePreStorageEmployeeMutation from "../../../../../requests/request-pre-storage/request-pre-storage-employee/use-delete-pre-storage-employee-mutation";
 
 import ModalShowDetailsPreStorageEmployee from "./../modal/modal-show-details-pre-storage-employee";
 import ModalUpdatePreStorageEmployee from "./../modal/modal-update-pre-storage-employee";

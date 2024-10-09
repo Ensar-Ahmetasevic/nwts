@@ -11,6 +11,7 @@ export default function usePreStorageByIdQuery(preStorageID, options = {}) {
   const query = useQuery({
     queryKey: ["preStorageIDQueryKey"],
     queryKey: ["preStorageWasteQueryKey"],
+    queryKey: ["preStorageConditionsQueryKey"],
     queryFn: () => fetchPreStorageById(preStorageID),
     enabled: !!preStorageID, // Ensures the query only runs if shippingID is provided
     ...options, // Allows passing additional options like refetchInterval, etc.

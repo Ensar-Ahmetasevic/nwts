@@ -60,38 +60,3 @@ export async function POST(req, res) {
     );
   }
 }
-
-// Fetch data
-
-export async function GET() {
-  try {
-    const preStorageOfWasteData = await prisma.preStorageEntry.findMany({
-      orderBy: {
-        id: "desc",
-      },
-    });
-
-    if (preStorageOfWasteData.length === 0) {
-      return NextResponse.json(
-        {
-          preStorageOfWasteData: null,
-          message: "No PreStorage Of Waste data available.",
-        },
-        { status: 204 }, // No Content
-      );
-    }
-
-    return NextResponse.json(
-      { preStorageOfWasteData, message: "Data fetched successfully" },
-      { status: 200 },
-    );
-  } catch (error) {
-    return NextResponse.json(
-      {
-        message: "Failed to fetch preStorage Of Waste Data.",
-        error: error.message,
-      },
-      { status: 500 },
-    );
-  }
-}

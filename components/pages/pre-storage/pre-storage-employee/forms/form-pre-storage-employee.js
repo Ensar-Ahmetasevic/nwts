@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 
 import dayjs from "dayjs";
 
-import useCreatePreStorageEmployeeMutation from "../../../../../requests/request-pre-storage-setup/request-pre-storage-employee/use-create-pre-storage-employee-mutation";
+import useCreatePreStorageEmployeeMutation from "../../../../../requests/request-pre-storage/request-pre-storage-employee/use-create-pre-storage-employee-mutation";
 
 export default function FormPreStorageEmployee({ OnCancel }) {
   const {
