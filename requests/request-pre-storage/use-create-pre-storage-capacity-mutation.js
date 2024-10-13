@@ -2,30 +2,31 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useCreatePreStorageWasteMutation() {
+export default function useCreatePreStorageCapacityMutation() {
   const queryClient = useQueryClient();
 
-  const createPreStorageWasteMutation = async (formData) => {
+  const createPreStorageCapacityMutation = async (formData) => {
     try {
       const response = await axios.post("/api/pre-storage-setup", formData);
       return response.data;
     } catch (error) {
-      console.error("Failed to create new Pre-Storage Waste", error);
+      console.error("Failed to create new Pre-Storage Capacity Waste", error);
       toast.error(`Error: ${error.response?.data?.message || error.message}`);
       throw error;
     }
   };
 
   const mutation = useMutation({
-    mutationFn: createPreStorageWasteMutation,
+    mutationFn: createPreStorageCapacityMutation,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["preStorageWasteQueryKey"],
+        queryKey: ["preStorageCapacityQueryKey"],
+        queryKey: ["preStorageIDQueryKey"],
       });
 
       // Toast a success message
-      toast.success("Pre-Storage Waste created successfully.", {
+      toast.success("Pre-Storage Capacity Waste created successfully.", {
         autoClose: 2000,
       });
     },

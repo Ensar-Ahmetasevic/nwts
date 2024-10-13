@@ -30,7 +30,7 @@ export default function CapacityAndConditions({ data }) {
   ];
   return (
     <div className="mx-10 flex w-1/2 flex-col space-y-10">
-      <div className=" grid flex-grow place-items-center rounded-box bg-base-300">
+      <div className=" grid flex-grow place-items-center rounded-box border-2 border-yellow-600 bg-base-300">
         <div className="flex w-1/2 flex-col items-center">
           <div className="mb-10 mt-5">
             <h1 className="stat-value">{data.name}</h1>

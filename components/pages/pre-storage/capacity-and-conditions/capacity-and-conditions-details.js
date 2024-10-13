@@ -66,7 +66,7 @@ export default function CapacityAndConditionsDetails({ data }) {
   ];
 
   return (
-    <div className="container mx-auto mt-20 flex max-w-4xl flex-col place-items-center rounded-box bg-base-300 p-6">
+    <div className="container mx-auto mt-20 flex max-w-4xl flex-col place-items-center rounded-box border-2 border-yellow-600 bg-base-300 p-6">
       {/* Display the name of the pre-storage location */}
       <div className="mb-10 mt-5">
         <h1 className="stat-value">{data.name}</h1>

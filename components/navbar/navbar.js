@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+
 import Link from "next/link";
 
 import ModalTruckDataForm from "./../pages/shipping-informations/components/modals/modal-truck-data-form";
@@ -67,11 +68,6 @@ export default function Navbar() {
           >
             <li>
               <Link href="/pre-storage">Capacity & Conditions</Link>
-              {/* Shows the current capacity of each storage facility, along with information on the types of waste
-              being stored, temperature ... */}
-            </li>
-            <li>
-              <Link href="/">Add Conditions</Link>
             </li>
 
             <li className="bg-base-200">

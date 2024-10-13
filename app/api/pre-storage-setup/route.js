@@ -47,7 +47,7 @@ export async function POST(req, res) {
 
 export async function GET() {
   try {
-    const preStorageOfWasteData = await prisma.preStorageEntry.findMany({
+    const preStorageOfCapacityData = await prisma.preStorageEntry.findMany({
       orderBy: {
         id: "desc",
       },
@@ -64,7 +64,7 @@ export async function GET() {
     }
 
     return NextResponse.json(
-      { preStorageOfWasteData, message: "Data fetched successfully" },
+      { preStorageOfCapacityData, message: "Data fetched successfully" },
       { status: 200 },
     );
   } catch (error) {

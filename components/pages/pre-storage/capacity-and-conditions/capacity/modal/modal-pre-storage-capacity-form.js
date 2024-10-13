@@ -2,7 +2,8 @@
 
 import { useForm } from "react-hook-form";
 
-import useCreatePreStorageWasteMutation from "../../../../../../requests/request-pre-storage/use-create-pre-storage-waste-mutation";
+import useCreatePreStorageCapacityMutation from "./../../../../../../requests/request-pre-storage/use-create-pre-storage-capacity-mutation";
+
 import usePreStorageEmployeeQuery from "../../../../../../requests/request-pre-storage/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
 
 import LoadingSpinnerButton from "../../../../../shared/loading-spiner-button";
@@ -21,21 +22,17 @@ export default function ModalPreStorageCapacityForm({
 
   // Create data
   const {
-    mutateAsync: createPreStorageWasteMutation,
+    mutateAsync: createPreStorageCapacityMutation,
     isPending,
     isError,
     isSuccess,
-  } = useCreatePreStorageWasteMutation();
+  } = useCreatePreStorageCapacityMutation();
 
   // Fetching data
 
   const { data: preStorageEmployeeData } = usePreStorageEmployeeQuery();
 
-  const isFormSubmit = async ({
-    quantity,
-
-    responsibleEmployee,
-  }) => {
+  const isFormSubmit = async ({ quantity, responsibleEmployee }) => {
     // Ensure values are numbers
     const formData = {
       quantity: parseInt(quantity),
@@ -44,7 +41,7 @@ export default function ModalPreStorageCapacityForm({
     };
 
     try {
-      await createPreStorageWasteMutation(formData);
+      await createPreStorageCapacityMutation(formData);
       reset();
       closeModal();
     } catch (error) {
