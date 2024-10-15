@@ -28,7 +28,9 @@ model ShippingInformation {
   id                 Int                @id @default(autoincrement())
   entryDateTime      DateTime           @default(now())
   exitDateTime       DateTime?
-  status             String             @default("IN")
+  truckStatus        String             @default("IN")
+  status             String             @default("in transport")
+  //Statuts: "in transport", "accepted", "rejected".
   companyName        String
   driverName         String
   registrationPlates String
@@ -110,11 +112,11 @@ model PreStorageEntry {
   quantity                        Int
   preStorageLocationId            Int
   preStorageLocation              PreStorageLocation            @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
-  responsibleEmployeePreStorageId Int
-  responsibleEmployeePreStorage   ResponsibleEmployeePreStorage @relation(fields: [responsibleEmployeePreStorageId], references: [id], onDelete: Cascade)
+  responsiblePreStorageEmployeeId Int
+  responsiblePreStorageEmployee   PreStorageResponsibleEmployee @relation(fields: [responsiblePreStorageEmployeeId], references: [id], onDelete: Cascade)
 }
 
-model ResponsibleEmployeePreStorage {
+model PreStorageResponsibleEmployee {
   id                   Int                    @id @default(autoincrement())
   name                 String
   surname              String
@@ -138,54 +140,56 @@ model PreStorageConditions {
   preStorageLocationId            Int
   preStorageResponsibleEmployeeId Int
   preStorageLocation              PreStorageLocation            @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
-  preStorageResponsibleEmployee   ResponsibleEmployeePreStorage @relation(fields: [preStorageResponsibleEmployeeId], references: [id], onDelete: Cascade)
+  preStorageResponsibleEmployee   PreStorageResponsibleEmployee @relation(fields: [preStorageResponsibleEmployeeId], references: [id], onDelete: Cascade)
 }
 
-// Step 3 "Storage of waste"
+// Step 3 "Final Storage of waste"
 
-model StorageOfWaste {
-  id                           Int                        @id @default(autoincrement())
-  createdAt                    DateTime                   @default(now())
-  quantity                     Int
-  storageTypeId                Int                        @unique
-  storageType                  StorageType                @relation(fields: [storageTypeId], references: [id], onDelete: Cascade)
-  storageLocationId            Int                        @unique
-  storageLocation              StorageLocation            @relation(fields: [storageLocationId], references: [id], onDelete: Cascade)
-  responsibleEmployeeStorageId Int                        @unique
-  responsibleEmployeeStorage   ResponsibleEmployeeStorage @relation(fields: [responsibleEmployeeStorageId], references: [id], onDelete: Cascade)
+model FinalStorageEntry {
+  id                     Int                             @id @default(autoincrement())
+  createdAt              DateTime                        @default(now())
+  quantity               Int
+  status                 String                          @default("pending")
+  // Statuts: "pending", "in transport", "accepted", "rejected".
+  FinalStorageTypeId     Int                             @unique
+  FinalStorageType       FinalStorageType                @relation(fields: [FinalStorageTypeId], references: [id], onDelete: Cascade)
+  FinalStorageLocationId Int                             @unique
+  FinalStorageLocation   FinalStorageLocation            @relation(fields: [FinalStorageLocationId], references: [id], onDelete: Cascade)
+  finalStorageEmployeeId Int                             @unique
+  finalStorageEmployee   FinalStorageResponsibleEmployee @relation(fields: [finalStorageEmployeeId], references: [id], onDelete: Cascade)
 }
 
-model StorageType {
-  id              Int              @id @default(autoincrement())
-  name            String
-  surfaceArea     Int
-  storageFor      String
-  storageOfWastes StorageOfWaste[]
+model FinalStorageType {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  surfaceArea        Int
+  storageFor         String
+  finalStorageEntrys FinalStorageEntry[]
 }
 
-model StorageLocation {
-  id              Int              @id @default(autoincrement())
-  name            String
-  level           Int
-  delepth         Int
-  roomName        String
-  storageOfWastes StorageOfWaste[]
+model FinalStorageLocation {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  level              Int
+  delepth            Int
+  roomName           String
+  finalStorageEntrys FinalStorageEntry[]
 }
 
-model ResponsibleEmployeeStorage {
-  id              Int              @id @default(autoincrement())
-  name            String
-  surname         String
-  dateOfBirth     Int
-  address         String
-  position        String
-  safetyTraining  Boolean
-  storageOfWastes StorageOfWaste[]
+model FinalStorageResponsibleEmployee {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  surname            String
+  dateOfBirth        Int
+  address            String
+  position           String
+  safetyTraining     Boolean
+  finalStorageEntrys FinalStorageEntry[]
 }
 
 // Step 3.1 Storage Conditions
 
-model StorageConditions {
+model FinalStorageConditions {
   id                    Int      @id @default(autoincrement())
   createdAt             DateTime @default(now())
   storageTemperature    Float
