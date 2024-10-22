@@ -8,7 +8,7 @@ import WarningMessage from "./../../../shared/warningMessage";
 import CapacityDetails from "./capacity/capacity-details";
 import ConditionsDetails from "./conditions/conditions-details";
 
-export default function CapacityAndConditionsDetails({ data }) {
+export default function CapacityAndConditionsDetails({ preStorageData }) {
   const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);
   const [isModalConditionsOpen, setIsModalConditionsOpen] = useState(false);
 
@@ -16,14 +16,14 @@ export default function CapacityAndConditionsDetails({ data }) {
   const toggleCapacityModal = () => setIsModalCapacityOpen((prev) => !prev);
   const toggelConditionsModal = () => setIsModalConditionsOpen((prev) => !prev);
 
-  const lastCondition = data.preStorageConditions.at(-1);
+  const lastCondition = preStorageData.preStorageConditions.at(-1);
 
-  const haleConditions = data.preStorageConditions;
-  const halesurface = data.surfaceArea;
-  const containerFootprint = data.containerFootprint;
+  const haleConditions = preStorageData.preStorageConditions;
+  const halesurface = preStorageData.surfaceArea;
+  const containerFootprint = preStorageData.containerFootprint;
 
   // Total sum of containers in hale
-  const totalContainers = data.preStorageEntry.reduce(
+  const totalContainers = preStorageData.preStorageEntry.reduce(
     (total, waste) => total + waste.quantity,
     0,
   );
@@ -69,7 +69,7 @@ export default function CapacityAndConditionsDetails({ data }) {
     <div className="container mx-auto mt-20 flex max-w-4xl flex-col place-items-center rounded-box border-2 border-yellow-600 bg-base-300 p-6">
       {/* Display the name of the pre-storage location */}
       <div className="mb-10 mt-5">
-        <h1 className="stat-value">{data.name}</h1>
+        <h1 className="stat-value">{preStorageData.name}</h1>
       </div>
 
       {/* Display warning message if applicable */}
@@ -83,6 +83,7 @@ export default function CapacityAndConditionsDetails({ data }) {
       {/* Capacity Details */}
 
       <CapacityDetails
+        preStorageData={preStorageData}
         dataForPieChart={dataForPieChart}
         freeSpacePercentage={freeSpacePercentage}
         freeSpace={freeSpace}
@@ -105,14 +106,14 @@ export default function CapacityAndConditionsDetails({ data }) {
       <ModalPreStorageCapacityForm
         isOpen={isModalCapacityOpen}
         closeModal={() => toggleCapacityModal()}
-        hallData={data}
+        hallData={preStorageData}
       />
 
       {/* Conditions modal component */}
       <ModalPreStorageConditionsForm
         isOpen={isModalConditionsOpen}
         closeModal={() => toggelConditionsModal()}
-        hallData={data}
+        hallData={preStorageData}
       />
     </div>
   );

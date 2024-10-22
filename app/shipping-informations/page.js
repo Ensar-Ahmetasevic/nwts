@@ -45,7 +45,7 @@ export default function ShippingInformations() {
 
   // Filter all trucks with IN status and count them
   const inStatusCount = shippingDatas.filter(
-    (truck) => truck.status === "IN",
+    (truck) => truck.truckStatus === "IN",
   ).length;
 
   // Filter the data based on the search query
@@ -71,7 +71,7 @@ export default function ShippingInformations() {
       // Check if it's a full date search
       return (
         truck.companyName.toLowerCase().includes(lowerCaseQuery) ||
-        truck.status.toLowerCase() === lowerCaseQuery ||
+        truck.truckStatus.toLowerCase() === lowerCaseQuery ||
         filterByFullDate === lowerCaseQuery
       );
     }

@@ -8,10 +8,10 @@ const prisma = new PrismaClient();
 export async function POST(req, res) {
   const formData = await req.json();
 
-  const { quantity, preStorageLocationId, responsibleEmployeePreStorageId } =
+  const { quantity, preStorageLocationId, responsiblePreStorageEmployeeId } =
     formData;
 
-  if (!quantity || !preStorageLocationId || !responsibleEmployeePreStorageId) {
+  if (!quantity || !preStorageLocationId || !responsiblePreStorageEmployeeId) {
     return NextResponse.json(
       {
         message: "Backend: All fields are required",
@@ -25,7 +25,7 @@ export async function POST(req, res) {
       data: {
         quantity,
         preStorageLocationId,
-        responsibleEmployeePreStorageId,
+        responsiblePreStorageEmployeeId,
       },
     });
 

@@ -54,12 +54,12 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
   }
 
   // Destructure the necessary data
-  const { id, companyName, status } = data?.shippingData;
+  const { id, companyName, truckStatus: status } = data?.shippingData;
 
   // Updating Truck Status
   const updateStatus = (shippingStatus) => {
     const shippingStatusData = {
-      status: shippingStatus,
+      truckStatus: shippingStatus,
       id,
       exitDateTime: new Date().toISOString(),
     };
@@ -91,10 +91,7 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
 
           <div className="flex flex-row space-x-4">
             {/* Add Containers */}
-            <CreateContainerProfile
-              shippingID={shippingID}
-             
-            />
+            <CreateContainerProfile shippingID={shippingID} />
 
             {/* Edit Truck Data */}
             <div className="tooltip" data-tip="Edit">

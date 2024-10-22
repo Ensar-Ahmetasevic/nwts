@@ -49,7 +49,7 @@ export default function FormPreStorageEmployee({ OnCancel }) {
   return (
     <>
       <div className="mt-10 flex flex-col items-center space-y-12 rounded-md border-2 border-red-500 bg-gray-900 p-5 px-12">
-        <h1 className="text-xl font-bold">Add new "Pre-Storage Type"</h1>
+        <h1 className="text-xl font-bold">Add new "Pre-Storage Employee"</h1>
 
         <form
           className="flex flex-col items-end space-y-8 pb-4"

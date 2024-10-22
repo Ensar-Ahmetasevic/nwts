@@ -6,7 +6,7 @@ export default function AllShippingData({ truck, isLoading, error }) {
   return (
     <div className="mx-auto w-2/3 pt-8">
       <table
-        className={`table border-l-4 ${truck.status === "IN" ? "border-green-500" : "border-rose-500"}`}
+        className={`table border-l-4 ${truck.truckStatus === "IN" ? "border-green-500" : "border-rose-500"}`}
       >
         <thead>
           <tr>
@@ -22,7 +22,7 @@ export default function AllShippingData({ truck, isLoading, error }) {
           <tr>
             <th></th>
             <td>{dayjs(truck.entryDateTime).format("DD-MM-YYYY")}</td>
-            <td>{truck.status}</td>
+            <td>{truck.truckStatus}</td>
             <td>{truck.companyName}</td>
             <td>
               <Link

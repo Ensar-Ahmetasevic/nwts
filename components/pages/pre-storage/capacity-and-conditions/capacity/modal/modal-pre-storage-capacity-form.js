@@ -37,7 +37,7 @@ export default function ModalPreStorageCapacityForm({
     const formData = {
       quantity: parseInt(quantity),
       preStorageLocationId: parseInt(hallData.id),
-      responsibleEmployeePreStorageId: parseInt(responsibleEmployee),
+      responsiblePreStorageEmployeeId: parseInt(responsibleEmployee),
     };
 
     try {

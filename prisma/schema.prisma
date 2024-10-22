@@ -29,8 +29,8 @@ model ShippingInformation {
   entryDateTime      DateTime           @default(now())
   exitDateTime       DateTime?
   truckStatus        String             @default("IN")
-  status             String             @default("in transport")
-  //Statuts: "in transport", "accepted", "rejected".
+  status             String             @default("pending")
+  //Statuts: "pending", "accepted", "rejected".
   companyName        String
   driverName         String
   registrationPlates String
@@ -107,13 +107,13 @@ model PreStorageLocation {
 }
 
 model PreStorageEntry {
-  id                              Int                           @id @default(autoincrement())
-  createdAt                       DateTime                      @default(now())
+  id                              Int                            @id @default(autoincrement())
+  createdAt                       DateTime                       @default(now())
   quantity                        Int
   preStorageLocationId            Int
-  preStorageLocation              PreStorageLocation            @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
-  responsiblePreStorageEmployeeId Int
-  responsiblePreStorageEmployee   PreStorageResponsibleEmployee @relation(fields: [responsiblePreStorageEmployeeId], references: [id], onDelete: Cascade)
+  preStorageLocation              PreStorageLocation             @relation(fields: [preStorageLocationId], references: [id], onDelete: Cascade)
+  responsiblePreStorageEmployeeId Int?
+  responsiblePreStorageEmployee   PreStorageResponsibleEmployee? @relation(fields: [responsiblePreStorageEmployeeId], references: [id], onDelete: Cascade)
 }
 
 model PreStorageResponsibleEmployee {

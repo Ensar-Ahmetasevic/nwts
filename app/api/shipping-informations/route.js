@@ -21,7 +21,7 @@ export async function POST(req, res) {
 
   try {
     await prisma.shippingInformation.create({
-      data: { companyName, driverName, registrationPlates, status: "IN" },
+      data: { companyName, driverName, registrationPlates, truckStatus: "IN" },
     });
 
     return NextResponse.json(
@@ -139,9 +139,9 @@ export async function PUT(req) {
 export async function PATCH(req) {
   const { shippingStatusData } = await req.json();
 
-  const { id, status, exitDateTime } = shippingStatusData;
+  const { id, truckStatus, exitDateTime } = shippingStatusData;
 
-  if (!id || !status) {
+  if (!id || !truckStatus) {
     return res.status(400).json({ message: "ID and status are required" });
   }
 
@@ -149,7 +149,7 @@ export async function PATCH(req) {
     const updateTruckData = await prisma.shippingInformation.update({
       where: { id: parseInt(id) },
       data: {
-        status,
+        truckStatus,
         exitDateTime,
       },
     });

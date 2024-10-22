@@ -28,5 +28,7 @@ export default function DisplayPreStorageData({ params }) {
     );
   }
 
-  return <CapacityAndConditionsDetails data={data.preStorageDataById} />;
+  return (
+    <CapacityAndConditionsDetails preStorageData={data.preStorageDataById} />
+  );
 }

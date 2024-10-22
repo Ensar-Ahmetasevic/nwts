@@ -34,7 +34,7 @@ export async function POST(req, res) {
   }
 
   try {
-    await prisma.responsibleEmployeePreStorage.create({
+    await prisma.preStorageResponsibleEmployee.create({
       data: {
         name,
         surname,
@@ -63,7 +63,7 @@ export async function POST(req, res) {
 export async function GET() {
   try {
     const preStorageEmployeeData =
-      await prisma.responsibleEmployeePreStorage.findMany({
+      await prisma.preStorageResponsibleEmployee.findMany({
         orderBy: { id: "desc" },
       });
 
@@ -96,7 +96,7 @@ export async function DELETE(req) {
   const { id } = await req.json();
 
   try {
-    await prisma.responsibleEmployeePreStorage.delete({
+    await prisma.preStorageResponsibleEmployee.delete({
       where: { id: id },
     });
     return NextResponse.json(
@@ -147,7 +147,7 @@ export async function PUT(req, res) {
 
   try {
     const updateContainerType =
-      await prisma.responsibleEmployeePreStorage.update({
+      await prisma.preStorageResponsibleEmployee.update({
         where: { id: parseInt(id) },
         data: {
           name,

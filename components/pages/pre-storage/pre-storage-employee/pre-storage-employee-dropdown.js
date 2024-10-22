@@ -50,7 +50,6 @@ export default function PreStorageEmployeeDropdown({
           </ul>
         ) : null}
       </div>
-      <div></div>
     </>
   );
 }

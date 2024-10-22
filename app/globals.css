@@ -21,7 +21,7 @@
 }
 
 .btnCancel {
-  @apply btn btn-sm rounded-sm border-2 border-gray-500 bg-transparent text-gray-500 hover:border-gray-500 hover:bg-gray-500 hover:text-white;
+  @apply btn btn-sm border-2 border-gray-500 bg-transparent text-gray-500 hover:border-gray-500 hover:bg-gray-500 hover:text-white;
 }
 
 .btnDelete {
