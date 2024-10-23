@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const fetchPendingShippingInformations = async () => {
+const fetchShippingInformationsStatus = async () => {
   const response = await axios.get(`/api/shipping-informations/pending`);
   return response.data.pendingShippingInformations;
 };
 
-const usePendingShippingInformationsQuery = (options = {}) => {
+const useShippingInformationsStautsQuery = (options = {}) => {
   const query = useQuery({
-    queryKey: ["pendingShippingInformations"],
-    queryFn: () => fetchPendingShippingInformations(),
+    queryKey: ["statusShippingInformations"],
+    queryFn: () => fetchShippingInformationsStatus(),
 
     ...options,
   });
@@ -17,4 +17,4 @@ const usePendingShippingInformationsQuery = (options = {}) => {
   return query;
 };
 
-export default usePendingShippingInformationsQuery;
+export default useShippingInformationsStautsQuery;

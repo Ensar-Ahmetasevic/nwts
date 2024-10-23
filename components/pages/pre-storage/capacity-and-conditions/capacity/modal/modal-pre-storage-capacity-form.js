@@ -7,30 +7,59 @@ import useCreatePreStorageCapacityMutation from "./../../../../../../requests/re
 import usePreStorageEmployeeQuery from "../../../../../../requests/request-pre-storage/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
 
 import LoadingSpinnerButton from "../../../../../shared/loading-spiner-button";
+import LoadingSpinnerPage from "../../../../../shared/loading-spiner-page";
+import AlertWarning from "../../../../../shared/alert-warning";
+import useUpdateShippingStatusMutation from "../../../../../../requests/request-shipping-information/use-update-shipping-status-mutation";
 
 export default function ModalPreStorageCapacityForm({
   isOpen,
   closeModal,
   hallData,
+  entryData,
 }) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: { quantity: entryData.totalQuantity } });
+
+  // Update Entry staus
+  const {
+    mutateAsync: updateShippingStatusMutations,
+    isPending: UpdateShippingStatusPending,
+    isSuccess: UpdateShippingStatusSuccess,
+  } = useUpdateShippingStatusMutation();
 
   // Create data
   const {
     mutateAsync: createPreStorageCapacityMutation,
-    isPending,
-    isError,
-    isSuccess,
+    isPending: PreStorageCapacityPending,
+    isSuccess: PreStorageCapacitySuccess,
   } = useCreatePreStorageCapacityMutation();
 
-  // Fetching data
+  // Fetching Pre Storage Employee data
+  const {
+    data: preStorageEmployeeData,
+    isLoading,
+    isError,
+  } = usePreStorageEmployeeQuery();
 
-  const { data: preStorageEmployeeData } = usePreStorageEmployeeQuery();
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinnerPage />
+      </div>
+    );
+  }
+
+  if (isError || !preStorageEmployeeData) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <AlertWarning text={"Error loading Pre Storage Employee request"} />
+      </div>
+    );
+  }
 
   const isFormSubmit = async ({ quantity, responsibleEmployee }) => {
     // Ensure values are numbers
@@ -41,11 +70,20 @@ export default function ModalPreStorageCapacityForm({
     };
 
     try {
+      // Step 1: Create the PreStorage capacity entry
       await createPreStorageCapacityMutation(formData);
+
+      // Step 2: Update the Shipping Information status after successful capacity creation
+      await updateShippingStatusMutations({
+        status: "accepted",
+        id: entryData.id,
+      });
+
+      // Step 3: Reset the form and close modal
       reset();
       closeModal();
     } catch (error) {
-      console.error("Error creating Pre-Storage Waste:", error);
+      console.error("Error handling the form submission:", error);
     }
   };
 
@@ -69,11 +107,7 @@ export default function ModalPreStorageCapacityForm({
                   min="1" // Prevent 0 or negative values
                   placeholder="Type here ..."
                   {...register("quantity", {
-                    required: true,
-                    min: {
-                      value: 1, // Ensure quantity is at least 1
-                      message: "Quantity must be greater than or equal to 1",
-                    },
+                    required: "Quantity must be greater than or equal to 1",
                   })}
                 />
                 {errors.example && (
@@ -95,11 +129,13 @@ export default function ModalPreStorageCapacityForm({
                 <select
                   className="select select-bordered select-md px-2"
                   id="responsible-employee"
-                  {...register("responsibleEmployee", { required: true })}
+                  {...register("responsibleEmployee", {
+                    required: "Please select Responsible employee",
+                  })}
                 >
                   <option value="">---</option>
 
-                  {preStorageEmployeeData?.map((employee) => (
+                  {preStorageEmployeeData.map((employee) => (
                     <option key={employee.id} value={employee.id}>
                       {employee.name} {employee.surname}
                     </option>
@@ -107,8 +143,16 @@ export default function ModalPreStorageCapacityForm({
                 </select>
               </div>
               <div className=" space-x-2">
-                <button className="btnSave" type="submit" disabled={isPending}>
-                  {isPending ? <LoadingSpinnerButton /> : "Save"}
+                <button
+                  className="btnSave"
+                  type="submit"
+                  disabled={UpdateShippingStatusPending}
+                >
+                  {UpdateShippingStatusPending ? (
+                    <LoadingSpinnerButton />
+                  ) : (
+                    "Save"
+                  )}
                 </button>
               </div>
             </form>

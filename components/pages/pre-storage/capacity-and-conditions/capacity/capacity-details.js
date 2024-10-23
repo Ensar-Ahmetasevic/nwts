@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 
 import RequestFromEntry from "./request-from-entry";
 
-import usePendingShippingInformationsQuery from "./../../../../../requests/request-shipping-information/use-fetch-pending-shipping-information-query";
+import useShippingInformationsStautsQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
 
 import LoadingSpinnerPage from "../../../../shared/loading-spiner-page";
 import AlertWarning from "../../../../shared/alert-warning";
@@ -24,14 +24,14 @@ export default function CapacityDetails({
   usedSpacePercentage,
   usedSpace,
   totalContainers,
-  toggleModal,
+  hallData,
 }) {
   // Get pending shipping information for this hall
   const {
     data: pendingShippingInformations,
     isLoading,
     isError,
-  } = usePendingShippingInformationsQuery();
+  } = useShippingInformationsStautsQuery();
 
   if (isLoading) {
     return (
@@ -77,6 +77,7 @@ export default function CapacityDetails({
         companyName: shippingInfo.companyName,
         registrationPlates: shippingInfo.registrationPlates,
         status: shippingInfo.status,
+        id: shippingInfo.id,
       };
     },
   );
@@ -115,12 +116,12 @@ export default function CapacityDetails({
       </div>
 
       {/* Button to open the Capacity modal */}
-      <button
+      {/* <button
         className="btn btn-outline btn-info mb-5  transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
         onClick={() => toggleModal()}
       >
         Update Capacity State
-      </button>
+      </button> */}
 
       {/* Open Request Drawer */}
       {hasPendingRequests && (
@@ -156,7 +157,11 @@ export default function CapacityDetails({
               <div className="menu min-h-full w-1/2 bg-base-200 p-4 text-base-content">
                 {/* Sidebar content here */}
                 {requestQuantity.map((i) => (
-                  <RequestFromEntry request={i} />
+                  <RequestFromEntry
+                    key={i.id}
+                    request={i}
+                    hallData={hallData}
+                  />
                 ))}
                 <div className="mt-10 flex justify-end">
                   <label

@@ -15,7 +15,7 @@ export default function ModalContainerProfilUpdate({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({});
+  } = useForm();
 
   const { data: locationOriginData } = useLocationOriginQuery();
 

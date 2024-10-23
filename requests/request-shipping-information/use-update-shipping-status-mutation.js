@@ -7,7 +7,7 @@ export default function useUpdateShippingStatusMutation() {
 
   const updateShippingStatusMutations = async (shippingStatusData) => {
     try {
-      const response = await axios.patch("/api/shipping-informations", {
+      const response = await axios.patch("/api/shipping-informations/pending", {
         shippingStatusData,
       });
       return response.data;
@@ -25,6 +25,7 @@ export default function useUpdateShippingStatusMutation() {
       queryClient.invalidateQueries({
         queryKey: ["shippingInformationQueryKey"],
         queryKey: ["shippingInformationIDQueryKey"],
+        queryKey: ["statusShippingInformations"],
       });
       // Toast a success message
       toast.success("Shipping Status UPDATED successfully.", {

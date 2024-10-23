@@ -33,3 +33,28 @@ export async function GET() {
     );
   }
 }
+
+// Update the status of the shipping information
+export async function PATCH(request) {
+  try {
+    const { shippingStatusData } = await request.json();
+
+    const { status, id } = shippingStatusData;
+
+    const updatedShippingInformation = await prisma.shippingInformation.update({
+      where: { id },
+      data: { status },
+    });
+
+    return NextResponse.json(updatedShippingInformation, { status: 200 });
+  } catch (error) {
+    console.error("Error updating shipping information status:", error);
+    return NextResponse.json(
+      {
+        message: "Failed to update shipping information status",
+        error: error.message,
+      },
+      { status: 500 },
+    );
+  }
+}

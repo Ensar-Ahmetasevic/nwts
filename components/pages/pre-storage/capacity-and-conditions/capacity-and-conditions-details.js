@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 
-import ModalPreStorageCapacityForm from "./capacity/modal/modal-pre-storage-capacity-form";
 import ModalPreStorageConditionsForm from "./conditions/modal/modal-pre-storage-conditions-form";
 
 import WarningMessage from "./../../../shared/warningMessage";
@@ -9,11 +8,9 @@ import CapacityDetails from "./capacity/capacity-details";
 import ConditionsDetails from "./conditions/conditions-details";
 
 export default function CapacityAndConditionsDetails({ preStorageData }) {
-  const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);
   const [isModalConditionsOpen, setIsModalConditionsOpen] = useState(false);
 
   // Function to toggle the visibility of a modal
-  const toggleCapacityModal = () => setIsModalCapacityOpen((prev) => !prev);
   const toggelConditionsModal = () => setIsModalConditionsOpen((prev) => !prev);
 
   const lastCondition = preStorageData.preStorageConditions.at(-1);
@@ -91,21 +88,14 @@ export default function CapacityAndConditionsDetails({ preStorageData }) {
         usedSpacePercentage={usedSpacePercentage}
         usedSpace={usedSpace}
         totalContainers={totalContainers}
-        toggleModal={toggleCapacityModal}
+        hallData={preStorageData}
       />
 
       <div className="divider divider-warning my-10">Conditions</div>
 
       {/* Conditions Details */}
       <ConditionsDetails
-        toggelModal={toggelConditionsModal}
         haleConditions={lastCondition}
-      />
-
-      {/* Capacity modal component */}
-      <ModalPreStorageCapacityForm
-        isOpen={isModalCapacityOpen}
-        closeModal={() => toggleCapacityModal()}
         hallData={preStorageData}
       />
 
