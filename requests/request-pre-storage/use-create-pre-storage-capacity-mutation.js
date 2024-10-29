@@ -23,6 +23,7 @@ export default function useCreatePreStorageCapacityMutation() {
       queryClient.invalidateQueries({
         queryKey: ["preStorageCapacityQueryKey"],
         queryKey: ["preStorageIDQueryKey"],
+        queryKey: ["statusShippingInformations"],
       });
 
       // Toast a success message

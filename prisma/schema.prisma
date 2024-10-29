@@ -42,6 +42,8 @@ model ShippingInformation {
 model ContainerProfile {
   id                    Int                  @id @default(autoincrement())
   createdAt             DateTime             @default(now())
+  // Statuts: "pending", "accepted", "rejected"
+  containerStatus       String               @default("pending")
   quantity              Int
   shippingInformationId Int //  foreign key
   shippingInformation   ShippingInformation? @relation(fields: [shippingInformationId], references: [id], onDelete: Cascade)

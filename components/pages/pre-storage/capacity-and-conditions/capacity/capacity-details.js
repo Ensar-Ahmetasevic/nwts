@@ -60,7 +60,7 @@ export default function CapacityDetails({
       ),
     );
 
-  // Map through filtered shipping informations and calculate total quantity
+  // Map through filtered shipping informations
   const requestQuantity = filteredPendingShippingInformations.map(
     (shippingInfo) => {
       // Get the total quantity of containers of the relevant wasteProfile type
@@ -72,8 +72,20 @@ export default function CapacityDetails({
         0,
       );
 
+      // Status of all continers relevant to the hall
+      const containerStatus = shippingInfo.containerProfiles
+        .filter((profile) => profile.wasteProfile.name === hallContainerType)
+        .map((profile) => profile.containerStatus);
+
+      // IDs of all continers relevant to the hall
+      const containerProfileIds = shippingInfo.containerProfiles
+        .filter((profile) => profile.wasteProfile.name === hallContainerType)
+        .map((profile) => profile.id);
+
       return {
         totalQuantity,
+        containerStatus,
+        containerProfileIds,
         companyName: shippingInfo.companyName,
         registrationPlates: shippingInfo.registrationPlates,
         status: shippingInfo.status,
@@ -82,8 +94,10 @@ export default function CapacityDetails({
     },
   );
 
-  // Check if there are any pending requests
-  const hasPendingRequests = requestQuantity.length > 0;
+  // Check if there is any "pending" container status for this hall
+  const hasPendingContainersInHall = requestQuantity.some((request) =>
+    request.containerStatus.includes("pending"),
+  );
 
   return (
     <div className="flex flex-col ">
@@ -124,7 +138,7 @@ export default function CapacityDetails({
       </button> */}
 
       {/* Open Request Drawer */}
-      {hasPendingRequests && (
+      {hasPendingContainersInHall && (
         <div className="alert alert-warning flex  flex-col items-center justify-center text-center">
           <div className="flex flex-row space-x-2">
             <p>You have</p>
@@ -156,10 +170,10 @@ export default function CapacityDetails({
               ></label>
               <div className="menu min-h-full w-1/2 bg-base-200 p-4 text-base-content">
                 {/* Sidebar content here */}
-                {requestQuantity.map((i) => (
+                {requestQuantity.map((request) => (
                   <RequestFromEntry
-                    key={i.id}
-                    request={i}
+                    key={request.id}
+                    entryData={request}
                     hallData={hallData}
                   />
                 ))}

@@ -39,6 +39,7 @@ export async function POST(req, res) {
     await prisma.containerProfile.create({
       data: {
         quantity: parsedQuantity,
+        containerStatus: "pending",
         locationOriginId: parsedLocationOriginId,
         wasteProfileId: parsedWasteProfileId,
         containerTypeId: parsedContainerTypeId,
@@ -150,5 +151,43 @@ export async function PUT(req) {
       { message: "Failed to update Container Profile", error: error.message },
       { status: 500 },
     );
+  }
+}
+
+// Update container profile STATUS
+
+export async function PATCH(request) {
+  try {
+    const { containerStatusUpdateData } = await request.json();
+
+    const { containerProfileId, containerStatus } = containerStatusUpdateData;
+
+    // Step 1: Update container status for specific container in a hall
+    const updatedContainer = await prisma.containerProfile.update({
+      where: { id: containerProfileId },
+      data: { containerStatus: containerStatus },
+    });
+
+    // Step 2: Check if all containers for the same shipping information are accepted
+    const relatedContainers = await prisma.containerProfile.findMany({
+      where: { shippingInformationId: updatedContainer.shippingInformationId },
+    });
+
+    const allAccepted = relatedContainers.every(
+      (container) => container.containerStatus === "accepted",
+    );
+
+    // Step 3: If all are accepted, update ShippingInformation status
+    if (allAccepted) {
+      await prisma.shippingInformation.update({
+        where: { id: updatedContainer.shippingInformationId },
+        data: { status: "accepted" },
+      });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error updating container status:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

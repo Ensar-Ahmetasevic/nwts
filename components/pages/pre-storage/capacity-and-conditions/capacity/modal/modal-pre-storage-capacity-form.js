@@ -1,15 +1,16 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 import useCreatePreStorageCapacityMutation from "./../../../../../../requests/request-pre-storage/use-create-pre-storage-capacity-mutation";
-
 import usePreStorageEmployeeQuery from "../../../../../../requests/request-pre-storage/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
+import useUpdateShippingStatusMutation from "../../../../../../requests/request-shipping-information/use-update-shipping-status-mutation";
+import useUpdateContainerProfileStatusMutation from "./../../../../../../requests/request-container-profile/use-update-container-profile-status-mutation";
 
 import LoadingSpinnerButton from "../../../../../shared/loading-spiner-button";
 import LoadingSpinnerPage from "../../../../../shared/loading-spiner-page";
 import AlertWarning from "../../../../../shared/alert-warning";
-import useUpdateShippingStatusMutation from "../../../../../../requests/request-shipping-information/use-update-shipping-status-mutation";
 
 export default function ModalPreStorageCapacityForm({
   isOpen,
@@ -23,6 +24,20 @@ export default function ModalPreStorageCapacityForm({
     reset,
     formState: { errors },
   } = useForm({ defaultValues: { quantity: entryData.totalQuantity } });
+
+  // Reset the form every time the `entryData` changes or the modal becomes visible
+  useEffect(() => {
+    if (isOpen) {
+      reset({ quantity: entryData.totalQuantity });
+    }
+  }, [entryData, isOpen, reset]);
+
+  // Update Container status
+  const {
+    mutateAsync: updateContainerProfileStatusMutation,
+    isPending: updateContainerProfileStatusPending,
+    isSuccess: updateContainerProfileStatusSuccess,
+  } = useUpdateContainerProfileStatusMutation();
 
   // Update Entry staus
   const {
@@ -69,17 +84,32 @@ export default function ModalPreStorageCapacityForm({
       responsiblePreStorageEmployeeId: parseInt(responsibleEmployee),
     };
 
+    const containerStatusUpdateData = {
+      containerStatus: "accepted",
+      containerProfileId: entryData.containerProfileIds[0],
+    };
+
     try {
       // Step 1: Create the PreStorage capacity entry
       await createPreStorageCapacityMutation(formData);
 
       // Step 2: Update the Shipping Information status after successful capacity creation
-      await updateShippingStatusMutations({
-        status: "accepted",
-        id: entryData.id,
-      });
+      await updateContainerProfileStatusMutation(containerStatusUpdateData);
 
-      // Step 3: Reset the form and close modal
+      // Step 3: Check the statuses of all containers
+      const allContainersAccepted = entryData.containerStatus.every(
+        (status) => status === "accepted",
+      );
+
+      // If all containers are accepted, update the truck status
+      if (allContainersAccepted) {
+        await updateShippingStatusMutations({
+          status: "accepted",
+          id: entryData.id,
+        });
+      }
+
+      // Step 4: // Resetting the form after successful submission and close modal
       reset();
       closeModal();
     } catch (error) {

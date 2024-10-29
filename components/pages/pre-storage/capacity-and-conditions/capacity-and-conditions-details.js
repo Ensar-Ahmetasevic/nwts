@@ -96,7 +96,7 @@ export default function CapacityAndConditionsDetails({ preStorageData }) {
       {/* Conditions Details */}
       <ConditionsDetails
         haleConditions={lastCondition}
-        hallData={preStorageData}
+        toggelModal={toggelConditionsModal}
       />
 
       {/* Conditions modal component */}

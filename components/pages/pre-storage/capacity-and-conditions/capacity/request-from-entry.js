@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import ModalPreStorageCapacityForm from "./modal/modal-pre-storage-capacity-form";
 
-export default function RequestFromEntry({ request, hallData }) {
+export default function RequestFromEntry({ entryData, hallData }) {
   const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);
 
   // Function to toggle the visibility of a modal
@@ -27,9 +27,9 @@ export default function RequestFromEntry({ request, hallData }) {
             {/* row 1 */}
             <tr>
               <th></th>
-              <td>{request.companyName}</td>
-              <td>{request.registrationPlates}</td>
-              <td>{request.totalQuantity}</td>
+              <td>{entryData.companyName}</td>
+              <td>{entryData.registrationPlates}</td>
+              <td>{entryData.totalQuantity}</td>
               <td>
                 <button
                   className="btnSave"
@@ -50,7 +50,7 @@ export default function RequestFromEntry({ request, hallData }) {
         isOpen={isModalCapacityOpen}
         closeModal={() => toggleCapacityModal()}
         hallData={hallData}
-        entryData={request}
+        entryData={entryData}
       />
     </>
   );
