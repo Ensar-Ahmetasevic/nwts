@@ -62,9 +62,12 @@ export default function FormPreStorageLocation({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("name", {
-                  required: true,
+                  required: "Pre-Storage Location name is required",
                 })}
               />
+              {errors.name && (
+                <p className="text-sm text-red-500">{errors.name.message}</p>
+              )}
             </div>
 
             {/* Surface Area  */}
@@ -79,11 +82,7 @@ export default function FormPreStorageLocation({ OnCancel }) {
                 min="1" // Prevent 0 or negative values
                 placeholder="Type here ..."
                 {...register("surfaceArea", {
-                  required: true,
-                  min: {
-                    value: 1,
-                    message: "Please enter a valid positive number",
-                  },
+                  required: "Please enter a valid positive number",
                 })}
               />
 
@@ -106,11 +105,7 @@ export default function FormPreStorageLocation({ OnCancel }) {
                 min="1" // Prevent 0 or negative values
                 placeholder="Type here ..."
                 {...register("containerFootprint", {
-                  required: true,
-                  min: {
-                    value: 1,
-                    message: "Please enter a valid positive number",
-                  },
+                  required: "Please enter a valid positive number",
                 })}
               />
 
@@ -129,9 +124,15 @@ export default function FormPreStorageLocation({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("containerType", {
-                  required: true,
+                  required: "Container type is required",
                 })}
               />
+              {errors.containerType && (
+                <p className="text-sm text-red-500">
+                  {" "}
+                  {errors.containerType.message}{" "}
+                </p>
+              )}
             </div>
 
             {/*   Waste Profile
@@ -143,9 +144,15 @@ export default function FormPreStorageLocation({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("wasteProfile", {
-                  required: true,
+                  required: "Waste profile is required",
                 })}
               />
+
+              {errors.wasteProfile && (
+                <p className="text-sm text-red-500">
+                  {errors.wasteProfile.message}
+                </p>
+              )}
             </div>
 
             {/* Pre-Storage For */}
@@ -159,9 +166,15 @@ export default function FormPreStorageLocation({ OnCancel }) {
                 type="text"
                 placeholder="Radioactive waste from nuclear facilities ..."
                 {...register("preStorageFor", {
-                  required: true,
+                  required: "PreStorage description is required",
                 })}
               />
+              {errors.preStorageFor && (
+                <p className="text-sm text-red-500">
+                  {" "}
+                  {errors.preStorageFor.message}{" "}
+                </p>
+              )}
             </div>
           </div>
 

@@ -64,9 +64,13 @@ export default function FormPreStorageEmployee({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("name", {
-                  required: true,
+                  required: "Pre storage employee name is required",
                 })}
               />
+
+              {errors.name && (
+                <p className="text-sm text-red-500"> {errors.name.message} </p>
+              )}
             </div>
 
             {/* Surname  */}
@@ -77,9 +81,12 @@ export default function FormPreStorageEmployee({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("surname", {
-                  required: true,
+                  required: "Pre storage employee surname is required",
                 })}
               />
+              {errors.surname && (
+                <p className="text-sm text-red-500">{errors.surname.message}</p>
+              )}
             </div>
             {/* Adress */}
             <div className="flex w-64 flex-col space-y-2">
@@ -89,9 +96,16 @@ export default function FormPreStorageEmployee({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("address", {
-                  required: true,
+                  required: "Address is required",
                 })}
               />
+
+              {errors.address && (
+                <p className="text-sm text-red-500">
+                  {" "}
+                  {errors.address.message}{" "}
+                </p>
+              )}
             </div>
 
             {/* Qualifications */}
@@ -103,9 +117,15 @@ export default function FormPreStorageEmployee({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("qualifications", {
-                  required: true,
+                  required: "Qualifications is required",
                 })}
               />
+              {errors.qualifications && (
+                <p className="text-sm text-red-500">
+                  {" "}
+                  {errors.qualifications.message}{" "}
+                </p>
+              )}
             </div>
 
             {/* Date Of Birth */}
@@ -116,9 +136,15 @@ export default function FormPreStorageEmployee({ OnCancel }) {
                 type="date"
                 placeholder="Select date"
                 {...register("dateOfBirth", {
-                  required: true,
+                  required: "Date of birth is required",
                 })}
               />
+
+              {errors.dateOfBirth && (
+                <p className="text-sm text-red-500">
+                  {errors.dateOfBirth.message}
+                </p>
+              )}
             </div>
 
             {/* Safety Training */}

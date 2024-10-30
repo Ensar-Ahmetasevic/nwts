@@ -140,7 +140,7 @@ export default function ModalPreStorageCapacityForm({
                     required: "Quantity must be greater than or equal to 1",
                   })}
                 />
-                {errors.example && (
+                {errors.quantity && (
                   <p className="text-sm text-red-500">
                     {errors.quantity.message}
                   </p>
@@ -160,7 +160,7 @@ export default function ModalPreStorageCapacityForm({
                   className="select select-bordered select-md px-2"
                   id="responsible-employee"
                   {...register("responsibleEmployee", {
-                    required: "Please select Responsible employee",
+                    required: "Please select responsible employee",
                   })}
                 >
                   <option value="">---</option>
@@ -171,6 +171,11 @@ export default function ModalPreStorageCapacityForm({
                     </option>
                   ))}
                 </select>
+                {errors.responsibleEmployee && (
+                  <p className="text-sm text-red-500">
+                    {errors.responsibleEmployee.message}
+                  </p>
+                )}
               </div>
               <div className=" space-x-2">
                 <button
