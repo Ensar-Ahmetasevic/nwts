@@ -15,7 +15,6 @@ export async function GET(req, { params }) {
           include: {
             locationOrigin: true,
             wasteProfile: true,
-            containerType: true,
           },
         },
       },

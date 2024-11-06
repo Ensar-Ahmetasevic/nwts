@@ -24,6 +24,8 @@ function useDeleteContainerProfileMutations() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["containerProfileQueryKey"],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["shippingInformationIDQueryKey"],
       });
       // Toast a success message

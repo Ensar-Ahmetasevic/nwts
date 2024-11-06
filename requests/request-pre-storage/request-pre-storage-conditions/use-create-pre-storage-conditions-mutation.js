@@ -25,6 +25,8 @@ export default function useCreatePreStorageConditionsMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["preStorageConditionsQueryKey"],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["preStorageIDQueryKey"],
       });
 

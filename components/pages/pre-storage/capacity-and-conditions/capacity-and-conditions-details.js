@@ -70,15 +70,14 @@ export default function CapacityAndConditionsDetails({ preStorageData }) {
       </div>
 
       {/* Display warning message if applicable */}
-
       {warningMessage && (
         <WarningMessage
           warningColor={warningColor}
           warningMessage={warningMessage}
         />
       )}
-      {/* Capacity Details */}
 
+      {/* Capacity Details */}
       <CapacityDetails
         preStorageData={preStorageData}
         dataForPieChart={dataForPieChart}
@@ -91,6 +90,7 @@ export default function CapacityAndConditionsDetails({ preStorageData }) {
         hallData={preStorageData}
       />
 
+      {/* Divider */}
       <div className="divider divider-warning my-10">Conditions</div>
 
       {/* Conditions Details */}

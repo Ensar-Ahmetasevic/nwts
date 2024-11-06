@@ -13,8 +13,12 @@ export default function DetailsShippingData({
 }) {
   const router = useRouter();
 
-  // Destructure the necessary data
-  const { containerProfiles } = data?.shippingData;
+  // Add validation check for data structure
+  if (!data?.shippingData?.containerProfiles) {
+    return <div>Invalid data structure</div>;
+  }
+
+  const { containerProfiles } = data.shippingData;
 
   return (
     <>

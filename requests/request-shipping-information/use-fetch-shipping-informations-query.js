@@ -4,6 +4,7 @@ import axios from "axios";
 const FetchshippingInformationData = async () => {
   const response = await axios.get("/api/shipping-informations");
   const data = response.data;
+
   return data;
 };
 

@@ -10,45 +10,69 @@ import AllShippingData from "./../../components/pages/shipping-informations/all-
 import useShippingInformationQuery from "../../requests/request-shipping-information/use-fetch-shipping-informations-query";
 
 import { FaSearch } from "react-icons/fa";
-import LoadingSpinnerButton from "./../../components/shared/loading-spiner-button";
+import LoadingSpinnerPage from "../../components/shared/loading-spiner-page";
+import AlertWarning from "../../components/shared/alert-warning";
 
 export default function ShippingInformations() {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Number of items to show per page
-
-  const { data, isLoading, error } = useShippingInformationQuery();
-
-  const shippingDatas = data?.shippingData || [];
+  const itemsPerPage = 10;
 
   // Initialize React Hook Form
   const { register, handleSubmit, watch } = useForm();
+  const searchQuery = watch("searchQuery", "");
 
-  const searchQuery = watch("searchQuery", ""); // Watch the searchQuery input
+  // Move the query hook before any data processing
+  const { data, isLoading, isError } = useShippingInformationQuery();
 
-  // Define the scrollToTop function
+  // Define handlers
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // Smooth scrolling effect
+      behavior: "smooth",
     });
   };
 
-  // Scroll to top when the current page changes
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const onSubmit = (data) => {
+    setCurrentPage(1);
+  };
+
+  // Effects
   useEffect(() => {
     scrollToTop();
-  }, [currentPage]); // Only run this effect when currentPage changes
+  }, [currentPage]);
 
-  // Reset page to 1 whenever searchQuery changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
 
-  // Filter all trucks with IN status and count them
-  const inStatusCount = shippingDatas.filter(
-    (truck) => truck.truckStatus === "IN",
-  ).length;
+  // Early returns for loading and error states
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinnerPage />
+      </div>
+    );
+  }
 
-  // Filter the data based on the search query
+  if (!data || isError) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <AlertWarning text={"Error loading shipping informations data"} />
+      </div>
+    );
+  }
+
+  const shippingDatas = data.shippingData || [];
+
+  // Move data processing logic here
   const filteredData = shippingDatas.filter((truck) => {
     const filterByFullDate = dayjs(truck.entryDateTime).format("DD-MM-YYYY");
     const filterByYear = dayjs(truck.entryDateTime).format("YYYY");
@@ -57,18 +81,16 @@ export default function ShippingInformations() {
 
     const lowerCaseQuery = searchQuery.toLowerCase();
 
-    // Check if the query starts with "D", "M", "Y", or is a full date
     if (lowerCaseQuery.startsWith("d")) {
-      const dayQuery = lowerCaseQuery.slice(1); // Remove the "D" prefix
+      const dayQuery = lowerCaseQuery.slice(1);
       return filterByDay === dayQuery;
     } else if (lowerCaseQuery.startsWith("m")) {
-      const monthQuery = lowerCaseQuery.slice(1); // Remove the "M" prefix
+      const monthQuery = lowerCaseQuery.slice(1);
       return filterByMonth === monthQuery;
     } else if (lowerCaseQuery.startsWith("y")) {
-      const yearQuery = lowerCaseQuery.slice(1); // Remove the "Y" prefix
+      const yearQuery = lowerCaseQuery.slice(1);
       return filterByYear === yearQuery;
     } else {
-      // Check if it's a full date search
       return (
         truck.companyName.toLowerCase().includes(lowerCaseQuery) ||
         truck.truckStatus.toLowerCase() === lowerCaseQuery ||
@@ -77,36 +99,14 @@ export default function ShippingInformations() {
     }
   });
 
-  // Calculate the indices for slicing the data
+  // Calculate pagination values
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Calculate total pages
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-
-  // Handle previous page
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  // Handle next page
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
-  };
-
-  // Handle form submission
-  const onSubmit = (data) => {
-    setCurrentPage(1); // Reset to the first page when a new search is made
-  };
-
-  if (!data) {
-    return (
-      <div className="flex flex-col items-center space-y-4">
-        <LoadingSpinnerButton /> Loading data...
-      </div>
-    );
-  }
+  const inStatusCount = shippingDatas.filter(
+    (truck) => truck.truckStatus === "IN",
+  ).length;
 
   return (
     <>
@@ -162,11 +162,7 @@ export default function ShippingInformations() {
               <ul>
                 {currentItems.map((truck) => (
                   <li key={truck.id}>
-                    <AllShippingData
-                      truck={truck}
-                      isLoading={isLoading}
-                      error={error}
-                    />
+                    <AllShippingData truck={truck} />
                   </li>
                 ))}
               </ul>

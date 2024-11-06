@@ -32,7 +32,7 @@ export default function ModalContainerProfilUpdate({
     isError: updateError,
   } = useUpdateContainerProfileMutation();
 
-  const { quantity, locationOrigin, wasteProfile, containerType, id } =
+  const { quantity, locationOrigin, wasteProfile, id } =
     modalContainerProfilData;
 
   const isFormSubmit = async (formData) => {
@@ -113,26 +113,6 @@ export default function ModalContainerProfilUpdate({
                 {wasteProfileData?.map((waste) => (
                   <option key={waste.id} value={waste.id}>
                     {waste.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Container type */}
-
-            <div className="flex w-64 flex-col space-y-2">
-              <label className="text-left text-sm" htmlFor="container-type">
-                Please select container type
-              </label>
-              <select
-                className="select select-bordered select-md px-2"
-                id="container-type"
-                defaultValue={containerType.id}
-                {...register("containerType", { required: true })}
-              >
-                {containerTypeData?.map((container) => (
-                  <option key={container.id} value={container.id}>
-                    {container.name}
                   </option>
                 ))}
               </select>

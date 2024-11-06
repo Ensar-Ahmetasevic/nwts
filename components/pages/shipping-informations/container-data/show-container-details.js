@@ -34,18 +34,24 @@ export default function ShowContainerDetails({ data }) {
   const { quantity, locationOrigin, wasteProfile, containerType, id } = data;
 
   const containerDetails = [
-    { title: "Waste Profile", name: wasteProfile.name, details: wasteProfile },
-    //
-    { title: "Quantity", name: quantity, details: { quantity } },
-    //
+    {
+      title: "Waste Profile",
+      name: wasteProfile?.name,
+      details: wasteProfile,
+    },
+    {
+      title: "Quantity",
+      name: quantity,
+      details: { quantity },
+    },
     {
       title: "Location Origin",
-      name: locationOrigin.name,
+      name: locationOrigin?.name,
       details: locationOrigin,
     },
     {
       title: "Container Type",
-      name: containerType.name,
+      name: containerType?.name,
       details: containerType,
     },
   ];

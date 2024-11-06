@@ -39,7 +39,7 @@ export async function POST(req, res) {
 
 // Fetch data
 
-export async function GET() {
+export async function GET(req, res) {
   try {
     const shippingData = await prisma.shippingInformation.findMany({
       orderBy: {
@@ -49,8 +49,11 @@ export async function GET() {
         containerProfiles: {
           include: {
             locationOrigin: true,
-            wasteProfile: true,
-            containerType: true,
+            wasteProfile: {
+              include: {
+                containerType: true,
+              },
+            },
           },
         },
       },

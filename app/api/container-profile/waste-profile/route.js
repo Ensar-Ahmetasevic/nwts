@@ -39,7 +39,7 @@ export async function POST(req, res) {
         chemicalProperties,
         biologicalProperties,
         collectionProcedures,
-        recommendationsForTransport,
+        containerTypeId: parseInt(recommendationsForTransport),
       },
     });
 
@@ -62,6 +62,7 @@ export async function GET() {
   try {
     const wasteProfileData = await prisma.wasteProfile.findMany({
       orderBy: { id: "desc" },
+      include: { containerType: true },
     });
 
     return NextResponse.json({ wasteProfileData }, { status: 200 });
@@ -113,7 +114,7 @@ export async function PUT(req, res) {
     chemicalProperties,
     biologicalProperties,
     collectionProcedures,
-    recommendationsForTransport,
+    containerTypeId,
     id,
   } = dataForUpdate;
 
@@ -127,7 +128,7 @@ export async function PUT(req, res) {
     !physicalProperties,
     !biologicalProperties,
     !collectionProcedures,
-    !recommendationsForTransport,
+    !containerTypeId,
     !id)
   ) {
     return NextResponse.json(
@@ -149,7 +150,7 @@ export async function PUT(req, res) {
         chemicalProperties,
         biologicalProperties,
         collectionProcedures,
-        recommendationsForTransport,
+        containerTypeId: parseInt(containerTypeId),
       },
     });
 
@@ -158,9 +159,8 @@ export async function PUT(req, res) {
       { status: 200 },
     );
   } catch (error) {
-    console.error("Faild to update Waste Profile: ", error);
     return NextResponse.json(
-      { message: "Faild to update Waste Profile: ", error: error.message },
+      { message: "Faild to update Waste Profile ", error: error.message },
       { status: 500 },
     );
   }

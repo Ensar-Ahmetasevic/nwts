@@ -10,9 +10,9 @@ export default function useUpdateWasteProfileMutation() {
       const response = await axios.put("/api/container-profile/waste-profile", {
         dataForUpdate,
       });
+     
       return response.data;
     } catch (error) {
-      console.error("Failed to UPDATE Waste Profile informations: ", error);
       toast.error(`Error: ${error.response.data.message}`);
       throw error; // Throw the error to trigger onError callback
     }

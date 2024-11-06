@@ -15,7 +15,7 @@ export async function GET() {
         include: {
           containerProfiles: {
             include: {
-              wasteProfile: true, // Uključuje informacije o wasteProfile
+              wasteProfile: true, // Includes wasteProfile information
             },
           },
         },

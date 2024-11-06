@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
 import useCreateWasteProfileMutation from "../../../../../requests/request-container-profile/request-waste-profile/use-create-waste-profile-mutation";
+import LoadingSpinnerPage from "./../../../../shared/loading-spiner-page";
+import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
+import AlertWarning from "./../../../../shared/alert-warning";
 
 function FormWasteProfile({ OnCancel }) {
   const {
@@ -10,6 +13,28 @@ function FormWasteProfile({ OnCancel }) {
   } = useForm();
 
   const createWasteProfileMutation = useCreateWasteProfileMutation();
+
+  const {
+    data: containerTypeData,
+    isLoading: isContainerTypeLoading,
+    isError: isContainerTypeError,
+  } = useContainerTypeQuery();
+
+  if (isContainerTypeLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinnerPage />
+      </div>
+    );
+  }
+
+  if (!containerTypeData || isContainerTypeError) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <AlertWarning text={"Error loading data"} />
+      </div>
+    );
+  }
 
   function isFormSubmit({
     name,
@@ -33,8 +58,9 @@ function FormWasteProfile({ OnCancel }) {
     const trimmedChemicalProperties = chemicalProperties.trim();
     const trimmedBiologicalProperties = biologicalProperties.trim();
     const trimmedCollectionProcedures = collectionProcedures.trim();
-    const trimmedRecommendationsForTransport =
-      recommendationsForTransport.trim();
+    const numberRecommendationsForTransport = parseInt(
+      recommendationsForTransport,
+    );
 
     // Create the formData object with trimmed values
     const formData = {
@@ -47,8 +73,10 @@ function FormWasteProfile({ OnCancel }) {
       chemicalProperties: trimmedChemicalProperties,
       biologicalProperties: trimmedBiologicalProperties,
       collectionProcedures: trimmedCollectionProcedures,
-      recommendationsForTransport: trimmedRecommendationsForTransport,
+      recommendationsForTransport: numberRecommendationsForTransport,
     };
+
+    console.log("formData", formData);
 
     createWasteProfileMutation.mutateAsync({ formData });
 
@@ -65,7 +93,7 @@ function FormWasteProfile({ OnCancel }) {
           onSubmit={handleSubmit(isFormSubmit)}
         >
           <div className="flex flex-row space-x-20">
-            {/* First 5 */}
+            {/* Name  */}
             <div className="flex flex-col space-y-6">
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">Name:</label>
@@ -79,6 +107,8 @@ function FormWasteProfile({ OnCancel }) {
                 />
               </div>
 
+              {/* waste type  */}
+
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">Type Of Waste:</label>
                 <input
@@ -90,6 +120,8 @@ function FormWasteProfile({ OnCancel }) {
                   })}
                 />
               </div>
+
+              {/* waste description */}
 
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">Waste Description:</label>
@@ -103,6 +135,8 @@ function FormWasteProfile({ OnCancel }) {
                 />
               </div>
 
+              {/* Risks and hazards*/}
+
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">Risks And Hazards:</label>
                 <input
@@ -114,6 +148,8 @@ function FormWasteProfile({ OnCancel }) {
                   })}
                 />
               </div>
+
+              {/* Processing methods */}
 
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">Processing Methods:</label>
@@ -128,8 +164,7 @@ function FormWasteProfile({ OnCancel }) {
               </div>
             </div>
 
-            {/* Second 5 */}
-
+            {/* physical properties  */}
             <div className="flex flex-col space-y-6">
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">
@@ -159,6 +194,7 @@ function FormWasteProfile({ OnCancel }) {
                 />
               </div>
 
+              {/* Biological Properties */}
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">
                   Biological Properties:
@@ -173,6 +209,7 @@ function FormWasteProfile({ OnCancel }) {
                 />
               </div>
 
+              {/* collection procedures  */}
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">
                   Collection Procedures:
@@ -187,18 +224,28 @@ function FormWasteProfile({ OnCancel }) {
                 />
               </div>
 
+              {/* transport recommendations */}
+
               <div className="flex w-64 flex-col space-y-2">
-                <label className="text-left text-sm">
+                <label className="text-left text-sm" htmlFor="location-origin">
                   Recommendations For Transport:
                 </label>
-                <input
-                  className="input input-md input-bordered px-2"
-                  type="text"
-                  placeholder="Type here ..."
+
+                <select
+                  className="select select-bordered select-md px-2"
+                  id="location-origin"
                   {...register("recommendationsForTransport", {
                     required: true,
                   })}
-                />
+                >
+                  <option value="">---</option>
+
+                  {containerTypeData.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>

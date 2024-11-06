@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
 import useUpdateWasteProfileMutation from "./../../../../../requests/request-container-profile/request-waste-profile/use-update-waste-profile-mutation";
+import useContainerTypeQuery from "./../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
+import LoadingSpinnerPage from "./../../../../shared/loading-spiner-page";
+import AlertWarning from "./../../../../shared/alert-warning";
 
 export default function ModalWasteProfileDetailsUpdate({
   modalContainerTypeData,
@@ -13,6 +16,12 @@ export default function ModalWasteProfileDetailsUpdate({
     reset,
     formState: { errors },
   } = useForm({});
+
+  const {
+    data: containerTypeData,
+    isLoading: isContainerTypeLoading,
+    isError: isContainerTypeError,
+  } = useContainerTypeQuery();
 
   const updateWasteProfileMutation = useUpdateWasteProfileMutation();
 
@@ -30,24 +39,55 @@ export default function ModalWasteProfileDetailsUpdate({
     chemicalProperties,
     biologicalProperties,
     collectionProcedures,
-    recommendationsForTransport,
+    containerType,
     id,
   } = modalContainerTypeData;
 
   const isFormSubmit = async (formData) => {
+    // Trim all string values
+    const trimmedData = {
+      name: formData.name.trim(),
+      typeOfWaste: formData.typeOfWaste.trim(),
+      wasteDescription: formData.wasteDescription.trim(),
+      risksAndHazards: formData.risksAndHazards.trim(),
+      processingMethods: formData.processingMethods.trim(),
+      physicalProperties: formData.physicalProperties.trim(),
+      chemicalProperties: formData.chemicalProperties.trim(),
+      biologicalProperties: formData.biologicalProperties.trim(),
+      collectionProcedures: formData.collectionProcedures.trim(),
+      containerTypeId: parseInt(formData.recommendationsForTransport),
+      id,
+    };
+
     try {
-      const dataForUpdate = {
-        ...formData,
-        id,
-      };
-
-      await updateWasteProfileMutation.mutateAsync(dataForUpdate);
-
+      await updateWasteProfileMutation.mutateAsync(trimmedData);
       closeModal();
     } catch (error) {
       console.error("Error updating Waste Profile:", error);
+
+      closeModal();
     }
   };
+
+  if (isContainerTypeLoading) {
+    return (
+      <dialog id="modal_update_waste_profile" className="modal modal-open">
+        <div className="modal-box flex items-center justify-center p-8">
+          <LoadingSpinnerPage />
+        </div>
+      </dialog>
+    );
+  }
+
+  if (!containerTypeData || isContainerTypeError) {
+    return (
+      <dialog id="modal_update_waste_profile" className="modal modal-open">
+        <div className="modal-box flex items-center justify-center p-8">
+          <AlertWarning text={"Error loading container type data"} />
+        </div>
+      </dialog>
+    );
+  }
 
   return (
     <>
@@ -193,19 +233,29 @@ export default function ModalWasteProfileDetailsUpdate({
                   />
                 </div>
 
+                {/* transport recommendations */}
                 <div className="flex w-64 flex-col space-y-2">
-                  <label className="text-left text-sm">
+                  <label
+                    className="text-left text-sm"
+                    htmlFor="recommendations-for-transport"
+                  >
                     Recommendations For Transport:
                   </label>
-                  <input
-                    className="input input-md input-bordered px-2"
-                    type="text"
-                    placeholder="Type here"
-                    defaultValue={recommendationsForTransport}
+
+                  <select
+                    className="select select-bordered select-md px-2"
+                    id="recommendations-for-transport"
+                    defaultValue={containerType.id}
                     {...register("recommendationsForTransport", {
                       required: true,
                     })}
-                  />
+                  >
+                    {containerTypeData.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {type.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

@@ -76,9 +76,14 @@ export default function ModalUpdatePreStorageEmployee({
                     placeholder="Type here ..."
                     defaultValue={name}
                     {...register("name", {
-                      required: true,
+                      required: "Pre storage employee name is required",
                     })}
                   />
+                  {errors.name && (
+                    <p className="text-sm text-red-500">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Surname  */}
@@ -90,9 +95,14 @@ export default function ModalUpdatePreStorageEmployee({
                     placeholder="Type here ..."
                     defaultValue={surname}
                     {...register("surname", {
-                      required: true,
+                      required: "Pre storage employee surname is required",
                     })}
                   />
+                  {errors.surname && (
+                    <p className="text-sm text-red-500">
+                      {errors.surname.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Adress */}
@@ -104,13 +114,17 @@ export default function ModalUpdatePreStorageEmployee({
                     placeholder="Type here ..."
                     defaultValue={address}
                     {...register("address", {
-                      required: true,
+                      required: "Address is required",
                     })}
                   />
+                  {errors.address && (
+                    <p className="text-sm text-red-500">
+                      {errors.address.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Qualifications */}
-
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">Qualifications:</label>
                   <input
@@ -119,9 +133,14 @@ export default function ModalUpdatePreStorageEmployee({
                     placeholder="Type here ..."
                     defaultValue={qualifications}
                     {...register("qualifications", {
-                      required: true,
+                      required: "Qualifications is required",
                     })}
                   />
+                  {errors.qualifications && (
+                    <p className="text-sm text-red-500">
+                      {errors.qualifications.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Date Of Birth */}
@@ -133,13 +152,17 @@ export default function ModalUpdatePreStorageEmployee({
                     placeholder="Select date"
                     defaultValue={dayjs(dateOfBirth).format("YYYY-MM-DD")}
                     {...register("dateOfBirth", {
-                      required: true,
+                      required: "Date of birth is required",
                     })}
                   />
+                  {errors.dateOfBirth && (
+                    <p className="text-sm text-red-500">
+                      {errors.dateOfBirth.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Safety Training */}
-
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">Safety Training:</label>
 
@@ -151,7 +174,9 @@ export default function ModalUpdatePreStorageEmployee({
                         className="radio checked:bg-blue-500"
                         value={true}
                         defaultChecked={safetyTraining === true}
-                        {...register("safetyTraining")}
+                        {...register("safetyTraining", {
+                          required: "Safety training selection is required",
+                        })}
                       />
                     </label>
                   </div>
@@ -163,10 +188,17 @@ export default function ModalUpdatePreStorageEmployee({
                         className="radio checked:bg-red-500"
                         value={false}
                         defaultChecked={safetyTraining === false}
-                        {...register("safetyTraining")}
+                        {...register("safetyTraining", {
+                          required: "Safety training selection is required",
+                        })}
                       />
                     </label>
                   </div>
+                  {errors.safetyTraining && (
+                    <p className="text-sm text-red-500">
+                      {errors.safetyTraining.message}
+                    </p>
+                  )}
                 </div>
               </div>
 

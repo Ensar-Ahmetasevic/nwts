@@ -22,8 +22,14 @@ function useCreateContainerProfileMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["containerProfileQueryKey"],
+     
+      });
+
+      queryClient.invalidateQueries({
+    
         queryKey: ["shippingInformationIDQueryKey"],
       });
+
 
       // Toast a success message
       toast.success("Container Profile data created successfully.", {

@@ -50,17 +50,17 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
   }
 
   if (!data || !data.shippingData) {
-    return <div>{data?.message || "No data available"}</div>;
+    return <div>{data.message || "No data available"}</div>;
   }
 
   // Destructure the necessary data
-  const { id, companyName, truckStatus: status } = data?.shippingData;
+  const { id, companyName, truckStatus: status } = data.shippingData;
 
   // Updating Truck Status
   const updateStatus = (shippingStatus) => {
     const shippingStatusData = {
-      truckStatus: shippingStatus,
       id,
+      truckStatus: shippingStatus,
       exitDateTime: new Date().toISOString(),
     };
 
@@ -130,7 +130,7 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
               className={`pointer-events-none h-12 w-16 rounded text-center font-bold ${
                 status === "IN"
                   ? " border-green-700 bg-green-700 text-white underline underline-offset-8 outline outline-offset-4 outline-green-700"
-                  : "border-2 border-slate-700 text-slate-700"
+                  : "border-2 border-slate-700 text-slate-700 "
               }`}
               disabled={status === "IN" || isLoading}
             >
@@ -141,8 +141,8 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
             <button
               className={`h-12 w-16 rounded  text-center font-bold ${
                 status === "OUT"
-                  ? "pointer-events-none bg-red-600 text-white underline underline-offset-8 outline outline-offset-4  outline-red-600"
-                  : "cursor-pointer border-2 border-slate-700  text-slate-700"
+                  ? "pointer-events-none bg-red-600 text-white underline underline-offset-8 outline outline-offset-4 outline-red-600"
+                  : "transform cursor-pointer text-slate-700 outline outline-red-600 transition-transform duration-300 ease-in-out hover:scale-110"
               }`}
               onClick={() => updateStatus("OUT")}
               disabled={status === "OUT" || isLoading}
@@ -156,7 +156,7 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
       {openModalUpdate ? (
         <ModalTruckUpdate
           closeModal={() => setOpenModalUpdate(false)}
-          modalTruckFormData={data?.shippingData}
+          modalTruckFormData={data.shippingData}
         />
       ) : null}
     </>

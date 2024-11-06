@@ -1,8 +1,16 @@
+import { useState } from "react";
+
 import Link from "next/link";
 import dayjs from "dayjs";
 import LoadingSpinnerButton from "./../../shared/loading-spiner-button";
 
-export default function AllShippingData({ truck, isLoading, error }) {
+export default function AllShippingData({ truck }) {
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleClick = () => {
+    setIsNavigating(true);
+  };
+
   return (
     <div className="mx-auto w-2/3 pt-8">
       <table
@@ -28,8 +36,9 @@ export default function AllShippingData({ truck, isLoading, error }) {
               <Link
                 className="btnCreate"
                 href={`/shipping-informations/${truck.id}`}
+                onClick={() => handleClick()}
               >
-                {isLoading ? <LoadingSpinnerButton /> : "OPEN"}
+                {isNavigating ? <LoadingSpinnerButton /> : "OPEN"}
               </Link>
             </td>
           </tr>

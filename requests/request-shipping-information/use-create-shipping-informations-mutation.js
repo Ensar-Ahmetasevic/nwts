@@ -22,6 +22,8 @@ function useCreateShippingInformationsMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["shippingInformationQueryKey"],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["shippingInformationIDQueryKey"],
       });
       // Toast a success message

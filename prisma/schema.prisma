@@ -51,8 +51,6 @@ model ContainerProfile {
   locationOrigin        LocationOrigin       @relation(fields: [locationOriginId], references: [id], onDelete: Cascade)
   wasteProfileId        Int
   wasteProfile          WasteProfile         @relation(fields: [wasteProfileId], references: [id], onDelete: Cascade)
-  containerTypeId       Int
-  containerType         ContainerType        @relation(fields: [containerTypeId], references: [id], onDelete: Cascade)
 }
 
 model LocationOrigin {
@@ -67,22 +65,23 @@ model LocationOrigin {
 }
 
 model WasteProfile {
-  id                          Int                @id @default(autoincrement())
-  name                        String
-  typeOfWaste                 String
-  wasteDescription            String
-  risksAndHazards             String
-  processingMethods           String
-  physicalProperties          String
-  chemicalProperties          String
-  biologicalProperties        String
-  collectionProcedures        String
-  recommendationsForTransport String
-  containerProfiles           ContainerProfile[]
+  id                   Int                @id @default(autoincrement())
+  name                 String
+  typeOfWaste          String
+  wasteDescription     String
+  risksAndHazards      String
+  processingMethods    String
+  physicalProperties   String
+  chemicalProperties   String
+  biologicalProperties String
+  collectionProcedures String
+  containerProfiles    ContainerProfile[]
+  containerTypeId      Int                @unique // Optional foreign key
+  containerType        ContainerType      @relation(fields: [containerTypeId], references: [id], onDelete: Cascade)
 }
 
 model ContainerType {
-  id                 Int                @id @default(autoincrement())
+  id                 Int           @id @default(autoincrement())
   name               String
   material           String
   volume             Float
@@ -91,7 +90,7 @@ model ContainerType {
   physicalProperties String
   footprint          Float
   description        String
-  containerProfiles  ContainerProfile[]
+  wasteProfile       WasteProfile?
 }
 
 // Step 2 "Pre-storage of waste"

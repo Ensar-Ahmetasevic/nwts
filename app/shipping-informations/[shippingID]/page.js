@@ -1,8 +1,9 @@
 "use client";
 
 import DetailsShippingData from "../../../components/pages/shipping-informations/details-shipping-data";
-import LoadingSpinnerButton from "./../../../components/shared/loading-spiner-button";
 import useShippingInformationByIdQuery from "./../../../requests/request-shipping-information/use-fetch-shipping-information-by-id-query";
+import LoadingSpinnerPage from "./../../../components/shared/loading-spiner-page";
+import AlertWarning from "./../../../components/shared/alert-warning";
 
 export default function ShippingDetails({ params }) {
   const shippingID = params.shippingID;
@@ -11,16 +12,20 @@ export default function ShippingDetails({ params }) {
   const { data, isLoading, error } =
     useShippingInformationByIdQuery(shippingID);
 
-  if (!data) {
+  if (isLoading) {
     return (
-      <div className="flex flex-col items-center space-y-4">
-        <LoadingSpinnerButton /> Loading data...
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinnerPage />
       </div>
     );
   }
 
-  if (error) {
-    return <div>Error loading data</div>;
+  if (!data || error) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <AlertWarning text={"Error loading data"} />
+      </div>
+    );
   }
 
   return (

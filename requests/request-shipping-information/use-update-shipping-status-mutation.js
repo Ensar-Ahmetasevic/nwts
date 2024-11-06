@@ -7,14 +7,14 @@ export default function useUpdateShippingStatusMutation() {
 
   const updateShippingStatusMutations = async (shippingStatusData) => {
     try {
-      const response = await axios.patch("/api/shipping-informations/pending", {
+      const response = await axios.patch("/api/shipping-informations", {
         shippingStatusData,
       });
       return response.data;
     } catch (error) {
       console.error("Failed to UPDATE Shipping Status: ", error);
       toast.error(`Error: ${error.response.data.message}`);
-      throw error; // Throw the error to trigger onError callback
+      throw error;
     }
   };
 
@@ -24,7 +24,11 @@ export default function useUpdateShippingStatusMutation() {
       // Invalidate and refetch
       queryClient.invalidateQueries({
         queryKey: ["shippingInformationQueryKey"],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["shippingInformationIDQueryKey"],
+      });
+      queryClient.invalidateQueries({
         queryKey: ["statusShippingInformations"],
       });
       // Toast a success message

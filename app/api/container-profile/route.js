@@ -120,10 +120,9 @@ export async function DELETE(req) {
 export async function PUT(req) {
   const { preparedData } = await req.json();
 
-  const { id, quantity, locationOrigin, wasteProfile, containerType } =
-    preparedData;
+  const { id, quantity, locationOrigin, wasteProfile } = preparedData;
 
-  if (!id || !quantity || !locationOrigin || !wasteProfile || !containerType) {
+  if (!id || !quantity || !locationOrigin || !wasteProfile) {
     return NextResponse.json(
       { message: "All fields are required" },
       { status: 400 },
@@ -137,7 +136,6 @@ export async function PUT(req) {
         quantity: parseInt(quantity),
         locationOriginId: parseInt(locationOrigin),
         wasteProfileId: parseInt(wasteProfile),
-        containerTypeId: parseInt(containerType),
       },
     });
 

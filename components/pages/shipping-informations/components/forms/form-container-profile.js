@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 
 import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin-query";
 import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile-query,";
-import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
 import useCreateContainerProfileMutation from "../../../../../requests/request-container-profile/use-create-container-profile-mutation";
 import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
@@ -26,8 +25,6 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
   const { data: locationOriginData } = useLocationOriginQuery();
 
   const { data: wasteProfileData } = useWasteProfileQuery();
-
-  const { data: containerTypeData } = useContainerTypeQuery();
 
   const isFormSubmit = async ({
     quantity,
@@ -111,27 +108,6 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
             {wasteProfileData?.map((waste) => (
               <option key={waste.id} value={waste.id}>
                 {waste.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Container type */}
-        <div className="flex w-64 flex-col space-y-2">
-          <label className="text-left text-sm" htmlFor="container-type">
-            Please select container type
-          </label>
-
-          <select
-            className="select select-bordered select-md px-2"
-            id="container-type"
-            {...register("containerType", { required: true })}
-          >
-            <option value="">---</option>
-
-            {containerTypeData?.map((container) => (
-              <option key={container.id} value={container.id}>
-                {container.name}
               </option>
             ))}
           </select>
