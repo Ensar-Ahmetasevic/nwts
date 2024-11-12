@@ -3,6 +3,7 @@ import useCreateWasteProfileMutation from "../../../../../requests/request-conta
 import LoadingSpinnerPage from "./../../../../shared/loading-spiner-page";
 import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
 import AlertWarning from "./../../../../shared/alert-warning";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 function FormWasteProfile({ OnCancel }) {
   const {
@@ -12,7 +13,8 @@ function FormWasteProfile({ OnCancel }) {
     formState: { errors },
   } = useForm();
 
-  const createWasteProfileMutation = useCreateWasteProfileMutation();
+  const { mutateAsync: createWasteProfileMutation, isPending } =
+    useCreateWasteProfileMutation();
 
   const {
     data: containerTypeData,
@@ -36,7 +38,7 @@ function FormWasteProfile({ OnCancel }) {
     );
   }
 
-  function isFormSubmit({
+  const isFormSubmit = async ({
     name,
     typeOfWaste,
     wasteDescription,
@@ -47,7 +49,7 @@ function FormWasteProfile({ OnCancel }) {
     biologicalProperties,
     collectionProcedures,
     recommendationsForTransport,
-  }) {
+  }) => {
     // Trim the values before sending them
     const trimmedName = name.trim();
     const trimmedTypeOfWaste = typeOfWaste.trim();
@@ -76,13 +78,11 @@ function FormWasteProfile({ OnCancel }) {
       recommendationsForTransport: numberRecommendationsForTransport,
     };
 
-    console.log("formData", formData);
-
-    createWasteProfileMutation.mutateAsync({ formData });
+    await createWasteProfileMutation({ formData });
 
     OnCancel(null);
     reset();
-  }
+  };
 
   return (
     <>
@@ -102,9 +102,12 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("name", {
-                    required: true,
+                    required: "Waste profile name is required",
                   })}
                 />
+                {errors.name && (
+                  <p className="text-sm text-red-500">{errors.name.message}</p>
+                )}
               </div>
 
               {/* waste type  */}
@@ -116,9 +119,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("typeOfWaste", {
-                    required: true,
+                    required: "Type of waste is required",
                   })}
                 />
+                {errors.typeOfWaste && (
+                  <p className="text-sm text-red-500">
+                    {errors.typeOfWaste.message}
+                  </p>
+                )}
               </div>
 
               {/* waste description */}
@@ -130,9 +138,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("wasteDescription", {
-                    required: true,
+                    required: "Waste description is required",
                   })}
                 />
+                {errors.wasteDescription && (
+                  <p className="text-sm text-red-500">
+                    {errors.wasteDescription.message}
+                  </p>
+                )}
               </div>
 
               {/* Risks and hazards*/}
@@ -144,9 +157,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("risksAndHazards", {
-                    required: true,
+                    required: "Risks and hazards are required",
                   })}
                 />
+                {errors.risksAndHazards && (
+                  <p className="text-sm text-red-500">
+                    {errors.risksAndHazards.message}
+                  </p>
+                )}
               </div>
 
               {/* Processing methods */}
@@ -158,9 +176,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("processingMethods", {
-                    required: true,
+                    required: "Processing methods are required",
                   })}
                 />
+                {errors.processingMethods && (
+                  <p className="text-sm text-red-500">
+                    {errors.processingMethods.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -175,9 +198,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("physicalProperties", {
-                    required: true,
+                    required: "Physical properties are required",
                   })}
                 />
+                {errors.physicalProperties && (
+                  <p className="text-sm text-red-500">
+                    {errors.physicalProperties.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex w-64 flex-col space-y-2">
@@ -189,9 +217,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("chemicalProperties", {
-                    required: true,
+                    required: "Chemical properties are required",
                   })}
                 />
+                {errors.chemicalProperties && (
+                  <p className="text-sm text-red-500">
+                    {errors.chemicalProperties.message}
+                  </p>
+                )}
               </div>
 
               {/* Biological Properties */}
@@ -204,9 +237,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("biologicalProperties", {
-                    required: true,
+                    required: "Biological properties are required",
                   })}
                 />
+                {errors.biologicalProperties && (
+                  <p className="text-sm text-red-500">
+                    {errors.biologicalProperties.message}
+                  </p>
+                )}
               </div>
 
               {/* collection procedures  */}
@@ -219,9 +257,14 @@ function FormWasteProfile({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("collectionProcedures", {
-                    required: true,
+                    required: "Collection procedures are required",
                   })}
                 />
+                {errors.collectionProcedures && (
+                  <p className="text-sm text-red-500">
+                    {errors.collectionProcedures.message}
+                  </p>
+                )}
               </div>
 
               {/* transport recommendations */}
@@ -235,7 +278,7 @@ function FormWasteProfile({ OnCancel }) {
                   className="select select-bordered select-md px-2"
                   id="location-origin"
                   {...register("recommendationsForTransport", {
-                    required: true,
+                    required: "Transport recommendations are required",
                   })}
                 >
                   <option value="">---</option>
@@ -246,13 +289,18 @@ function FormWasteProfile({ OnCancel }) {
                     </option>
                   ))}
                 </select>
+                {errors.recommendationsForTransport && (
+                  <p className="text-sm text-red-500">
+                    {errors.recommendationsForTransport.message}
+                  </p>
+                )}
               </div>
             </div>
           </div>
 
           <div className=" space-x-2">
-            <button className="btnSave" type="submit">
-              Save
+            <button className="btnSave" type="submit" disabled={isPending}>
+              {isPending ? <LoadingSpinnerButton /> : "Save"}
             </button>
             <button
               className="btnCancel"

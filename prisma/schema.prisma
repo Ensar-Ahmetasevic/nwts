@@ -76,7 +76,7 @@ model WasteProfile {
   biologicalProperties String
   collectionProcedures String
   containerProfiles    ContainerProfile[]
-  containerTypeId      Int                @unique // Optional foreign key
+  containerTypeId      Int                @unique
   containerType        ContainerType      @relation(fields: [containerTypeId], references: [id], onDelete: Cascade)
 }
 

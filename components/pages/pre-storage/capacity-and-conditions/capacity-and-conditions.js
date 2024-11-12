@@ -1,4 +1,7 @@
+import { useState } from "react";
 import Link from "next/link";
+
+import LoadingSpinnerButton from "./../../../shared/loading-spiner-button";
 
 // Import dynamic from next/dynamic
 import dynamic from "next/dynamic";
@@ -12,6 +15,8 @@ const CustomPieChart = dynamic(
 );
 
 export default function CapacityAndConditions({ data }) {
+  const [isNavigating, setIsNavigating] = useState(false);
+
   const halesurface = data.surfaceArea;
   const containerFootprint = data.containerFootprint;
 
@@ -28,6 +33,11 @@ export default function CapacityAndConditions({ data }) {
     { name: "Free Space", value: freeSpace },
     { name: "Used Space", value: usedSpace },
   ];
+
+  const handleClick = () => {
+    setIsNavigating(true);
+  };
+
   return (
     <div className="mx-10 flex w-1/2 flex-col space-y-10">
       <div className=" grid flex-grow place-items-center rounded-box border-2 border-yellow-600 bg-base-300">
@@ -63,8 +73,9 @@ export default function CapacityAndConditions({ data }) {
           <Link
             className="btn btn-outline btn-warning  mb-5 w-full transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
             href={`/pre-storage/${data.id}`}
+            onClick={() => handleClick()}
           >
-            DETAILS
+            {isNavigating ? <LoadingSpinnerButton /> : "DETAILS"}
           </Link>
         </div>
       </div>

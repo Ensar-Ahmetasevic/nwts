@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
 import useUpdateContainerTypeMutation from "./../../../../../requests/request-container-profile/request-container-type/use-update-container-type-mutation";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 export default function ModalContainerTypeDetailsUpdate({
   modalContainerTypeData,
@@ -14,7 +15,8 @@ export default function ModalContainerTypeDetailsUpdate({
     formState: { errors },
   } = useForm({});
 
-  const updateContainerTypeMutation = useUpdateContainerTypeMutation();
+  const { mutateAsync: updateContainerTypeMutation, isPending } =
+    useUpdateContainerTypeMutation();
 
   useEffect(() => {
     document.getElementById("modal_update_container_type").showModal();
@@ -39,7 +41,7 @@ export default function ModalContainerTypeDetailsUpdate({
         id,
       };
 
-      await updateContainerTypeMutation.mutateAsync(preparedData);
+      await updateContainerTypeMutation(preparedData);
 
       closeModal();
     } catch (error) {
@@ -51,7 +53,7 @@ export default function ModalContainerTypeDetailsUpdate({
     <>
       <dialog id="modal_update_container_type" className="modal">
         <div className="modal-box">
-          <h3 className="text-lg font-bold">Edit Container Details</h3>
+          <h3 className="text-lg font-bold">Edit Container Type Details</h3>
 
           <div className="modal-action flex flex-col">
             <form
@@ -68,9 +70,14 @@ export default function ModalContainerTypeDetailsUpdate({
                     defaultValue={name}
                     placeholder="Type here"
                     {...register("name", {
-                      required: true,
+                      required: "Container type name is required",
                     })}
                   />
+                  {errors.name && (
+                    <p className="text-sm text-red-500">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">Material:</label>
@@ -80,23 +87,37 @@ export default function ModalContainerTypeDetailsUpdate({
                     defaultValue={material}
                     placeholder="Type here"
                     {...register("material", {
-                      required: true,
+                      required: "Material is required",
                     })}
                   />
+                  {errors.material && (
+                    <p className="text-sm text-red-500">
+                      {errors.material.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">{"Volume (m³) :"}</label>
                   <input
                     className="input input-md input-bordered px-2"
                     type="number"
-                    step=".01"
+                    step=".1"
+                    min="1"
                     defaultValue={volume}
                     placeholder="Type here"
                     {...register("volume", {
-                      required: true,
-                      min: 1,
+                      required: "Volume is required",
+                      min: {
+                        value: 1,
+                        message: "Volume must be greater than 0",
+                      },
                     })}
                   />
+                  {errors.volume && (
+                    <p className="text-sm text-red-500">
+                      {errors.volume.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -106,14 +127,23 @@ export default function ModalContainerTypeDetailsUpdate({
                   <input
                     className="input input-md input-bordered px-2"
                     type="number"
-                    step=".01"
+                    step=".1"
+                    min="1"
                     defaultValue={carryingCapacity}
                     placeholder="Type here"
                     {...register("carryingCapacity", {
-                      required: true,
-                      min: 1,
+                      required: "Carrying capacity is required",
+                      min: {
+                        value: 1,
+                        message: "Carrying capacity must be greater than 0",
+                      },
                     })}
                   />
+                  {errors.carryingCapacity && (
+                    <p className="text-sm text-red-500">
+                      {errors.carryingCapacity.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -126,9 +156,14 @@ export default function ModalContainerTypeDetailsUpdate({
                     defaultValue={radioactivityLevel}
                     placeholder="Type here"
                     {...register("radioactivityLevel", {
-                      required: true,
+                      required: "Radioactivity level is required",
                     })}
                   />
+                  {errors.radioactivityLevel && (
+                    <p className="text-sm text-red-500">
+                      {errors.radioactivityLevel.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -141,9 +176,14 @@ export default function ModalContainerTypeDetailsUpdate({
                     defaultValue={physicalProperties}
                     placeholder="Type here"
                     {...register("physicalProperties", {
-                      required: true,
+                      required: "Physical properties are required",
                     })}
                   />
+                  {errors.physicalProperties && (
+                    <p className="text-sm text-red-500">
+                      {errors.physicalProperties.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -153,14 +193,23 @@ export default function ModalContainerTypeDetailsUpdate({
                   <input
                     className="input input-md input-bordered px-2"
                     type="number"
-                    step=".01"
+                    step=".1"
+                    min="1"
                     defaultValue={footprint}
                     placeholder="Type here"
                     {...register("footprint", {
-                      required: true,
-                      min: 1,
+                      required: "Footprint is required",
+                      min: {
+                        value: 1,
+                        message: "Footprint must be greater than 0",
+                      },
                     })}
                   />
+                  {errors.footprint && (
+                    <p className="text-sm text-red-500">
+                      {errors.footprint.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -174,14 +223,19 @@ export default function ModalContainerTypeDetailsUpdate({
                   defaultValue={description}
                   placeholder="Type here"
                   {...register("description", {
-                    required: true,
+                    required: "Description is required",
                   })}
                 />
+                {errors.description && (
+                  <p className="text-sm text-red-500">
+                    {errors.description.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-x-2">
-                <button className="btnSave" type="submit">
-                  Save
+                <button className="btnSave" type="submit" disabled={isPending}>
+                  {isPending ? <LoadingSpinnerButton /> : "Save"}
                 </button>
               </div>
             </form>

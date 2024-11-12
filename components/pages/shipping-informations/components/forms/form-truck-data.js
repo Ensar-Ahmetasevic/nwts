@@ -56,9 +56,14 @@ export default function FormTruckData({ onSubmitForm }) {
               type="text"
               placeholder="Type here ..."
               {...register("companyName", {
-                required: true,
+                required: "Company name is required",
               })}
             />
+            {errors.companyName && (
+              <p className="text-sm text-red-500">
+                {errors.companyName.message}
+              </p>
+            )}
           </div>
 
           <div className="flex w-64 flex-col space-y-2">
@@ -68,9 +73,14 @@ export default function FormTruckData({ onSubmitForm }) {
               type="text"
               placeholder="Type here ..."
               {...register("driverName", {
-                required: true,
+                required: "Driver name is required",
               })}
             />
+            {errors.driverName && (
+              <p className="text-sm text-red-500">
+                {errors.driverName.message}
+              </p>
+            )}
           </div>
 
           <div className="flex w-64 flex-col space-y-2">
@@ -80,9 +90,14 @@ export default function FormTruckData({ onSubmitForm }) {
               type="text"
               placeholder="Type here ..."
               {...register("registrationPlates", {
-                required: true,
+                required: "Registration plates are required",
               })}
             />
+            {errors.registrationPlates && (
+              <p className="text-sm text-red-500">
+                {errors.registrationPlates.message}
+              </p>
+            )}
           </div>
         </div>
         <div>

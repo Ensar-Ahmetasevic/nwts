@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
 import useUpdateLocationOriginMutation from "./../../../../../requests/request-container-profile/request-location-origin/use-update-location-origin-mutation";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 export default function ModalLocationOriginDetailsUpdate({
   modalContainerTypeData,
@@ -14,7 +15,8 @@ export default function ModalLocationOriginDetailsUpdate({
     formState: { errors },
   } = useForm({});
 
-  const updateLocationOriginMutation = useUpdateLocationOriginMutation();
+  const { mutateAsync: updateLocationOriginMutation, isPending } =
+    useUpdateLocationOriginMutation();
 
   useEffect(() => {
     document.getElementById("modal_update_location_origin").showModal();
@@ -29,7 +31,7 @@ export default function ModalLocationOriginDetailsUpdate({
         id,
       };
 
-      await updateLocationOriginMutation.mutateAsync(dataForUpdate);
+      await updateLocationOriginMutation(dataForUpdate);
 
       closeModal();
     } catch (error) {
@@ -41,7 +43,7 @@ export default function ModalLocationOriginDetailsUpdate({
     <>
       <dialog id="modal_update_location_origin" className="modal">
         <div className="modal-box">
-          <h3 className="text-lg font-bold">Edit Container Details</h3>
+          <h3 className="text-lg font-bold">Edit Location Origin Details</h3>
 
           <div className="modal-action flex flex-col">
             <form
@@ -58,9 +60,14 @@ export default function ModalLocationOriginDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={name}
                     {...register("name", {
-                      required: true,
+                      required: "Location origin name is required",
                     })}
                   />
+                  {errors.name && (
+                    <p className="text-sm text-red-500">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">Address:</label>
@@ -70,9 +77,14 @@ export default function ModalLocationOriginDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={address}
                     {...register("address", {
-                      required: true,
+                      required: "Address is required",
                     })}
                   />
+                  {errors.address && (
+                    <p className="text-sm text-red-500">
+                      {errors.address.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex w-64 flex-col space-y-2">
                   <label className="text-left text-sm">Origin:</label>
@@ -82,15 +94,20 @@ export default function ModalLocationOriginDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={origin}
                     {...register("origin", {
-                      required: true,
+                      required: "Origin is required",
                     })}
                   />
+                  {errors.origin && (
+                    <p className="text-sm text-red-500">
+                      {errors.origin.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="space-x-2">
-                <button className="btnSave" type="submit">
-                  Save
+                <button className="btnSave" type="submit" disabled={isPending}>
+                  {isPending ? <LoadingSpinnerButton /> : "Save"}
                 </button>
               </div>
             </form>

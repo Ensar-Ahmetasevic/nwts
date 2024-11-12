@@ -6,6 +6,7 @@ import WarningMessage from "./../../../shared/warningMessage";
 
 import CapacityDetails from "./capacity/capacity-details";
 import ConditionsDetails from "./conditions/conditions-details";
+import BackButton from "./../../../shared/back-button";
 
 export default function CapacityAndConditionsDetails({ preStorageData }) {
   const [isModalConditionsOpen, setIsModalConditionsOpen] = useState(false);
@@ -63,48 +64,53 @@ export default function CapacityAndConditionsDetails({ preStorageData }) {
   ];
 
   return (
-    <div className="container mx-auto mt-20 flex max-w-4xl flex-col place-items-center rounded-box border-2 border-yellow-600 bg-base-300 p-6">
-      {/* Display the name of the pre-storage location */}
-      <div className="mb-10 mt-5">
-        <h1 className="stat-value">{preStorageData.name}</h1>
-      </div>
+    <>
+      <div className="container mx-auto mt-20 flex max-w-4xl flex-col place-items-center rounded-box border-2 border-yellow-600 bg-base-300 p-6">
+        {/* Back button */}
+        <BackButton route={"pre-storage"} />
 
-      {/* Display warning message if applicable */}
-      {warningMessage && (
-        <WarningMessage
-          warningColor={warningColor}
-          warningMessage={warningMessage}
+        {/* Display the name of the pre-storage location */}
+        <div className="mb-10 mt-5">
+          <h1 className="stat-value">{preStorageData.name}</h1>
+        </div>
+
+        {/* Display warning message if applicable */}
+        {warningMessage && (
+          <WarningMessage
+            warningColor={warningColor}
+            warningMessage={warningMessage}
+          />
+        )}
+
+        {/* Capacity Details */}
+        <CapacityDetails
+          preStorageData={preStorageData}
+          dataForPieChart={dataForPieChart}
+          freeSpacePercentage={freeSpacePercentage}
+          freeSpace={freeSpace}
+          freeContainers={freeContainers}
+          usedSpacePercentage={usedSpacePercentage}
+          usedSpace={usedSpace}
+          totalContainers={totalContainers}
+          hallData={preStorageData}
         />
-      )}
 
-      {/* Capacity Details */}
-      <CapacityDetails
-        preStorageData={preStorageData}
-        dataForPieChart={dataForPieChart}
-        freeSpacePercentage={freeSpacePercentage}
-        freeSpace={freeSpace}
-        freeContainers={freeContainers}
-        usedSpacePercentage={usedSpacePercentage}
-        usedSpace={usedSpace}
-        totalContainers={totalContainers}
-        hallData={preStorageData}
-      />
+        {/* Divider */}
+        <div className="divider divider-warning my-10">Conditions</div>
 
-      {/* Divider */}
-      <div className="divider divider-warning my-10">Conditions</div>
+        {/* Conditions Details */}
+        <ConditionsDetails
+          haleConditions={lastCondition}
+          toggelModal={toggelConditionsModal}
+        />
 
-      {/* Conditions Details */}
-      <ConditionsDetails
-        haleConditions={lastCondition}
-        toggelModal={toggelConditionsModal}
-      />
-
-      {/* Conditions modal component */}
-      <ModalPreStorageConditionsForm
-        isOpen={isModalConditionsOpen}
-        closeModal={() => toggelConditionsModal()}
-        hallData={preStorageData}
-      />
-    </div>
+        {/* Conditions modal component */}
+        <ModalPreStorageConditionsForm
+          isOpen={isModalConditionsOpen}
+          closeModal={() => toggelConditionsModal()}
+          hallData={preStorageData}
+        />
+      </div>
+    </>
   );
 }

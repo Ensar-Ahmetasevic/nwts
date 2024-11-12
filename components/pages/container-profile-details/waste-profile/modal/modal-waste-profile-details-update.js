@@ -5,6 +5,7 @@ import useUpdateWasteProfileMutation from "./../../../../../requests/request-con
 import useContainerTypeQuery from "./../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
 import LoadingSpinnerPage from "./../../../../shared/loading-spiner-page";
 import AlertWarning from "./../../../../shared/alert-warning";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 export default function ModalWasteProfileDetailsUpdate({
   modalContainerTypeData,
@@ -23,7 +24,8 @@ export default function ModalWasteProfileDetailsUpdate({
     isError: isContainerTypeError,
   } = useContainerTypeQuery();
 
-  const updateWasteProfileMutation = useUpdateWasteProfileMutation();
+  const { mutateAsync: updateWasteProfileMutation, isPending } =
+    useUpdateWasteProfileMutation();
 
   useEffect(() => {
     document.getElementById("modal_update_waste_profile").showModal();
@@ -60,7 +62,7 @@ export default function ModalWasteProfileDetailsUpdate({
     };
 
     try {
-      await updateWasteProfileMutation.mutateAsync(trimmedData);
+      await updateWasteProfileMutation(trimmedData);
       closeModal();
     } catch (error) {
       console.error("Error updating Waste Profile:", error);
@@ -93,7 +95,7 @@ export default function ModalWasteProfileDetailsUpdate({
     <>
       <dialog id="modal_update_waste_profile" className="modal">
         <div className="modal-box">
-          <h3 className="text-lg font-bold">Edit Container Details</h3>
+          <h3 className="text-lg font-bold">Edit Waste Profile Details</h3>
 
           <div className="modal-action flex flex-col">
             <form
@@ -110,9 +112,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={name}
                     {...register("name", {
-                      required: true,
+                      required: "Waste profile name is required",
                     })}
                   />
+                  {errors.name && (
+                    <p className="text-sm text-red-500">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -123,9 +130,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={typeOfWaste}
                     {...register("typeOfWaste", {
-                      required: true,
+                      required: "Type of waste is required",
                     })}
                   />
+                  {errors.typeOfWaste && (
+                    <p className="text-sm text-red-500">
+                      {errors.typeOfWaste.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -138,9 +150,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={wasteDescription}
                     {...register("wasteDescription", {
-                      required: true,
+                      required: "Waste description is required",
                     })}
                   />
+                  {errors.wasteDescription && (
+                    <p className="text-sm text-red-500">
+                      {errors.wasteDescription.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -153,9 +170,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={risksAndHazards}
                     {...register("risksAndHazards", {
-                      required: true,
+                      required: "Risks and hazards are required",
                     })}
                   />
+                  {errors.risksAndHazards && (
+                    <p className="text-sm text-red-500">
+                      {errors.risksAndHazards.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -168,9 +190,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={processingMethods}
                     {...register("processingMethods", {
-                      required: true,
+                      required: "Processing methods are required",
                     })}
                   />
+                  {errors.processingMethods && (
+                    <p className="text-sm text-red-500">
+                      {errors.processingMethods.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -183,9 +210,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={physicalProperties}
                     {...register("physicalProperties", {
-                      required: true,
+                      required: "Physical properties are required",
                     })}
                   />
+                  {errors.physicalProperties && (
+                    <p className="text-sm text-red-500">
+                      {errors.physicalProperties.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -198,9 +230,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={chemicalProperties}
                     {...register("chemicalProperties", {
-                      required: true,
+                      required: "Chemical properties are required",
                     })}
                   />
+                  {errors.chemicalProperties && (
+                    <p className="text-sm text-red-500">
+                      {errors.chemicalProperties.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -213,9 +250,14 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={biologicalProperties}
                     {...register("biologicalProperties", {
-                      required: true,
+                      required: "Biological properties are required",
                     })}
                   />
+                  {errors.biologicalProperties && (
+                    <p className="text-sm text-red-500">
+                      {errors.biologicalProperties.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex w-64 flex-col space-y-2">
@@ -228,12 +270,16 @@ export default function ModalWasteProfileDetailsUpdate({
                     placeholder="Type here"
                     defaultValue={collectionProcedures}
                     {...register("collectionProcedures", {
-                      required: true,
+                      required: "Collection procedures are required",
                     })}
                   />
+                  {errors.collectionProcedures && (
+                    <p className="text-sm text-red-500">
+                      {errors.collectionProcedures.message}
+                    </p>
+                  )}
                 </div>
 
-                {/* transport recommendations */}
                 <div className="flex w-64 flex-col space-y-2">
                   <label
                     className="text-left text-sm"
@@ -247,7 +293,7 @@ export default function ModalWasteProfileDetailsUpdate({
                     id="recommendations-for-transport"
                     defaultValue={containerType.id}
                     {...register("recommendationsForTransport", {
-                      required: true,
+                      required: "Transport recommendations are required",
                     })}
                   >
                     {containerTypeData.map((type) => (
@@ -256,12 +302,17 @@ export default function ModalWasteProfileDetailsUpdate({
                       </option>
                     ))}
                   </select>
+                  {errors.recommendationsForTransport && (
+                    <p className="text-sm text-red-500">
+                      {errors.recommendationsForTransport.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="space-x-2">
-                <button className="btnSave" type="submit">
-                  Save
+                <button className="btnSave" type="submit" disabled={isPending}>
+                  {isPending ? <LoadingSpinnerButton /> : "Save"}
                 </button>
               </div>
             </form>

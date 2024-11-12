@@ -21,19 +21,19 @@ export default function RootLayout({ children }) {
           <ToastContainer
             position="top-right"
             autoClose={4000}
-            hideProgressBar={true}
-            newestOnTop={false}
-            closeOnClick
+            showProgressBar={true}
+            newestOnTop={true}
+            closeOnClick={true}
             rtl={false}
-            closeButton={false}
-            pauseOnFocusLoss
-            draggable
+            closeButton={true}
+            pauseOnFocusLoss={false}
+            draggable={false}
             pauseOnHover
             className="mt-16 text-center"
             toastClassName="bg-gray-900 text-white"
             bodyClassName="text-sm"
           />
-          <Navbar  />
+          <Navbar />
           {children}
         </Providers>
       </body>

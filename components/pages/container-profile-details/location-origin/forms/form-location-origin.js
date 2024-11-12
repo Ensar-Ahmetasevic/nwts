@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import useCreateLocationOriginMutation from "../../../../../requests/request-container-profile/request-location-origin/use-create-location-origin-mutation";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
 function FormLocationOrigin({ OnCancel }) {
   const {
@@ -9,9 +10,10 @@ function FormLocationOrigin({ OnCancel }) {
     formState: { errors },
   } = useForm();
 
-  const createLocationOriginMutation = useCreateLocationOriginMutation();
+  const { mutateAsync: createLocationOriginMutation, isPending } =
+    useCreateLocationOriginMutation();
 
-  function isFormSubmit({ name, address, origin }) {
+  const isFormSubmit = async ({ name, address, origin }) => {
     // Trim the values before sending them
     const trimmedName = name.trim();
     const trimmedAddress = address.trim();
@@ -23,11 +25,11 @@ function FormLocationOrigin({ OnCancel }) {
       address: trimmedAddress,
       origin: trimmedOrigin,
     };
-    createLocationOriginMutation.mutateAsync({ formData });
+    await createLocationOriginMutation({ formData });
 
     OnCancel(null);
     reset();
-  }
+  };
 
   return (
     <>
@@ -46,9 +48,12 @@ function FormLocationOrigin({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("name", {
-                  required: true,
+                  required: "Location origin name is required",
                 })}
               />
+              {errors.name && (
+                <p className="text-sm text-red-500">{errors.name.message}</p>
+              )}
             </div>
             <div className="flex w-64 flex-col space-y-2">
               <label className="text-left text-sm">Address:</label>
@@ -57,9 +62,12 @@ function FormLocationOrigin({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("address", {
-                  required: true,
+                  required: "Address is required",
                 })}
               />
+              {errors.address && (
+                <p className="text-sm text-red-500">{errors.address.message}</p>
+              )}
             </div>
             <div className="flex w-64 flex-col space-y-2">
               <label className="text-left text-sm">Origin:</label>
@@ -68,15 +76,18 @@ function FormLocationOrigin({ OnCancel }) {
                 type="text"
                 placeholder="Type here ..."
                 {...register("origin", {
-                  required: true,
+                  required: "Origin is required",
                 })}
               />
+              {errors.origin && (
+                <p className="text-sm text-red-500">{errors.origin.message}</p>
+              )}
             </div>
           </div>
 
           <div className=" space-x-2">
-            <button className="btnSave" type="submit">
-              Save
+            <button className="btnSave" type="submit" disabled={isPending}>
+              {isPending ? <LoadingSpinnerButton /> : "Save"}
             </button>
             <button
               className="btnCancel"

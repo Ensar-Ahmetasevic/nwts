@@ -33,12 +33,12 @@ function FormContainerType({ OnCancel }) {
     const formData = {
       name: trimmedName,
       material: trimmedMaterial,
-      volume,
-      carryingCapacity,
       radioactivityLevel: trimmedRadioactivityLevel,
       physicalProperties: trimmedPhysicalProperties,
-      footprint,
       description: trimmeddescription,
+      volume,
+      carryingCapacity,
+      footprint,
     };
     createContainerTypeMutation.mutateAsync({ formData });
 
@@ -64,9 +64,12 @@ function FormContainerType({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("name", {
-                    required: true,
+                    required: "Container type name is required",
                   })}
                 />
+                {errors.name && (
+                  <p className="text-sm text-red-500">{errors.name.message}</p>
+                )}
               </div>
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">Material:</label>
@@ -75,22 +78,33 @@ function FormContainerType({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("material", {
-                    required: true,
+                    required: "Material is required",
                   })}
                 />
+                {errors.material && (
+                  <p className="text-sm text-red-500">
+                    {errors.material.message}
+                  </p>
+                )}
               </div>
               <div className="flex w-64 flex-col space-y-2">
                 <label className="text-left text-sm">{"Volume (m³) :"}</label>
                 <input
                   className="input input-md input-bordered px-2"
                   type="number"
-                  step=".01"
+                  step=".1"
+                  min={"1"}
                   placeholder="Type here ..."
                   {...register("volume", {
-                    required: true,
-                    min: 1,
+                    required: "Volume is required",
+                    min: { value: 1, message: "Volume must be greater than 0" },
                   })}
                 />
+                {errors.volume && (
+                  <p className="text-sm text-red-500">
+                    {errors.volume.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex w-64 flex-col space-y-2">
@@ -101,13 +115,22 @@ function FormContainerType({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="number"
-                  step=".01"
+                  step=".1"
+                  min={"1"}
                   placeholder="Type here ..."
                   {...register("carryingCapacity", {
-                    required: true,
-                    min: 1,
+                    required: "Carrying capacity is required",
+                    min: {
+                      value: 1,
+                      message: "Carrying capacity must be greater than 0",
+                    },
                   })}
                 />
+                {errors.carryingCapacity && (
+                  <p className="text-sm text-red-500">
+                    {errors.carryingCapacity.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -122,9 +145,14 @@ function FormContainerType({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("radioactivityLevel", {
-                    required: true,
+                    required: "Radioactivity level is required",
                   })}
                 />
+                {errors.radioactivityLevel && (
+                  <p className="text-sm text-red-500">
+                    {errors.radioactivityLevel.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex w-64 flex-col space-y-2">
@@ -136,9 +164,14 @@ function FormContainerType({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("physicalProperties", {
-                    required: true,
+                    required: "Physical properties are required",
                   })}
                 />
+                {errors.physicalProperties && (
+                  <p className="text-sm text-red-500">
+                    {errors.physicalProperties.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex w-64 flex-col space-y-2">
@@ -149,13 +182,22 @@ function FormContainerType({ OnCancel }) {
                 <input
                   className="input input-md input-bordered px-2"
                   type="number"
-                  step=".01"
+                  step=".1"
+                  min={"1"}
                   placeholder="Type here ..."
                   {...register("footprint", {
-                    required: true,
-                    min: 1,
+                    required: "Footprint is required",
+                    min: {
+                      value: 1,
+                      message: "Footprint must be greater than 0",
+                    },
                   })}
                 />
+                {errors.footprint && (
+                  <p className="text-sm text-red-500">
+                    {errors.footprint.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex w-64 flex-col space-y-2">
@@ -167,9 +209,14 @@ function FormContainerType({ OnCancel }) {
                   type="text"
                   placeholder="Type here ..."
                   {...register("description", {
-                    required: true,
+                    required: "Description is required",
                   })}
                 />
+                {errors.description && (
+                  <p className="text-sm text-red-500">
+                    {errors.description.message}
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -26,19 +26,13 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
 
   const { data: wasteProfileData } = useWasteProfileQuery();
 
-  const isFormSubmit = async ({
-    quantity,
-    locationOrigin,
-    wasteProfile,
-    containerType,
-  }) => {
+  const isFormSubmit = async ({ quantity, locationOrigin, wasteProfile }) => {
     // Trim whitespace from each field
     const formData = {
-      quantity: quantity.trim(),
-      locationOriginId: locationOrigin.trim(),
-      wasteProfileId: wasteProfile.trim(),
-      containerTypeId: containerType.trim(),
-      shippingInformationId: shippingID,
+      quantity: parseInt(quantity),
+      locationOriginId: parseInt(locationOrigin),
+      wasteProfileId: parseInt(wasteProfile),
+      shippingInformationId: parseInt(shippingID),
     };
 
     try {
@@ -46,6 +40,7 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
       reset();
       closeModal();
     } catch (error) {
+      closeModal();
       console.error("Error creating Container Profile:", error);
     }
   };
@@ -62,13 +57,17 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
           <input
             className="input input-md input-bordered px-2"
             type="number"
+            step="1"
+            min="1"
             placeholder="Type here ..."
             {...register("quantity", {
-              required: true,
-              min: 1,
+              required: "Quantity is required",
+              min: { value: 1, message: "Quantity must be greater than 0" },
             })}
           />
-          {errors.example && <p>This is required</p>}
+          {errors.quantity && (
+            <p className="text-sm text-red-500">{errors.quantity.message}</p>
+          )}
         </div>
 
         {/* Location origin */}
@@ -80,7 +79,9 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
           <select
             className="select select-bordered select-md px-2"
             id="location-origin"
-            {...register("locationOrigin", { required: true })}
+            {...register("locationOrigin", {
+              required: "Location origin is required",
+            })}
           >
             <option value="">---</option>
 
@@ -90,6 +91,11 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
               </option>
             ))}
           </select>
+          {errors.locationOrigin && (
+            <p className="text-sm text-red-500">
+              {errors.locationOrigin.message}
+            </p>
+          )}
         </div>
 
         {/* Waste profile */}
@@ -101,7 +107,9 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
           <select
             className="select select-bordered select-md px-2"
             id="waste-profile"
-            {...register("wasteProfile", { required: true })}
+            {...register("wasteProfile", {
+              required: "Waste profile is required",
+            })}
           >
             <option value="">---</option>
 
@@ -111,6 +119,11 @@ export default function FormContainerProfile({ closeModal, shippingID }) {
               </option>
             ))}
           </select>
+          {errors.wasteProfile && (
+            <p className="text-sm text-red-500">
+              {errors.wasteProfile.message}
+            </p>
+          )}
         </div>
 
         <div className=" space-x-2">

@@ -1,3 +1,3 @@
 export default function LoadingSpinnerButton() {
-  return <span className="loading loading-bars loading-md"></span>;
+  return <span className="loading loading-dots loading-md"></span>;
 }

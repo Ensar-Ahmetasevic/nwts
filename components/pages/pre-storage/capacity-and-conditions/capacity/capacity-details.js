@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 
+
 import RequestFromEntry from "./request-from-entry";
 
 import useShippingInformationsStautsQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
@@ -26,6 +27,8 @@ export default function CapacityDetails({
   totalContainers,
   hallData,
 }) {
+ 
+
   // Get pending shipping information for this hall
   const {
     data: pendingShippingInformations,
@@ -100,7 +103,7 @@ export default function CapacityDetails({
   );
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       {/* Display pie chart and usage information */}
       <div className="mb-6 flex w-full flex-row space-x-12">
         {/* Pie chart with transition effects */}
@@ -128,14 +131,6 @@ export default function CapacityDetails({
           />
         </div>
       </div>
-
-      {/* Button to open the Capacity modal */}
-      {/* <button
-        className="btn btn-outline btn-info mb-5  transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
-        onClick={() => toggleModal()}
-      >
-        Update Capacity State
-      </button> */}
 
       {/* Open Request Drawer */}
       {hasPendingContainersInHall && (

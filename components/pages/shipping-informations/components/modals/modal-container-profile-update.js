@@ -69,14 +69,20 @@ export default function ModalContainerProfilUpdate({
               <input
                 className="input input-md input-bordered px-2"
                 type="number"
+                step="1"
+                min="1"
                 placeholder="Type here"
                 defaultValue={quantity}
                 {...register("quantity", {
-                  required: true,
-                  min: 1,
+                  required: "Quantity is required",
+                  min: { value: 1, message: "Quantity must be greater than 0" },
                 })}
               />
-              {errors.example && <p>This is required</p>}
+              {errors.quantity && (
+                <p className="text-sm text-red-500">
+                  {errors.quantity.message}
+                </p>
+              )}
             </div>
 
             {/* Location origin */}
@@ -89,7 +95,9 @@ export default function ModalContainerProfilUpdate({
                 className="select select-bordered select-md px-2"
                 id="location-origin"
                 defaultValue={locationOrigin.id}
-                {...register("locationOrigin", { required: true })}
+                {...register("locationOrigin", {
+                  required: "Location origin is required",
+                })}
               >
                 {locationOriginData?.map((origin) => (
                   <option key={origin.id} value={origin.id}>
@@ -97,6 +105,11 @@ export default function ModalContainerProfilUpdate({
                   </option>
                 ))}
               </select>
+              {errors.locationOrigin && (
+                <p className="text-sm text-red-500">
+                  {errors.locationOrigin.message}
+                </p>
+              )}
             </div>
 
             {/* Waste profile */}
@@ -108,7 +121,9 @@ export default function ModalContainerProfilUpdate({
                 className="select select-bordered select-md px-2"
                 id="waste-profile"
                 defaultValue={wasteProfile.id}
-                {...register("wasteProfile", { required: true })}
+                {...register("wasteProfile", {
+                  required: "Waste profile is required",
+                })}
               >
                 {wasteProfileData?.map((waste) => (
                   <option key={waste.id} value={waste.id}>
@@ -116,6 +131,11 @@ export default function ModalContainerProfilUpdate({
                   </option>
                 ))}
               </select>
+              {errors.wasteProfile && (
+                <p className="text-sm text-red-500">
+                  {errors.wasteProfile.message}
+                </p>
+              )}
             </div>
 
             <div className=" space-x-2">

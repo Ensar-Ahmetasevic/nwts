@@ -159,8 +159,23 @@ export async function PUT(req, res) {
       { status: 200 },
     );
   } catch (error) {
+    if (
+      error.code === "P2002" &&
+      error.meta?.target?.includes("containerTypeId")
+    ) {
+      return NextResponse.json(
+        {
+          message:
+            "The selected container type is already assigned to another waste profile. Please select a different container type.",
+          error:
+            "The selected container type is already assigned to another waste profile. Please select a different container type.",
+        },
+        { status: 400 },
+      );
+    }
+
     return NextResponse.json(
-      { message: "Faild to update Waste Profile ", error: error.message },
+      { message: "Error updating waste profile", error: error.message },
       { status: 500 },
     );
   }

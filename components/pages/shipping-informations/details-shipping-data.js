@@ -4,6 +4,7 @@ import ShowContainerDetails from "./container-data/show-container-details";
 
 import TruckData from "./truck-data/truck-data";
 import TruckDataDetails from "./truck-data/truck-data-details";
+import BackButton from "./../../shared/back-button";
 
 export default function DetailsShippingData({
   data,
@@ -33,10 +34,10 @@ export default function DetailsShippingData({
                 error={error}
                 shippingID={shippingID}
               />
-              <div className="tooltip mb-4 mt-4" data-tip="Go Back">
-                <button className="btnNeutral" onClick={() => router.back()}>
-                  {"<< --"}
-                </button>
+
+              {/* Go backe to the shipping informations */}
+              <div className="mt-2">
+                <BackButton route={"shipping-informations"} />
               </div>
 
               {/* Container Details */}

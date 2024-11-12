@@ -7,19 +7,13 @@ const prisma = new PrismaClient();
 export async function POST(req, res) {
   const formData = await req.json();
 
-  const {
-    quantity,
-    locationOriginId,
-    wasteProfileId,
-    containerTypeId,
-    shippingInformationId,
-  } = formData;
+  const { quantity, locationOriginId, wasteProfileId, shippingInformationId } =
+    formData;
 
   if (
     !quantity ||
     !locationOriginId ||
     !wasteProfileId ||
-    !containerTypeId ||
     !shippingInformationId
   ) {
     return NextResponse.json(
@@ -32,7 +26,6 @@ export async function POST(req, res) {
   const parsedQuantity = parseInt(quantity);
   const parsedLocationOriginId = parseInt(locationOriginId);
   const parsedWasteProfileId = parseInt(wasteProfileId);
-  const parsedContainerTypeId = parseInt(containerTypeId);
   const parsedShippingInformationId = parseInt(shippingInformationId);
 
   try {
@@ -42,7 +35,6 @@ export async function POST(req, res) {
         containerStatus: "pending",
         locationOriginId: parsedLocationOriginId,
         wasteProfileId: parsedWasteProfileId,
-        containerTypeId: parsedContainerTypeId,
         shippingInformationId: parsedShippingInformationId,
       },
     });
