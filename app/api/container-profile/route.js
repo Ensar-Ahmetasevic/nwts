@@ -107,7 +107,7 @@ export async function DELETE(req) {
   }
 }
 
-// Update container profile
+// Update container profile on the Entry Form
 
 export async function PUT(req) {
   const { preparedData } = await req.json();
@@ -128,6 +128,7 @@ export async function PUT(req) {
         quantity: parseInt(quantity),
         locationOriginId: parseInt(locationOrigin),
         wasteProfileId: parseInt(wasteProfile),
+        containerStatus: "pending",
       },
     });
 
@@ -144,7 +145,7 @@ export async function PUT(req) {
   }
 }
 
-// Update container profile STATUS
+// Update container profile STATUS in the hall
 
 export async function PATCH(request) {
   try {
@@ -153,6 +154,8 @@ export async function PATCH(request) {
     const { containerProfileId, containerStatus } = containerStatusUpdateData;
 
     // Step 1: Update container status for specific container in a hall
+    // and we are using this when we are updating the container status in the hall
+
     const updatedContainer = await prisma.containerProfile.update({
       where: { id: containerProfileId },
       data: { containerStatus: containerStatus },

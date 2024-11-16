@@ -6,16 +6,25 @@ const prisma = new PrismaClient();
 // GET request to fetch pending ShippingInformation filtered by hall ID (preStorageID)
 export async function GET() {
   try {
-    // Get all ShippingInformation with status "pending" that have containers with matching wasteProfile
     const pendingShippingInformations =
       await prisma.shippingInformation.findMany({
         where: {
           status: "pending",
+          containerProfiles: {
+            some: {
+              containerStatus: "pending",
+              // Only include if at least one container is pending
+            },
+          },
         },
         include: {
           containerProfiles: {
+            where: {
+              containerStatus: "pending",
+              // Only include pending containers
+            },
             include: {
-              wasteProfile: true, // Includes wasteProfile information
+              wasteProfile: true,
             },
           },
         },

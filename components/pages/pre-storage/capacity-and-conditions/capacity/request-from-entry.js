@@ -2,11 +2,33 @@ import { useState } from "react";
 
 import ModalPreStorageCapacityForm from "./modal/modal-pre-storage-capacity-form";
 
+import useUpdateContainerProfileStatusMutation from "./../../../../../requests/request-container-profile/use-update-container-profile-status-mutation";
+
 export default function RequestFromEntry({ entryData, hallData }) {
   const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);
 
+  // Update Container status
+  const {
+    mutateAsync: updateContainerProfileStatusMutation,
+    isPending: updateContainerProfileStatusPending,
+    isSuccess: updateContainerProfileStatusSuccess,
+  } = useUpdateContainerProfileStatusMutation();
+
   // Function to toggle the visibility of a modal
   const toggleCapacityModal = () => setIsModalCapacityOpen((prev) => !prev);
+
+  const isRejected = async () => {
+    const containerStatusUpdateData = {
+      containerStatus: "rejected",
+      containerProfileId: entryData.containerProfileIds[0],
+    };
+
+    try {
+      await updateContainerProfileStatusMutation(containerStatusUpdateData);
+    } catch (error) {
+      console.error("Failed to update container status:", error);
+    }
+  };
 
   return (
     <>
@@ -39,7 +61,9 @@ export default function RequestFromEntry({ entryData, hallData }) {
                 </button>
               </td>
               <td>
-                <button className="btnCancel">Reject</button>
+                <button className="btnCancel" onClick={() => isRejected()}>
+                  Reject
+                </button>
               </td>
             </tr>
           </tbody>

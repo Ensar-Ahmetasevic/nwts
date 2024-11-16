@@ -4,7 +4,6 @@ import useDeleteContainerProfileMutations from "./../../../../requests/request-c
 
 import ModalShowContainerDetails from "./../components/modals/modal-show-container-details";
 import ModalContainerProfilUpdate from "./../components/modals/modal-container-profile-update";
-import ModalShowContainerTypeDetails from "./../components/modals/modal-show-container-type-details";
 
 import { MdOutlineExpandMore } from "react-icons/md";
 import { MdDeleteSweep } from "react-icons/md";
@@ -16,8 +15,6 @@ export default function ShowContainerDetails({ data }) {
   const [modalContenData, setModalContentData] = useState(null);
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
-  const [openModalContainerType, setOpenModalContainerType] = useState(false);
-
   const [title, setTitle] = useState("");
 
   //Delete data
@@ -31,7 +28,7 @@ export default function ShowContainerDetails({ data }) {
     await deleteContainerProfileMutations(id);
   };
 
-  const { quantity, locationOrigin, wasteProfile, containerType, id } = data;
+  const { quantity, locationOrigin, wasteProfile, containerStatus, id } = data;
 
   const containerDetails = [
     {
@@ -49,23 +46,12 @@ export default function ShowContainerDetails({ data }) {
       name: locationOrigin?.name,
       details: locationOrigin,
     },
-    {
-      title: "Container Type",
-      name: containerType?.name,
-      details: containerType,
-    },
   ];
 
   const handleModalDetails = (detail) => {
     setModalContentData(detail.details);
     setTitle(detail.title);
     setOpenModalDetails(true);
-  };
-
-  const handelModalContainerTypeDetails = (detail) => {
-    setModalContentData(detail.details);
-    setTitle(detail.title);
-    setOpenModalContainerType(true);
   };
 
   const handleModalUpdateContainerProfile = () => {
@@ -78,13 +64,16 @@ export default function ShowContainerDetails({ data }) {
         <div>
           <ul className="rounded-lg border-2 p-2 font-medium">
             <div className="mb-4 flex flex-row space-x-3 text-lg">
+              {/* Quantity */}
               <h2 className="underline underline-offset-4">{quantity}</h2>
               <h2 className="font-normal">
                 {quantity === 1 ? "container" : "containers"} of type
               </h2>
+              {/* Waste Profile */}
               <h2 className="underline underline-offset-4">
                 {wasteProfile.name}
               </h2>
+              {/* Location Origin */}
               <h2 className="font-normal">from</h2>
               <h2 className="underline underline-offset-4">
                 {locationOrigin.name}
@@ -98,7 +87,7 @@ export default function ShowContainerDetails({ data }) {
                     <p>Details</p>
                   </div>
                 </summary>
-
+                {/* Container Details */}
                 <div className="collapse-content">
                   {containerDetails.map((detail, index) => (
                     <li key={index} className="flex space-x-3 text-base">
@@ -107,19 +96,9 @@ export default function ShowContainerDetails({ data }) {
 
                       <div className="tooltip mt-1" data-tip="Extend">
                         <label
-                          htmlFor={
-                            detail.title === "Container Type"
-                              ? "modal_container_type_details"
-                              : "modal_container_details"
-                          }
+                          htmlFor="modal_container_details"
                           className="btnExtend"
-                          onClick={() => {
-                            if (detail.title === "Container Type") {
-                              handelModalContainerTypeDetails(detail);
-                            } else {
-                              handleModalDetails(detail);
-                            }
-                          }}
+                          onClick={() => handleModalDetails(detail)}
                         >
                           <MdOutlineExpandMore />
                         </label>
@@ -129,45 +108,42 @@ export default function ShowContainerDetails({ data }) {
                 </div>
               </details>
             </div>
-            <div className="mt-4 flex justify-end space-x-2">
-              <div className="tooltip" data-tip="Edit">
-                <label
-                  htmlFor="update_modal_container_profile"
-                  className="btnUpdate"
-                  onClick={() => handleModalUpdateContainerProfile()}
-                >
-                  <CiEdit />
-                </label>
-              </div>
 
-              <div className="tooltip" data-tip="Delete">
-                <button
-                  className="btnDelete flex items-center"
-                  onClick={() => deleteHandler(id)}
-                  disabled={deleteIsLoading}
-                >
-                  {deleteIsLoading ? (
-                    <LoadingSpinnerButton />
-                  ) : (
-                    <MdDeleteSweep />
-                  )}
-                </button>
+            {containerStatus === "pending" || containerStatus === "rejected" ? (
+              <div className="mt-4 flex justify-end space-x-2">
+                {/* Edit/Update button */}
+                <div className="tooltip" data-tip="Edit">
+                  <label
+                    htmlFor="update_modal_container_profile"
+                    className="btnUpdate"
+                    onClick={() => handleModalUpdateContainerProfile()}
+                  >
+                    <CiEdit />
+                  </label>
+                </div>
+
+                {/* Delete button */}
+                <div className="tooltip" data-tip="Delete">
+                  <button
+                    className="btnDelete flex items-center"
+                    onClick={() => deleteHandler(id)}
+                    disabled={deleteIsLoading}
+                  >
+                    {deleteIsLoading ? (
+                      <LoadingSpinnerButton />
+                    ) : (
+                      <MdDeleteSweep />
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : null}
           </ul>
         </div>
 
         {openModalDetails ? (
           <ModalShowContainerDetails
             closeModal={() => setOpenModalDetails(false)}
-            modalContenData={modalContenData}
-            title={title}
-          />
-        ) : null}
-
-        {openModalContainerType ? (
-          <ModalShowContainerTypeDetails
-            closeModal={() => setOpenModalContainerType(false)}
             modalContenData={modalContenData}
             title={title}
           />

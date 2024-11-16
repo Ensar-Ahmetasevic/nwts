@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 
-
 import RequestFromEntry from "./request-from-entry";
 
 import useShippingInformationsStautsQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
@@ -27,8 +26,6 @@ export default function CapacityDetails({
   totalContainers,
   hallData,
 }) {
- 
-
   // Get pending shipping information for this hall
   const {
     data: pendingShippingInformations,
@@ -142,6 +139,7 @@ export default function CapacityDetails({
             </p>
             <p> new requests!</p>
           </div>
+          {/* Side drawer for the requests */}
           <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content static">

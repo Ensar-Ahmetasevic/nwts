@@ -21,7 +21,7 @@ export default function TruckDataDetails({ data }) {
   }, 0);
 
   return (
-    <div className="ml-4 flex flex-col space-y-3 rounded-lg border-2  p-3 xl:flex-row xl:space-y-0">
+    <div className="flex flex-col space-y-3 rounded-lg border-2 p-3 xl:flex-row xl:space-y-0">
       {/* Quantity, Entry and Exit Date */}
       <div className="stats stats-vertical shadow">
         <div className="stat">

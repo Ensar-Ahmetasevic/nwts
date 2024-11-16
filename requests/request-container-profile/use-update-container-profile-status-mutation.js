@@ -34,9 +34,9 @@ export default function useUpdateContainerProfileStatusMutation() {
         queryKey: ["statusShippingInformations"],
       });
       // Toast a success message
-      toast.success("Container Profile Status has been UPDATED successfully.", {
+      /*  toast.success("Container Profile Status has been UPDATED successfully.", {
         autoClose: 2000,
-      });
+      }); */
     },
   });
 
