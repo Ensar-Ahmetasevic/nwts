@@ -4,6 +4,10 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import LoadingSpinnerButton from "./../../shared/loading-spiner-button";
 
+import { PiDotsThreeOutline } from "react-icons/pi";
+import { HiOutlineBellAlert } from "react-icons/hi2";
+import { VscCheck } from "react-icons/vsc";
+
 export default function AllShippingData({ truck }) {
   const [isNavigating, setIsNavigating] = useState(false);
 
@@ -11,10 +15,16 @@ export default function AllShippingData({ truck }) {
     setIsNavigating(true);
   };
 
+  const containerStatus = truck.containerProfiles.some(
+    (container) => container.containerStatus === "rejected",
+  )
+    ? "rejected"
+    : "accepted";
+
   return (
     <div className="mx-auto w-2/3 pt-8">
       <table
-        className={`table border-l-4 ${truck.truckStatus === "IN" ? "border-green-500" : "border-rose-500"}`}
+        className={`table border-l-4 ${containerStatus === "rejected" ? "border-sky-400" : truck.truckStatus === "IN" ? "border-green-500" : "border-rose-500"}`}
       >
         <thead>
           <tr>
@@ -34,11 +44,32 @@ export default function AllShippingData({ truck }) {
             <td>{truck.companyName}</td>
             <td>
               <Link
-                className="btnCreate"
+                className={` ${
+                  containerStatus === "rejected"
+                    ? "btnInfo"
+                    : truck.truckStatus === "IN"
+                      ? "btnCreate"
+                      : "btnDelete"
+                }`}
                 href={`/shipping-informations/${truck.id}`}
                 onClick={() => handleClick()}
               >
-                {isNavigating ? <LoadingSpinnerButton /> : "OPEN"}
+                {isNavigating ? (
+                  <LoadingSpinnerButton />
+                ) : containerStatus === "rejected" ? (
+                  <>
+                    <HiOutlineBellAlert className="h-6 w-6 animate-pulse" />
+                    OPEN
+                  </>
+                ) : truck.status === "pending" ? (
+                  <>
+                    <PiDotsThreeOutline /> OPEN
+                  </>
+                ) : truck.status === "accepted" ? (
+                  <>
+                    <VscCheck /> OPEN
+                  </>
+                ) : null}
               </Link>
             </td>
           </tr>

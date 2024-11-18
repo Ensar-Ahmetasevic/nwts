@@ -33,6 +33,9 @@ export default function useUpdateContainerProfileStatusMutation() {
       queryClient.invalidateQueries({
         queryKey: ["statusShippingInformations"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["shippingInformationQueryKey"],
+      });
       // Toast a success message
       /*  toast.success("Container Profile Status has been UPDATED successfully.", {
         autoClose: 2000,

@@ -50,11 +50,16 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
   }
 
   if (!data || !data.shippingData) {
-    return <div>{data.message || "No data available"}</div>;
+    return <div>{"No data available"}</div>;
   }
 
   // Destructure the necessary data
-  const { id, companyName, truckStatus: status } = data.shippingData;
+  const {
+    id,
+    companyName,
+    truckStatus,
+    status: containerStatus,
+  } = data.shippingData;
 
   // Updating Truck Status
   const updateStatus = (shippingStatus) => {
@@ -80,7 +85,7 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
     <>
       {/* Truck Data */}
       <div
-        className={`flex flex-row items-center justify-between rounded-lg ${status === "IN" ? "border-green-600" : "border-red-600"} border-2 p-4`}
+        className={`flex flex-row items-center justify-between rounded-lg ${truckStatus === "IN" ? "border-green-600" : "border-red-600"} border-2 p-4`}
       >
         <div className="space-y-3 text-lg">
           {/* Company Name */}
@@ -91,7 +96,9 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
 
           <div className="flex flex-row space-x-4">
             {/* Add Containers */}
-            <CreateContainerProfile shippingID={shippingID} />
+            {containerStatus === "accepted" ? null : (
+              <CreateContainerProfile shippingID={shippingID} />
+            )}
 
             {/* Edit Truck Data */}
             <div className="tooltip" data-tip="Edit">
@@ -105,16 +112,18 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
             </div>
 
             {/* Delete Truck Data */}
-            <div className="tooltip" data-tip="Delete">
-              <button
-                className="btnDelete"
-                id="deleteButton"
-                disabled={deleteLoading || successfullyDeleted}
-                onClick={() => handleDelete()}
-              >
-                {deleteLoading ? <LoadingSpinnerButton /> : <MdDeleteSweep />}
-              </button>
-            </div>
+            {containerStatus === "accepted" ? null : (
+              <div className="tooltip" data-tip="Delete">
+                <button
+                  className="btnDelete"
+                  id="deleteButton"
+                  disabled={deleteLoading || successfullyDeleted}
+                  onClick={() => handleDelete()}
+                >
+                  {deleteLoading ? <LoadingSpinnerButton /> : <MdDeleteSweep />}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -122,17 +131,17 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
         <div className="flex flex-col space-y-3">
           <div className="flex flex-row space-x-2">
             <h2>Activ status:</h2>
-            <h2 className="font-bold">{status}</h2>
+            <h2 className="font-bold">{truckStatus}</h2>
           </div>
           <div className="flex flex-row space-x-4">
             {/* IN */}
             <button
               className={`pointer-events-none h-12 w-16 rounded text-center font-bold ${
-                status === "IN"
+                truckStatus === "IN"
                   ? " border-green-700 bg-green-700 text-white underline underline-offset-8 outline outline-offset-4 outline-green-700"
                   : "border-2 border-slate-700 text-slate-700 "
               }`}
-              disabled={status === "IN" || isLoading}
+              disabled={truckStatus === "IN" || isLoading}
             >
               {updateLoading ? <LoadingSpinnerButton /> : "IN"}
             </button>
@@ -140,12 +149,12 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
             {/* OUT */}
             <button
               className={`h-12 w-16 rounded  text-center font-bold ${
-                status === "OUT"
+                truckStatus === "OUT"
                   ? "pointer-events-none bg-red-600 text-white underline underline-offset-8 outline outline-offset-4 outline-red-600"
                   : "transform cursor-pointer text-slate-700 outline outline-red-600 transition-transform duration-300 ease-in-out hover:scale-110"
               }`}
               onClick={() => updateStatus("OUT")}
-              disabled={status === "OUT" || isLoading}
+              disabled={truckStatus === "OUT" || isLoading}
             >
               {updateLoading ? <LoadingSpinnerButton /> : "OUT"}
             </button>

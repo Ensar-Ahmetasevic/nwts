@@ -29,7 +29,7 @@
 }
 
 .btnInfo {
-  @apply btn btn-sm rounded-sm border-2 border-blue-400 bg-transparent text-blue-500 hover:border-blue-400 hover:bg-blue-400 hover:text-white;
+  @apply btn btn-sm rounded-sm border-2 border-sky-400 bg-transparent text-sky-500 hover:border-sky-400 hover:bg-sky-400 hover:text-white;
 }
 
 .btnExtend {

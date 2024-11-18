@@ -5,8 +5,13 @@ import { useRouter, usePathname } from "next/navigation";
 
 import Link from "next/link";
 
+import useShippingInformationQuery from "./../../requests/request-shipping-information/use-fetch-shipping-informations-query";
+
 import ModalTruckDataForm from "./../pages/shipping-informations/components/modals/modal-truck-data-form";
 import LoadingSpinnerPage from "./../shared/loading-spiner-page";
+import Indicator from "./../shared/indicator";
+import AlertWarning from "../shared/alert-warning";
+import ContainerProfile from "./../../app/container-profile/page";
 
 export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,9 +20,28 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const { data, isLoading, isError } = useShippingInformationQuery();
+
   useEffect(() => {
     setIsNavigating(false);
   }, [pathname]);
+
+  // Early returns for loading and error states
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinnerPage />
+      </div>
+    );
+  }
+
+  if (!data || isError) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <AlertWarning text={"Error loading shipping informations data"} />
+      </div>
+    );
+  }
 
   const handleClick = (destinationPath) => {
     // Only set navigating to true if we're not already on the destination path
@@ -40,6 +64,15 @@ export default function Navbar() {
       router.push("/shipping-informations");
     }
   };
+
+  // Check if `data` exists and has a `shippingData` array
+  const hasRejectedStatus = data?.shippingData?.some((shipment) =>
+    // Check if any `shipment` has `containerProfiles` and iterate over them
+    shipment.containerProfiles?.some(
+      // Check if any `profile` has `containerStatus` equal to "rejected"
+      (profile) => profile.containerStatus === "rejected",
+    ),
+  );
 
   return (
     <>
@@ -65,18 +98,30 @@ export default function Navbar() {
 
         {/* Shipping Check-In */}
         <div className="dropdown dropdown-hover">
-          <div tabIndex={0} role="button" className="btn w-40">
-            Shipping Check-In
+          <div tabIndex={0} role="button" className="btn flex w-full flex-row">
+            {/* Show Rejected Pointer */}
+            {hasRejectedStatus ? (
+              <span className="flex h-4 w-4">
+                <Indicator />
+              </span>
+            ) : null}
+
+            <samp>Entry Check-In</samp>
           </div>
           <ul className="menu dropdown-content rounded-t-none bg-base-100 p-2 px-1">
             <li>
-              <button onClick={() => openModal()}>Add New</button>
+              <button onClick={() => openModal()}>Add New Entry</button>
             </li>
             <li>
               <Link
                 href="/shipping-informations"
                 onClick={() => handleClick("/shipping-informations")}
               >
+                {hasRejectedStatus ? (
+                  <span className="flex h-4 w-4">
+                    <Indicator />
+                  </span>
+                ) : null}{" "}
                 View All
               </Link>
             </li>

@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 
 export default function TruckDataDetails({ data }) {
   if (!data || !data.shippingData) {
-    return <div>{data?.message || "No data available"}</div>;
+    return <div>{"No data available"}</div>;
   }
 
   // Destructure the necessary data
