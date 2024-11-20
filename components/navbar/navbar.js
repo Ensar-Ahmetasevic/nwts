@@ -11,7 +11,6 @@ import ModalTruckDataForm from "./../pages/shipping-informations/components/moda
 import LoadingSpinnerPage from "./../shared/loading-spiner-page";
 import Indicator from "./../shared/indicator";
 import AlertWarning from "../shared/alert-warning";
-import ContainerProfile from "./../../app/container-profile/page";
 
 export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,6 +73,15 @@ export default function Navbar() {
     ),
   );
 
+  // Check if `data` exists and has a `shippingData` array
+  const hasPendingStatus = data?.shippingData?.some((shipment) =>
+    // Check if any `shipment` has `containerProfiles` and iterate over them
+    shipment.containerProfiles?.some(
+      // Check if any `profile` has `containerStatus` equal to "pending"
+      (profile) => profile.containerStatus === "pending",
+    ),
+  );
+
   return (
     <>
       {/* Add Loading Overlay */}
@@ -102,7 +110,7 @@ export default function Navbar() {
             {/* Show Rejected Pointer */}
             {hasRejectedStatus ? (
               <span className="flex h-4 w-4">
-                <Indicator />
+                <Indicator color="bg-sky-500" />
               </span>
             ) : null}
 
@@ -119,7 +127,7 @@ export default function Navbar() {
               >
                 {hasRejectedStatus ? (
                   <span className="flex h-4 w-4">
-                    <Indicator />
+                    <Indicator color="bg-sky-500" />
                   </span>
                 ) : null}{" "}
                 View All
@@ -139,14 +147,27 @@ export default function Navbar() {
         {/* Pre-Storage */}
         <div className="dropdown dropdown-hover">
           <div tabIndex={0} role="button" className="btn w-40">
-            Pre-storage
+            {/* Show Requests Pointer */}
+            {hasPendingStatus ? (
+              <span className="flex h-4 w-4">
+                <Indicator color="bg-green-400" />
+              </span>
+            ) : null}
+            <span>Pre-storage</span>
           </div>
+
           <ul className="menu dropdown-content w-full rounded-t-none bg-base-100 p-2">
             <li>
               <Link
                 href="/pre-storage"
                 onClick={() => handleClick("/pre-storage")}
               >
+                {/* Show Requests Pointer */}
+                {hasPendingStatus ? (
+                  <span className="flex h-4 w-4">
+                    <Indicator color="bg-green-400" />
+                  </span>
+                ) : null}
                 Capacity & Conditions
               </Link>
             </li>

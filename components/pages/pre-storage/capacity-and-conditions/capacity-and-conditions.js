@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Link from "next/link";
 
+import useShippingInformationQuery from "../../../../requests/request-shipping-information/use-fetch-shipping-informations-query";
+
 import LoadingSpinnerButton from "./../../../shared/loading-spiner-button";
+import Indicator from "./../../../shared/indicator";
+import LoadingSpinnerPage from "../../../shared/loading-spiner-page";
+import AlertWarning from "../../../shared/alert-warning";
 
 // Import dynamic from next/dynamic
 import dynamic from "next/dynamic";
@@ -16,6 +21,41 @@ const CustomPieChart = dynamic(
 
 export default function CapacityAndConditions({ data }) {
   const [isNavigating, setIsNavigating] = useState(false);
+
+  const { data: entryData, isLoading, isError } = useShippingInformationQuery();
+
+  // Early returns for loading and error states
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <LoadingSpinnerPage />
+      </div>
+    );
+  }
+
+  if (!entryData || isError) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <AlertWarning text={"Error loading shipping informations data"} />
+      </div>
+    );
+  }
+
+  /* Helper function for checking if there are pending statuses for a specific hale */
+  const hasPendingStatus = (haleName) => {
+    if (!entryData.shippingData) return false;
+
+    // We only extract M01 or M02 from "Hall M01" or "Hall M02"
+    const shortHaleName = haleName.split(" ")[1];
+
+    return entryData.shippingData.some((shipment) =>
+      shipment.containerProfiles.some(
+        (profile) =>
+          profile.containerStatus === "pending" &&
+          profile.wasteProfile.name === shortHaleName,
+      ),
+    );
+  };
 
   const halesurface = data.surfaceArea;
   const containerFootprint = data.containerFootprint;
@@ -71,10 +111,11 @@ export default function CapacityAndConditions({ data }) {
           </div>
           {/* CTA */}
           <Link
-            className="btn btn-outline btn-warning  mb-5 w-full transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
+            className="btn btn-outline btn-warning mb-5 w-full transition delay-75 duration-200 ease-in-out hover:-translate-y-1 hover:scale-105"
             href={`/pre-storage/${data.id}`}
             onClick={() => handleClick()}
           >
+            {hasPendingStatus(data.name) && <Indicator color="bg-green-400" />}
             {isNavigating ? <LoadingSpinnerButton /> : "DETAILS"}
           </Link>
         </div>

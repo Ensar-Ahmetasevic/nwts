@@ -79,6 +79,8 @@ export default function DetailsShippingData({
             )}
           </div>
         </div>
+
+        {/* Right side of the page Truck Details and warning message */}
         <div className="flex w-1/2 flex-col space-y-6">
           <div>
             <TruckDataDetails data={data} />

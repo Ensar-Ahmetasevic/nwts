@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 
 import useWasteProfileQuery from "../../../../../requests/request-container-profile/request-waste-profile/use-fetch-waste-profile-query,";
 import useLocationOriginQuery from "../../../../../requests/request-container-profile/request-location-origin/use-fetch-location-origin-query";
-import useContainerTypeQuery from "../../../../../requests/request-container-profile/request-container-type/use-fetch-container-type-query";
 import useUpdateContainerProfileMutation from "./../../../../../requests/request-container-profile/use-update-container-profile-mutation";
 import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
 
@@ -13,17 +12,15 @@ export default function ModalContainerProfilUpdate({
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
+
+  const { quantity, locationOrigin, wasteProfile, id } =
+    modalContainerProfilData;
 
   const { data: locationOriginData } = useLocationOriginQuery();
 
   const { data: wasteProfileData } = useWasteProfileQuery();
-
-  const { data: containerTypeData } = useContainerTypeQuery();
-
-  const updateContainerProfileMutation = useUpdateContainerProfileMutation();
 
   const {
     mutateAsync: updateMutateAsync,
@@ -31,9 +28,6 @@ export default function ModalContainerProfilUpdate({
     isPending: updateLoading,
     isError: updateError,
   } = useUpdateContainerProfileMutation();
-
-  const { quantity, locationOrigin, wasteProfile, id } =
-    modalContainerProfilData;
 
   const isFormSubmit = async (formData) => {
     try {
@@ -94,11 +88,18 @@ export default function ModalContainerProfilUpdate({
               <select
                 className="select select-bordered select-md px-2"
                 id="location-origin"
-                defaultValue={locationOrigin.id}
+                defaultValue={locationOrigin?.id}
                 {...register("locationOrigin", {
                   required: "Location origin is required",
                 })}
               >
+                <option
+                  value={locationOrigin?.id}
+                  defaultValue={locationOrigin?.id}
+                >
+                  {locationOrigin?.name}
+                </option>
+
                 {locationOriginData?.map((origin) => (
                   <option key={origin.id} value={origin.id}>
                     {origin.name}
@@ -120,11 +121,18 @@ export default function ModalContainerProfilUpdate({
               <select
                 className="select select-bordered select-md px-2"
                 id="waste-profile"
-                defaultValue={wasteProfile.id}
+                defaultValue={wasteProfile?.id}
                 {...register("wasteProfile", {
                   required: "Waste profile is required",
                 })}
               >
+                <option
+                  value={wasteProfile?.id}
+                  defaultValue={wasteProfile?.id}
+                >
+                  {wasteProfile?.name}
+                </option>
+
                 {wasteProfileData?.map((waste) => (
                   <option key={waste.id} value={waste.id}>
                     {waste.name}
