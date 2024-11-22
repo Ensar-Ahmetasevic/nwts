@@ -28,6 +28,10 @@ function useDeleteContainerProfileMutations() {
       queryClient.invalidateQueries({
         queryKey: ["shippingInformationIDQueryKey"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["shippingInformationQueryKey"],
+      });
+
       // Toast a success message
       toast.success("Container Profile data DELETED successfully.", {
         autoClose: 2000,

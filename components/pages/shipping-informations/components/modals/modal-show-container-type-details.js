@@ -58,7 +58,7 @@ export default function ModalShowContainerTypeDetails({
           <div className="modal-action">
             <label
               htmlFor="modal_container_details"
-              className="btn"
+              className="btnCancel"
               onClick={closeModal}
             >
               Close

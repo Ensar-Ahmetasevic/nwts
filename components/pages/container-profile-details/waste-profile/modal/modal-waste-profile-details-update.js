@@ -319,7 +319,7 @@ export default function ModalWasteProfileDetailsUpdate({
 
             <div className="modal-action">
               <form method="dialog">
-                <button className="btn" onClick={closeModal}>
+                <button className="btnCancel" onClick={closeModal}>
                   Close
                 </button>
               </form>

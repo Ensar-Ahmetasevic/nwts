@@ -183,7 +183,7 @@ export default function ModalPreStorageConditionsForm({
 
             <div className="modal-action">
               <button
-                className="btn"
+                className="btnCancel"
                 onClick={() => {
                   closeModal();
                   reset();

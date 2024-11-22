@@ -194,7 +194,7 @@ export default function ModalPreStorageCapacityForm({
 
             <div className="modal-action">
               <button
-                className="btn"
+                className="btnCancel"
                 onClick={() => {
                   closeModal(), reset();
                 }}

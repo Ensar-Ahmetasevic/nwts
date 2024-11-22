@@ -125,7 +125,7 @@ export default function ModalTruckUpdate({ modalTruckFormData, closeModal }) {
           <div className="modal-action">
             <label
               htmlFor="modal_truck_data"
-              className="btn"
+              className="btnCancel"
               onClick={() => closeModal()}
             >
               Cancel

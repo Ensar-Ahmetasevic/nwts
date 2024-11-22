@@ -10,12 +10,16 @@ import { MdDeleteSweep } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { TbListDetails } from "react-icons/tb";
 import LoadingSpinnerButton from "./../../../shared/loading-spiner-button";
+import ConfirmDelete from "./../../../shared/confirmDelete";
 
 export default function ShowContainerDetails({ data }) {
   const [modalContenData, setModalContentData] = useState(null);
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [title, setTitle] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const { quantity, locationOrigin, wasteProfile, containerStatus, id } = data;
 
   //Delete data
   const {
@@ -23,12 +27,16 @@ export default function ShowContainerDetails({ data }) {
     isPending: deleteIsLoading,
   } = useDeleteContainerProfileMutations();
 
-  //DELETE MUTATION;
-  const deleteHandler = async (id) => {
-    await deleteContainerProfileMutations(id);
+  //Open Delete Confirmation Modal
+  const handleDelete = async () => {
+    setShowDeleteConfirm(true);
   };
 
-  const { quantity, locationOrigin, wasteProfile, containerStatus, id } = data;
+  //Confirm Delete
+  const confirmDelete = async () => {
+    await deleteContainerProfileMutations(id);
+    setShowDeleteConfirm(false);
+  };
 
   const containerDetails = [
     {
@@ -126,7 +134,7 @@ export default function ShowContainerDetails({ data }) {
                 <div className="tooltip" data-tip="Delete">
                   <button
                     className="btnDelete flex items-center"
-                    onClick={() => deleteHandler(id)}
+                    onClick={() => handleDelete()}
                     disabled={deleteIsLoading}
                   >
                     {deleteIsLoading ? (
@@ -140,6 +148,14 @@ export default function ShowContainerDetails({ data }) {
             ) : null}
           </ul>
         </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirm && (
+          <ConfirmDelete
+            setShowDeleteConfirm={setShowDeleteConfirm}
+            confirmDelete={confirmDelete}
+          />
+        )}
 
         {openModalDetails ? (
           <ModalShowContainerDetails

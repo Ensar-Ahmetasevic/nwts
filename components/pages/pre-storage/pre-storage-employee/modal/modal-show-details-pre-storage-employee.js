@@ -60,7 +60,7 @@ export default function ModalShowDetailsPreStorageEmployee({
           <div className="modal-action">
             <label
               htmlFor="modal_details_pre_storage_employee"
-              className="btn"
+              className="btnCancel"
               onClick={closeModal}
             >
               Close

@@ -27,6 +27,10 @@ function useCreateContainerProfileMutation() {
         queryKey: ["shippingInformationIDQueryKey"],
       });
 
+      queryClient.invalidateQueries({
+        queryKey: ["shippingInformationQueryKey"],
+      });
+
       // Toast a success message
       toast.success("Container Profile data created successfully.", {
         autoClose: 2000,

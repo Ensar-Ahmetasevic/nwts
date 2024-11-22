@@ -34,7 +34,7 @@ export default function ModalShowLocationOriginDetails({
           <div className="modal-action">
             <label
               htmlFor="modal_origin_details"
-              className="btn"
+              className="btnCancel"
               onClick={closeModal}
             >
               Close

@@ -18,7 +18,7 @@ export default function ModalContainerForm({ closeModal, shippingID }) {
           <div className="modal-action">
             <label
               htmlFor="modal_container_form"
-              className="btn"
+              className="btnCancel"
               onClick={closeModal}
             >
               Cancel

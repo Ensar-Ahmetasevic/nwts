@@ -12,9 +12,11 @@ import useDeleteShippingInformationsMutations from "./../../../../requests/reque
 import useUpdateShippingStatusMutation from "./../../../../requests/request-shipping-information/use-update-shipping-status-mutation";
 
 import LoadingSpinnerButton from "./../../../shared/loading-spiner-button";
+import ConfirmDelete from "./../../../shared/confirmDelete";
 
 export default function TruckData({ data, isLoading, error, shippingID }) {
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const router = useRouter();
   // Delete data
@@ -72,12 +74,18 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
     updateMutateAsync(shippingStatusData);
   };
 
-  // Delete Truck Data
+  //Open Delete Confirmation Modal
   const handleDelete = async () => {
+    setShowDeleteConfirm(true);
+  };
+
+  //Confirm Delete
+  const confirmDelete = async () => {
     await deleteMutateAsync(data.shippingData.id);
+    setShowDeleteConfirm(false);
 
     if (!successfullyDeleted) {
-      router.push("/shipping-informations"); // Redirect after successfully deleting
+      router.push("/shipping-informations");
     }
   };
 
@@ -162,6 +170,15 @@ export default function TruckData({ data, isLoading, error, shippingID }) {
         </div>
       </div>
 
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <ConfirmDelete
+          setShowDeleteConfirm={setShowDeleteConfirm}
+          confirmDelete={confirmDelete}
+        />
+      )}
+
+      {/* Update Truck Data Modal */}
       {openModalUpdate ? (
         <ModalTruckUpdate
           closeModal={() => setOpenModalUpdate(false)}

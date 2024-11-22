@@ -158,7 +158,11 @@ export default function ModalContainerProfilUpdate({
           </form>
 
           <div className="modal-action">
-            <label htmlFor="update_modal" className="btn" onClick={closeModal}>
+            <label
+              htmlFor="update_modal"
+              className="btnCancel"
+              onClick={closeModal}
+            >
               Cancel
             </label>
           </div>

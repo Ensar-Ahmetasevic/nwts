@@ -58,7 +58,7 @@ export default function ModalShowDetailsPreStorageLocation({
           <div className="modal-action">
             <label
               htmlFor="modal_details_pre_storage_location"
-              className="btn"
+              className="btnCancel"
               onClick={closeModal}
             >
               Close

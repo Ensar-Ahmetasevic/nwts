@@ -83,7 +83,7 @@ export default function ModalShowWasteProfileDetails({
           <div className="modal-action">
             <label
               htmlFor="modal_waste_details"
-              className="btn"
+              className="btnCancel"
               onClick={closeModal}
             >
               Close
