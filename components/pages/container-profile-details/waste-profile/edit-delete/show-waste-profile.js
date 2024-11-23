@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import useDeleteWasteProfileMutation from "./../../../../../requests/request-container-profile/request-waste-profile/use-delete-waste-profile-mutation";
+import ConfirmDelete from "../../../../shared/confirmDelete";
 
 import ModalShowWasteProfileDetails from "./../modal/modal-show-waste-profile-details";
 import ModalWasteProfileDetailsUpdate from "./../modal/modal-waste-profile-details-update";
@@ -12,8 +14,29 @@ import { MdOutlineExpandMore } from "react-icons/md";
 export default function ShowWasteProfile({ wasteData }) {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const deleteWasteProfileMutation = useDeleteWasteProfileMutation();
+  const router = useRouter();
+
+  const { mutateAsync: deleteMutateAsync } = useDeleteWasteProfileMutation();
+
+  // await deleteMutateAsync.mutateAsync(wasteData.id);
+
+  //Open Delete Confirmation Modal
+  const handleDelete = async () => {
+    setShowDeleteConfirm(true);
+  };
+
+  //Confirm Delete
+  const confirmDelete = async () => {
+    try {
+      await deleteMutateAsync(wasteData.id);
+      setShowDeleteConfirm(false);
+    } catch (error) {
+      setShowDeleteConfirm(false);
+      router.refresh();
+    }
+  };
 
   return (
     <>
@@ -22,6 +45,7 @@ export default function ShowWasteProfile({ wasteData }) {
         <th></th>
         <td>{wasteData?.name}</td>
         <td>
+          {/* Details */}
           <div className="tooltip" data-tip="Details">
             <label
               htmlFor="modal_waste_details"
@@ -32,6 +56,7 @@ export default function ShowWasteProfile({ wasteData }) {
             </label>
           </div>
         </td>
+        {/* Edit */}
         <td>
           <div className="tooltip" data-tip="Edit">
             <button
@@ -42,13 +67,12 @@ export default function ShowWasteProfile({ wasteData }) {
             </button>
           </div>
         </td>
+        {/* Delete */}
         <td>
           <div className="tooltip" data-tip="Delete">
             <label
               className="btnDelete flex items-center"
-              onClick={() => {
-                deleteWasteProfileMutation.mutateAsync(wasteData.id);
-              }}
+              onClick={() => handleDelete()}
             >
               <MdDeleteSweep />
             </label>
@@ -71,6 +95,14 @@ export default function ShowWasteProfile({ wasteData }) {
           modalContainerTypeData={wasteData}
         />
       ) : null}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <ConfirmDelete
+          setShowDeleteConfirm={setShowDeleteConfirm}
+          confirmDelete={confirmDelete}
+        />
+      )}
     </>
   );
 }

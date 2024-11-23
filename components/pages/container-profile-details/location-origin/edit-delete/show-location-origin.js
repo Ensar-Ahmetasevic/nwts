@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import useDeleteLocationOriginMutation from "./../../../../../requests/request-container-profile/request-location-origin/use-delete-location-origin-mutation";
 
 import ModalLocationOriginDetailsUpdate from "./../modal/modal-location-origin-details-update";
 import ModalShowLocationOriginDetails from "./../modal/modal-show-location-origin-details";
+import ConfirmDelete from "../../../../shared/confirmDelete";
 
 import { MdDeleteSweep } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
@@ -12,8 +14,27 @@ import { MdOutlineExpandMore } from "react-icons/md";
 export default function ShowLocationOrigin({ originData }) {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const deleteLocationOriginMutation = useDeleteLocationOriginMutation();
+  const router = useRouter();
+
+  const { mutateAsync: deleteMutateAsync } = useDeleteLocationOriginMutation();
+
+  //Open Delete Confirmation Modal
+  const handleDelete = async () => {
+    setShowDeleteConfirm(true);
+  };
+
+  //Confirm Delete
+  const confirmDelete = async () => {
+    try {
+      await deleteMutateAsync(originData.id);
+      setShowDeleteConfirm(false);
+    } catch (error) {
+      setShowDeleteConfirm(false);
+      router.refresh();
+    }
+  };
 
   return (
     <>
@@ -21,6 +42,7 @@ export default function ShowLocationOrigin({ originData }) {
       <tr>
         <th></th>
         <td>{originData?.name}</td>
+        {/* Details */}
         <td>
           <div className="tooltip" data-tip="Details">
             <label
@@ -32,6 +54,7 @@ export default function ShowLocationOrigin({ originData }) {
             </label>
           </div>
         </td>
+        {/* Edit */}
         <td>
           <div className="tooltip" data-tip="Edit">
             <button
@@ -42,13 +65,12 @@ export default function ShowLocationOrigin({ originData }) {
             </button>
           </div>
         </td>
+        {/* Delete */}
         <td>
           <div className="tooltip" data-tip="Delete">
             <label
               className="btnDelete flex items-center"
-              onClick={() => {
-                deleteLocationOriginMutation.mutateAsync(originData.id);
-              }}
+              onClick={() => handleDelete()}
             >
               <MdDeleteSweep />
             </label>
@@ -71,6 +93,14 @@ export default function ShowLocationOrigin({ originData }) {
           modalContainerTypeData={originData}
         />
       ) : null}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <ConfirmDelete
+          setShowDeleteConfirm={setShowDeleteConfirm}
+          confirmDelete={confirmDelete}
+        />
+      )}
     </>
   );
 }

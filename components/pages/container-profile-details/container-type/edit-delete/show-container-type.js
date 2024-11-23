@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import useDeleteContainerTypeMutation from "./../../../../../requests/request-container-profile/request-container-type/use-delete-container-type-mutation";
+import ConfirmDelete from "../../../../shared/confirmDelete";
 
 import ModalShowContainerTypeDetails from "./../modal/modal-show-container-type-details";
 import ModalContainerTypeDetailsUpdate from "./../modal/modal-container-type-details-update";
@@ -12,8 +14,27 @@ import { MdOutlineExpandMore } from "react-icons/md";
 export default function ShowContainerType({ containerData }) {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const deleteContainerTypeMutation = useDeleteContainerTypeMutation();
+  const router = useRouter();
+
+  const { mutateAsync: deleteMutateAsync } = useDeleteContainerTypeMutation();
+
+  //Open Delete Confirmation Modal
+  const handleDelete = async () => {
+    setShowDeleteConfirm(true);
+  };
+
+  //Confirm Delete
+  const confirmDelete = async () => {
+    try {
+      await deleteMutateAsync(containerData.id);
+      setShowDeleteConfirm(false);
+    } catch (error) {
+      setShowDeleteConfirm(false);
+      router.refresh();
+    }
+  };
 
   return (
     <>
@@ -22,6 +43,7 @@ export default function ShowContainerType({ containerData }) {
         <th></th>
         <td>{containerData?.name}</td>
         <td>
+          {/* Details */}
           <div className="tooltip" data-tip="Details">
             <label
               htmlFor="modal_container_details"
@@ -32,6 +54,7 @@ export default function ShowContainerType({ containerData }) {
             </label>
           </div>
         </td>
+        {/* Edit */}
         <td>
           <div className="tooltip" data-tip="Edit">
             <button
@@ -46,16 +69,21 @@ export default function ShowContainerType({ containerData }) {
           <div className="tooltip" data-tip="Delete">
             <label
               className="btnDelete flex items-center"
-              onClick={() => {
-                console.log(containerData.id),
-                  deleteContainerTypeMutation.mutateAsync(containerData.id);
-              }}
+              onClick={() => handleDelete()}
             >
               <MdDeleteSweep />
             </label>
           </div>
         </td>
       </tr>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <ConfirmDelete
+          setShowDeleteConfirm={setShowDeleteConfirm}
+          confirmDelete={confirmDelete}
+        />
+      )}
 
       {openModalDetails ? (
         <ModalShowContainerTypeDetails

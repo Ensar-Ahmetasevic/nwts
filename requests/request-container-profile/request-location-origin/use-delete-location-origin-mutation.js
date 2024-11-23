@@ -16,8 +16,8 @@ export default function useDeleteLocationOriginMutation() {
       return response.data;
     } catch (error) {
       console.error("Failed to DELETE Location Origin data: ", error);
-      toast.error(`Error: ${error.response.data.message}`);
-      throw error; // Throw the error to trigger onError callback
+      toast.error("Failed to delete location origin.");
+      throw error;
     }
   };
 
