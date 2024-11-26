@@ -146,8 +146,8 @@ export default function Navbar() {
 
         {/* Pre-Storage */}
         <div className="dropdown dropdown-hover">
+          {/* Show Requests Pointer */}
           <div tabIndex={0} role="button" className="btn w-40">
-            {/* Show Requests Pointer */}
             {hasPendingStatus ? (
               <span className="flex h-4 w-4">
                 <Indicator color="bg-green-400" />
@@ -184,21 +184,37 @@ export default function Navbar() {
 
         {/* Final-Storage */}
         <div className="dropdown dropdown-hover">
+          {/* Show Requests Pointer */}
           <div tabIndex={0} role="button" className="btn w-40">
-            Final-Storage
+            {/*    {hasPendingStatus ? (
+              <span className="flex h-4 w-4">
+                <Indicator color="bg-green-400" />
+              </span>
+            ) : null} */}
+            <span>Final-storage</span>
           </div>
-          <ul className="menu dropdown-content rounded-t-none bg-base-100 p-2">
-            <li>
-              <button onClick={() => console.log("Add final-storage")}>
-                Add New
-              </button>
-            </li>
+
+          <ul className="menu dropdown-content w-full rounded-t-none bg-base-100 p-2">
             <li>
               <Link
-                href="/final-storage"
-                onClick={() => handleClick("/final-storage")}
+                href="/pre-storage"
+                onClick={() => alert("Final-Storage Capacity & Conditions")}
               >
-                View All
+                {/* Show Requests Pointer */}
+                {/*  {hasPendingStatus ? (
+                  <span className="flex h-4 w-4">
+                    <Indicator color="bg-green-400" />
+                  </span>
+                ) : null} */}
+                Capacity & Conditions
+              </Link>
+            </li>
+            <li className="bg-base-200">
+              <Link
+                href="/pre-storage/setup"
+                onClick={() => alert("Final-Storage Setup")}
+              >
+                Final-Storage Setup
               </Link>
             </li>
           </ul>

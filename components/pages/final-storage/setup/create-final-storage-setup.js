@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import PreStorageSetupDynamicFormDisplay from "./pre-storage-setup-dynamic-form-display";
 import PreStorageEmployeeDropdown from "./pre-storage-employee/pre-storage-employee-dropdown";
 import PreStorageLocationDropdown from "./pre-storage-locatino/pre-storage-location-dropdown";
 
-export default function CreatePreStorageSetup() {
+export default function CreateFinalStorageSetup() {
   const [activeButton, setActiveButton] = useState(null);
 
   const handleButtonClick = (buttonsData) => {
@@ -13,12 +14,12 @@ export default function CreatePreStorageSetup() {
   };
 
   return (
-    <section id="preStorageSetup">
+    <section id="finalStorageSetup">
       <div className="container mx-auto flex flex-col items-center pt-10">
         {/* Info Card */}
         <div className="mb-8 w-full max-w-3xl rounded-lg bg-gradient-to-r from-base-300 to-base-200 p-8 shadow-lg">
           <h2 className="mb-4 text-center text-2xl font-bold text-primary">
-            Pre-Storage Setup Guide
+            Final-Storage Setup Guide
           </h2>
 
           <div className="space-y-4 text-center">
@@ -38,7 +39,7 @@ export default function CreatePreStorageSetup() {
                 />
               </svg>
               <p className="text-lg">
-                Each Pre-Storage requires two key components:
+                Each Final-Storage requires two key components:
               </p>
             </div>
 

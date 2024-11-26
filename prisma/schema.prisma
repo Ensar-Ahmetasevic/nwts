@@ -146,35 +146,26 @@ model PreStorageConditions {
 
 // Step 3 "Final Storage of waste"
 
+model FinalStorageLocation {
+  id                     Int                     @id @default(autoincrement())
+  roomName               String
+  containerType          String
+  surfaceArea            Int
+  depth                  Int
+  finalStorageEntrys     FinalStorageEntry[]
+  finalStorageConditions FinalStorageCondition[]
+}
+
 model FinalStorageEntry {
   id                     Int                             @id @default(autoincrement())
   createdAt              DateTime                        @default(now())
   quantity               Int
   status                 String                          @default("pending")
   // Statuts: "pending", "in transport", "accepted", "rejected".
-  FinalStorageTypeId     Int                             @unique
-  FinalStorageType       FinalStorageType                @relation(fields: [FinalStorageTypeId], references: [id], onDelete: Cascade)
   FinalStorageLocationId Int                             @unique
   FinalStorageLocation   FinalStorageLocation            @relation(fields: [FinalStorageLocationId], references: [id], onDelete: Cascade)
   finalStorageEmployeeId Int                             @unique
   finalStorageEmployee   FinalStorageResponsibleEmployee @relation(fields: [finalStorageEmployeeId], references: [id], onDelete: Cascade)
-}
-
-model FinalStorageType {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  surfaceArea        Int
-  storageFor         String
-  finalStorageEntrys FinalStorageEntry[]
-}
-
-model FinalStorageLocation {
-  id                 Int                 @id @default(autoincrement())
-  name               String
-  level              Int
-  delepth            Int
-  roomName           String
-  finalStorageEntrys FinalStorageEntry[]
 }
 
 model FinalStorageResponsibleEmployee {
@@ -190,11 +181,13 @@ model FinalStorageResponsibleEmployee {
 
 // Step 3.1 Storage Conditions
 
-model FinalStorageConditions {
-  id                    Int      @id @default(autoincrement())
-  createdAt             DateTime @default(now())
-  storageTemperature    Float
-  storageRadiationLevel Float
-  storageHumidity       Float
-  storagePressure       Float
+model FinalStorageCondition {
+  id                     Int                  @id @default(autoincrement())
+  createdAt              DateTime             @default(now())
+  storageTemperature     Float
+  storageRadiationLevel  Float
+  storageHumidity        Float
+  storagePressure        Float
+  finalStorageLocationId Int
+  finalStorageLocation   FinalStorageLocation @relation(fields: [finalStorageLocationId], references: [id], onDelete: Cascade)
 }
