@@ -118,15 +118,16 @@ model PreStorageEntry {
 }
 
 model PreStorageResponsibleEmployee {
-  id                   Int                    @id @default(autoincrement())
+  id                   Int                      @id @default(autoincrement())
   name                 String
   surname              String
   dateOfBirth          DateTime
   address              String
   qualifications       String
-  safetyTraining       Boolean                @default(false)
+  safetyTraining       Boolean                  @default(false)
   preStorageEntry      PreStorageEntry[]
   PreStorageConditions PreStorageConditions[]
+  approvedTransfers    StorageTransferRequest[]
 }
 
 // Step 2.1 Pre-Storage Conditions
@@ -169,7 +170,7 @@ model FinalStorageEntry {
 }
 
 model FinalStorageResponsibleEmployee {
-  id                 Int                 @id @default(autoincrement())
+  id                 Int                      @id @default(autoincrement())
   name               String
   surname            String
   dateOfBirth        Int
@@ -177,6 +178,7 @@ model FinalStorageResponsibleEmployee {
   position           String
   safetyTraining     Boolean
   finalStorageEntrys FinalStorageEntry[]
+  approvedTransfers  StorageTransferRequest[]
 }
 
 // Step 3.1 Storage Conditions
@@ -190,4 +192,27 @@ model FinalStorageCondition {
   storagePressure        Float
   finalStorageLocationId Int
   finalStorageLocation   FinalStorageLocation @relation(fields: [finalStorageLocationId], references: [id], onDelete: Cascade)
+}
+
+model StorageTransferRequest {
+  id                Int      @id @default(autoincrement())
+  createdAt         DateTime @default(now())
+  status            String   @default("pending")
+  requestedQuantity Int
+  containerType     String
+
+  // Location references
+  requestedByRoom       String
+  requestedByEmployeeId Int
+  approvedByEmployeeId  Int?
+  requestedByEmployee   FinalStorageResponsibleEmployee @relation(fields: [requestedByEmployeeId], references: [id])
+  approvedByEmployee    PreStorageResponsibleEmployee?  @relation(fields: [approvedByEmployeeId], references: [id])
+
+  // Tracking dates
+  approvedAt         DateTime?
+  transportStartedAt DateTime?
+  completedAt        DateTime?
+
+  notes         String?
+  responseNotes String?
 }

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-import PreStorageSetupDynamicFormDisplay from "./pre-storage-setup-dynamic-form-display";
-import PreStorageEmployeeDropdown from "./pre-storage-employee/pre-storage-employee-dropdown";
-import PreStorageLocationDropdown from "./pre-storage-locatino/pre-storage-location-dropdown";
+import FinalStorageSetupDynamicFormDisplay from "./final-storage-setup-dynamic-form-display";
+import FinalStorageEmployeeDropdown from "./final-storage-employee/final-storage-employee-dropdown";
+import FinalStorageLocationDropdown from "./final-storage-locatino/final-storage-location-dropdown";
 
 export default function CreateFinalStorageSetup() {
   const [activeButton, setActiveButton] = useState(null);
@@ -49,7 +49,7 @@ export default function CreateFinalStorageSetup() {
                   <span className="rounded-full bg-primary px-3 py-1 text-sm text-white">
                     1
                   </span>
-                  <p className="font-semibold">Pre-Storage Location</p>
+                  <p className="font-semibold">Final-Storage Location</p>
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="rounded-full bg-primary px-3 py-1 text-sm text-white">
@@ -61,7 +61,7 @@ export default function CreateFinalStorageSetup() {
             </div>
 
             <p className="mt-4 text-sm text-base-content/80">
-              Create data for both components to enable Pre-Storage Profile
+              Create data for both components to enable Final-Storage Profile
               creation
             </p>
           </div>
@@ -69,18 +69,18 @@ export default function CreateFinalStorageSetup() {
 
         {/* Dropdown Buttons */}
         <div className="m-6 flex flex-row justify-center space-x-3">
-          <PreStorageLocationDropdown
+          <FinalStorageLocationDropdown
             activeButton={activeButton}
             OnActiveButton={handleButtonClick}
           />
-          <PreStorageEmployeeDropdown
+          <FinalStorageEmployeeDropdown
             activeButton={activeButton}
             OnActiveButton={handleButtonClick}
           />
         </div>
 
         <div>
-          <PreStorageSetupDynamicFormDisplay
+          <FinalStorageSetupDynamicFormDisplay
             activeButton={activeButton}
             setActiveButton={setActiveButton}
           />

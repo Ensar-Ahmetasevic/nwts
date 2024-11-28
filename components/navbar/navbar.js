@@ -27,11 +27,7 @@ export default function Navbar() {
 
   // Early returns for loading and error states
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <LoadingSpinnerPage />
-      </div>
-    );
+    return <LoadingSpinnerPage />;
   }
 
   if (!data || isError) {
@@ -85,13 +81,7 @@ export default function Navbar() {
   return (
     <>
       {/* Add Loading Overlay */}
-      {isNavigating && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="rounded-lg bg-base-100 p-8">
-            <LoadingSpinnerPage />
-          </div>
-        </div>
-      )}
+      {isNavigating && <LoadingSpinnerPage />}
 
       <nav className="navbar space-x-3 bg-base-100 px-12">
         <div className="flex-1">
@@ -210,12 +200,7 @@ export default function Navbar() {
               </Link>
             </li>
             <li className="bg-base-200">
-              <Link
-                href="/pre-storage/setup"
-                onClick={() => alert("Final-Storage Setup")}
-              >
-                Final-Storage Setup
-              </Link>
+              <Link href="/final-storage/setup">Final-Storage Setup</Link>
             </li>
           </ul>
         </div>

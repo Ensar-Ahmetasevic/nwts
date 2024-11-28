@@ -11,11 +11,7 @@ export default function PreStorage() {
   const { data, isLoading, isError } = usePreStorageLocationQuery();
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <LoadingSpinnerPage />
-      </div>
-    );
+    return <LoadingSpinnerPage />;
   }
 
   if (isError || !data || data.length === 0) {
@@ -28,7 +24,7 @@ export default function PreStorage() {
 
   // Reverse the data array to change the rendering order
   const reversedData = data.slice().reverse();
- 
+
   // data.slice() creates a new array copy so that we don't mutate the original data array.
   // data.reverse() reverses the order of the elements in the new array.
 

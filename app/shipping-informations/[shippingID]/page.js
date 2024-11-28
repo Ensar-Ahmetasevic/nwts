@@ -13,11 +13,7 @@ export default function ShippingDetails({ params }) {
     useShippingInformationByIdQuery(shippingID);
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <LoadingSpinnerPage />
-      </div>
-    );
+    return <LoadingSpinnerPage />;
   }
 
   if (!data || error) {

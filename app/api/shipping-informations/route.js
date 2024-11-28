@@ -70,7 +70,7 @@ export async function GET(req, res) {
   } catch (error) {
     return NextResponse.json(
       {
-        message: "Failed to fetch Shipping Information Data.",
+        message: "Failed to fetch Shipping Information Data.222",
         error: error.message,
       },
       { status: 500 },

@@ -13,11 +13,7 @@ export default function DisplayPreStorageData({ params }) {
   const { data, isLoading, isError } = usePreStorageByIdQuery(preStorageID);
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <LoadingSpinnerPage />
-      </div>
-    );
+    return <LoadingSpinnerPage />;
   }
 
   if (isError || !data || !data.preStorageDataById) {
