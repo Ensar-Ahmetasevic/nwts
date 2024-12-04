@@ -16,6 +16,8 @@ export async function POST(req, res) {
     safetyTraining,
   } = formData;
 
+
+
   if (
     !name ||
     !surname ||
@@ -27,7 +29,7 @@ export async function POST(req, res) {
   ) {
     return NextResponse.json(
       {
-        message: "Backend: All fields are required",
+        message: "All fields are required",
       },
       { status: 400 },
     );

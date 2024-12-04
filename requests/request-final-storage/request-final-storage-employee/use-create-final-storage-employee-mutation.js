@@ -15,7 +15,7 @@ export default function useCreateFinalStorageEmployeeMutation() {
       return response;
     } catch (error) {
       console.error("Failed to create new Final-Storage Employee", error);
-      toast.error(`Error: ${error}`);
+      toast.error(`Error: ${error.response.data.message}`);
       throw error;
     }
   };

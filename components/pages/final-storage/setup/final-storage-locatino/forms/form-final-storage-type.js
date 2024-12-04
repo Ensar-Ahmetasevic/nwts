@@ -17,26 +17,23 @@ export default function FormFinalStorageLocation({ OnCancel }) {
     name,
     surfaceArea,
     containerFootprint,
+    depth,
     containerType,
-    wasteProfile,
-    finalStorageFor,
   }) {
     // Trim the values before sending them
     const trimmedName = name.trim();
-    const trimmedFinalStorageFor = finalStorageFor.trim();
     const trimmedContainerType = containerType.trim();
-    const trimmedWasteProfile = wasteProfile.trim();
     const surfaceAreaNumber = parseInt(surfaceArea);
     const containerFootprintNumber = parseInt(containerFootprint);
+    const depthNumber = parseInt(depth);
 
     // Create the formData object with trimmed values
     const formData = {
       name: trimmedName,
       surfaceArea: surfaceAreaNumber,
       containerType: trimmedContainerType,
-      wasteProfile: trimmedWasteProfile,
-      finalStorageFor: trimmedFinalStorageFor,
       containerFootprint: containerFootprintNumber,
+      depth: depthNumber,
     };
     createFinalStorageLocationMutation.mutateAsync({ formData });
 
@@ -93,26 +90,22 @@ export default function FormFinalStorageLocation({ OnCancel }) {
               )}
             </div>
 
-            {/* Container Footprint  */}
+            {/* Depth  */}
             <div className="flex w-64 flex-col space-y-2">
-              <label className="text-left text-sm">
-                {"Container Footprint (m²)"}:
-              </label>
+              <label className="text-left text-sm">{"Depth (m)"}:</label>
               <input
                 className="input input-md input-bordered px-2"
                 type="number"
                 step="1" // Restrict to whole numbers
                 min="1" // Prevent 0 or negative values
                 placeholder="Type here ..."
-                {...register("containerFootprint", {
+                {...register("depth", {
                   required: "Please enter a valid positive number",
                 })}
               />
 
-              {errors.surfaceArea && (
-                <p className="text-sm text-red-500">
-                  {errors.surfaceArea.message}
-                </p>
+              {errors.depth && (
+                <p className="text-sm text-red-500">{errors.depth.message}</p>
               )}
             </div>
 
@@ -135,44 +128,25 @@ export default function FormFinalStorageLocation({ OnCancel }) {
               )}
             </div>
 
-            {/*   Waste Profile
-             */}
-            <div className="flex flex-col space-y-2">
-              <label className="text-left text-sm">Waste Profile:</label>
+            {/* Container Footprint  */}
+            <div className="flex w-64 flex-col space-y-2">
+              <label className="text-left text-sm">
+                {"Container Footprint (m²)"}:
+              </label>
               <input
                 className="input input-md input-bordered px-2"
-                type="text"
+                type="number"
+                step="1" // Restrict to whole numbers
+                min="1" // Prevent 0 or negative values
                 placeholder="Type here ..."
-                {...register("wasteProfile", {
-                  required: "Waste profile is required",
+                {...register("containerFootprint", {
+                  required: "Please enter a valid positive number",
                 })}
               />
 
-              {errors.wasteProfile && (
+              {errors.surfaceArea && (
                 <p className="text-sm text-red-500">
-                  {errors.wasteProfile.message}
-                </p>
-              )}
-            </div>
-
-            {/* Final-Storage For */}
-
-            <div className="flex w-64 flex-col space-y-2">
-              <label className="text-left text-sm">Final-Storage For:</label>
-              <textarea
-                className="textarea textarea-bordered"
-                rows={4}
-                cols={50}
-                type="text"
-                placeholder="Radioactive waste from nuclear facilities ..."
-                {...register("finalStorageFor", {
-                  required: "FinalStorage description is required",
-                })}
-              />
-              {errors.finalStorageFor && (
-                <p className="text-sm text-red-500">
-                  {" "}
-                  {errors.finalStorageFor.message}{" "}
+                  {errors.surfaceArea.message}
                 </p>
               )}
             </div>

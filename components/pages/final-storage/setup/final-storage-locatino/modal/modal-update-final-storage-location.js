@@ -14,15 +14,8 @@ export default function ModalUpdateFinalStorageLocation({
     document.getElementById("modal_update_final_storage_location").showModal();
   }, [modalDataFinalStorageLocation]);
 
-  const {
-    name,
-    surfaceArea,
-    containerFootprint,
-    finalStorageFor,
-    containerType,
-    wasteProfile,
-    id,
-  } = modalDataFinalStorageLocation;
+  const { id, name, surfaceArea, containerFootprint, depth, containerType } =
+    modalDataFinalStorageLocation;
 
   const {
     register,
@@ -31,9 +24,9 @@ export default function ModalUpdateFinalStorageLocation({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      surfaceArea: surfaceArea,
+      surfaceArea: parseInt(surfaceArea),
       containerType: containerType,
-      wasteProfile: wasteProfile,
+      depth: parseInt(depth),
       containerFootprint: parseInt(containerFootprint),
     },
   });
@@ -151,41 +144,22 @@ export default function ModalUpdateFinalStorageLocation({
                   )}
                 </div>
 
-                {/* Waste Profile */}
-                <div className="flex flex-col space-y-2">
-                  <label className="text-left text-sm">Waste Profile:</label>
+                {/* depth */}
+                <div className="flex w-64 flex-col space-y-2">
+                  <label className="text-left text-sm">{"Depth (m)"}:</label>
                   <input
                     className="input input-md input-bordered px-2"
-                    type="text"
+                    type="number"
+                    step="1"
+                    min="1"
                     placeholder="Type here ..."
-                    {...register("wasteProfile", {
-                      required: "Waste profile is required",
+                    {...register("depth", {
+                      required: "Please enter a valid positive number",
                     })}
                   />
-                  {errors.wasteProfile && (
+                  {errors.depth && (
                     <p className="text-sm text-red-500">
-                      {errors.wasteProfile.message}
-                    </p>
-                  )}
-                </div>
-
-                {/* Final-Storage For */}
-                <div className="flex flex-col space-y-2">
-                  <label className="text-left text-sm">
-                    Final-Storage For:
-                  </label>
-                  <input
-                    className="input input-md input-bordered px-2"
-                    type="text"
-                    placeholder="Type here ..."
-                    defaultValue={finalStorageFor}
-                    {...register("finalStorageFor", {
-                      required: "Final-storage for is required",
-                    })}
-                  />
-                  {errors.finalStorageFor && (
-                    <p className="text-sm text-red-500">
-                      {errors.finalStorageFor.message}
+                      {errors.depth.message}
                     </p>
                   )}
                 </div>

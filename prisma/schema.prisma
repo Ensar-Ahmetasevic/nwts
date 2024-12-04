@@ -149,8 +149,9 @@ model PreStorageConditions {
 
 model FinalStorageLocation {
   id                     Int                     @id @default(autoincrement())
-  roomName               String
+  name                   String
   containerType          String
+  containerFootprint     Int
   surfaceArea            Int
   depth                  Int
   finalStorageEntrys     FinalStorageEntry[]
@@ -175,7 +176,6 @@ model FinalStorageResponsibleEmployee {
   surname            String
   dateOfBirth        Int
   address            String
-  position           String
   safetyTraining     Boolean
   finalStorageEntrys FinalStorageEntry[]
   approvedTransfers  StorageTransferRequest[]

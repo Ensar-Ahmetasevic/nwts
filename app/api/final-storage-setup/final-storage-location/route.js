@@ -7,27 +7,19 @@ const prisma = new PrismaClient();
 export async function POST(req, res) {
   const formData = await req.json();
 
-  const {
-    name,
-    surfaceArea,
-    containerFootprint,
-    finalStorageFor,
-    containerType,
-    wasteProfile,
-  } = formData;
+  const { name, surfaceArea, containerFootprint, depth, containerType } =
+    formData;
 
   if (
     !name ||
     !surfaceArea ||
     !containerFootprint ||
-    !containerType ||
-    !wasteProfile ||
-    !finalStorageFor
+    !depth ||
+    !containerType
   ) {
     return NextResponse.json(
       {
-        message:
-          "Backend: All fields are required and surface area must be a valid number",
+        message: "All fields are required",
       },
       { status: 400 },
     );
@@ -36,7 +28,9 @@ export async function POST(req, res) {
   // Ensure surfaceArea is a valid number
   const surfaceAreaNumber = surfaceArea.toFixed(2);
   const containerFootprintNumber = containerFootprint.toFixed(2);
-  // Store up to two decimal places but it returns a string so befor seding to the database we need to convert it to a number again
+  const depthNumber = depth.toFixed(2);
+  // Store up to two decimal places but it returns a string so befor seding
+  // to the database we need to convert it to a number again
 
   try {
     await prisma.finalStorageLocation.create({
@@ -44,9 +38,8 @@ export async function POST(req, res) {
         name,
         surfaceArea: parseInt(surfaceAreaNumber),
         containerFootprint: parseInt(containerFootprintNumber),
-        finalStorageFor,
+        depth: parseInt(depthNumber),
         containerType,
-        wasteProfile,
       },
     });
 
@@ -71,7 +64,8 @@ export async function GET() {
       {
         orderBy: { id: "desc" },
         include: {
-          finalStorageEntry: true,
+          finalStorageEntrys: true,
+          finalStorageConditions: true,
         },
       },
     );
@@ -129,30 +123,23 @@ export async function DELETE(req) {
 export async function PUT(req, res) {
   const { dataForUpdate } = await req.json();
 
-  const {
-    name,
-    surfaceArea,
-    containerFootprint,
-    finalStorageFor,
-    containerType,
-    wasteProfile,
-    id,
-  } = dataForUpdate;
+  const { id, name, surfaceArea, containerFootprint, depth, containerType } =
+    dataForUpdate;
 
   // Ensure surfaceArea is a valid number
   const surfaceAreaNumber = parseFloat(parseFloat(surfaceArea).toFixed(2));
   const containerFootprintNumber = parseFloat(
     parseFloat(containerFootprint).toFixed(2),
   );
+  const depthNumber = parseFloat(parseFloat(depth).toFixed(2));
   // Store up to two decimal places but it returns a string so befor seding to the database we need to convert it to a number again
 
   if (
     !name ||
     !surfaceAreaNumber ||
-    !containerFootprint ||
-    !finalStorageFor ||
+    !containerFootprintNumber ||
+    !depthNumber ||
     !containerType ||
-    !wasteProfile ||
     isNaN(surfaceAreaNumber)
   ) {
     return NextResponse.json(
@@ -171,8 +158,7 @@ export async function PUT(req, res) {
         data: {
           name,
           containerType,
-          wasteProfile,
-          finalStorageFor,
+          depth: depthNumber,
           surfaceArea: surfaceAreaNumber,
           containerFootprint: containerFootprintNumber,
         },

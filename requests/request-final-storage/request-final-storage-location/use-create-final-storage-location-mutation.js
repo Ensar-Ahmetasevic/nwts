@@ -14,7 +14,7 @@ export default function useCreateFinalStorageLocationMutation() {
       return response;
     } catch (error) {
       console.error("Failed to create new Final-Storage Location data", error);
-      toast.error(`Error: ${error}`);
+      toast.error(`Error: ${error.response.data.message}`);
       throw error;
     }
   };
