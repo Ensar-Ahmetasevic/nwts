@@ -174,7 +174,8 @@ model FinalStorageResponsibleEmployee {
   id                 Int                      @id @default(autoincrement())
   name               String
   surname            String
-  dateOfBirth        Int
+  dateOfBirth        DateTime
+  qualifications     String
   address            String
   safetyTraining     Boolean
   finalStorageEntrys FinalStorageEntry[]

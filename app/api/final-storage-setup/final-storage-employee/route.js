@@ -16,7 +16,7 @@ export async function POST(req, res) {
     safetyTraining,
   } = formData;
 
-
+  console.log("formData: ", formData);
 
   if (
     !name ||
