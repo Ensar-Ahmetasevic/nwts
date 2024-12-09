@@ -1,6 +1,6 @@
 "use client";
 
-import CapacityAndConditions from "../../components/pages/pre-storage/capacity-and-conditions/capacity-and-conditions";
+import CapacityAndConditions from "./../../components/pages/pre-storage/capacity-and-conditions/capacity-and-conditions";
 
 import usePreStorageLocationQuery from "../../requests/request-pre-storage/request-pre-storage-location/use-fetch-pre-storage-location-query,";
 
@@ -29,12 +29,12 @@ export default function PreStorage() {
   // data.reverse() reverses the order of the elements in the new array.
 
   return (
-    <ul>
+    <div className="mt-20 flex flex-wrap justify-center gap-12 p-8">
       {reversedData.map((preStorageData) => (
-        <li className="my-14 flex justify-center" key={preStorageData.id}>
+        <div key={preStorageData.id}>
           <CapacityAndConditions data={preStorageData} />
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

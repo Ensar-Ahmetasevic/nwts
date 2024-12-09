@@ -187,7 +187,7 @@ export default function Navbar() {
           <ul className="menu dropdown-content w-full rounded-t-none bg-base-100 p-2">
             <li>
               <Link
-                href="/pre-storage"
+                href="/final-storage"
                 onClick={() => alert("Final-Storage Capacity & Conditions")}
               >
                 {/* Show Requests Pointer */}

@@ -1,31 +1,31 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import useShippingInformationQuery from "../../../../requests/request-shipping-information/use-fetch-shipping-informations-query";
+import useShippingInformationQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-informations-query";
 
-import LoadingSpinnerButton from "./../../../shared/loading-spiner-button";
-import Indicator from "./../../../shared/indicator";
-import LoadingSpinnerPage from "../../../shared/loading-spiner-page";
-import AlertWarning from "../../../shared/alert-warning";
+import LoadingSpinnerButton from "./../../../../shared/loading-spiner-button";
+import Indicator from "./../../../../shared/indicator";
+import LoadingSpinnerPage from "./../../../../shared/loading-spiner-page";
+import AlertWarning from "./../../../../shared/alert-warning";
 
 // Import dynamic from next/dynamic
 import dynamic from "next/dynamic";
 
 // Dynamically import CustomPieChart with ssr: false
 const CustomPieChart = dynamic(
-  () => import("../../../shared/custom-pie-chart"),
+  () => import("./../../../../shared/custom-pie-chart"),
   {
     ssr: false,
   },
 );
 
-export default function CapacityAndConditions({ data }) {
+export default function FinalStorageCapacityAndConditions({ data }) {
   const [isNavigating, setIsNavigating] = useState(false);
 
-  const { data: entryData, isLoading, isError } = useShippingInformationQuery();
+  // const { data: entryData, isLoading, isError } = useShippingInformationQuery();
 
   // Early returns for loading and error states
-  if (isLoading) {
+  /*   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <LoadingSpinnerPage />
@@ -39,10 +39,11 @@ export default function CapacityAndConditions({ data }) {
         <AlertWarning text={"Error loading shipping informations data"} />
       </div>
     );
-  }
+  } */
 
   /* Helper function for checking if there are pending statuses for a specific hale */
-  const hasPendingStatus = (haleName) => {
+
+  /*   const hasPendingStatus = (haleName) => {
     if (!entryData.shippingData) return false;
 
     // We only extract M01 or M02 from "Hall M01" or "Hall M02"
@@ -55,12 +56,12 @@ export default function CapacityAndConditions({ data }) {
           profile.wasteProfile.name === shortHaleName,
       ),
     );
-  };
+  }; */
 
   const halesurface = data.surfaceArea;
   const containerFootprint = data.containerFootprint;
 
-  const totalContainers = data.finalStorageEntry.reduce(
+  const totalContainers = data.finalStorageEntrys.reduce(
     (total, waste) => total + waste.quantity,
     0,
   );
@@ -79,7 +80,7 @@ export default function CapacityAndConditions({ data }) {
   };
 
   return (
-    <div className="mx-10 flex w-1/2 flex-col space-y-10">
+    <div className="mx-10 flex w-full flex-col space-y-10">
       <div className=" grid flex-grow place-items-center rounded-box border-2 border-yellow-600 bg-base-300">
         <div className="flex w-1/2 flex-col items-center">
           <div className="mb-10 mt-5">
@@ -115,7 +116,7 @@ export default function CapacityAndConditions({ data }) {
             href={`/final-storage/${data.id}`}
             onClick={() => handleClick()}
           >
-            {hasPendingStatus(data.name) && <Indicator color="bg-green-400" />}
+            {/* {hasPendingStatus(data.name) && <Indicator color="bg-green-400" />} */}
             {isNavigating ? <LoadingSpinnerButton /> : "DETAILS"}
           </Link>
         </div>

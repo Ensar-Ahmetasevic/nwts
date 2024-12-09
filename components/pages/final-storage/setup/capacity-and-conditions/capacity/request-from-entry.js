@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import ModalFinalStorageCapacityForm from "./modal/modal-final-storage-capacity-form";
 
-import useUpdateContainerProfileStatusMutation from "./../../../../../requests/request-container-profile/use-update-container-profile-status-mutation";
+import useUpdateContainerProfileStatusMutation from "./../../../../../../requests/request-container-profile/use-update-container-profile-status-mutation";
 
 export default function RequestFromEntry({ entryData, hallData }) {
   const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);

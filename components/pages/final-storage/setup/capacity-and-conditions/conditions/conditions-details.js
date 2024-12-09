@@ -4,7 +4,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import dayjs from "dayjs";
 
-import getConditionLevel from "./../../../../../lib/helpers/getConditionLevel";
+import getConditionLevel from "./../../../../../../lib/helpers/getConditionLevel";
 
 export default function ConditionsDetails({ toggelModal, haleConditions }) {
   if (!haleConditions) {

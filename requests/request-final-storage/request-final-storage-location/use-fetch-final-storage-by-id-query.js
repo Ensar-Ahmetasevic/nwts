@@ -6,6 +6,7 @@ const fetchFinalStorageById = async (finalStorageID) => {
     `/api/final-storage-setup/${finalStorageID}`,
   );
   const data = response.data;
+
   return data;
 };
 

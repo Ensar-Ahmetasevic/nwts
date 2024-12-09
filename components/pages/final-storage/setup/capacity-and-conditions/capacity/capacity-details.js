@@ -2,14 +2,14 @@ import dynamic from "next/dynamic";
 
 import RequestFromEntry from "./request-from-entry";
 
-import useShippingInformationsStautsQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
+import useShippingInformationsStautsQuery from "./../../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
 
-import LoadingSpinnerPage from "../../../../shared/loading-spiner-page";
-import AlertWarning from "../../../../shared/alert-warning";
+import LoadingSpinnerPage from "./../../../../../shared/loading-spiner-page";
+import AlertWarning from "./../../../../../shared/alert-warning";
 
 // Dynamically import the CustomPieChart component without server-side rendering
 const CustomPieChart = dynamic(
-  () => import("./../../../../shared/custom-pie-chart"),
+  () => import("./../../../../../shared/custom-pie-chart"),
   {
     ssr: false,
   },
@@ -26,6 +26,23 @@ export default function CapacityDetails({
   totalContainers,
   hallData,
 }) {
+  console.log("console.log: ", totalContainers);
+
+  if (!totalContainers) {
+    return (
+      <div className="space-y-6">
+        <p>There are no containers in the room.</p>
+        {/* Provide an option to add new conditions */}
+        <button
+          className="btn btn-outline btn-info mb-5 w-full"
+          onClick={() => console.log("Sending request to pre-storage...")}
+        >
+          Send Request
+        </button>
+      </div>
+    );
+  }
+
   // Get pending shipping information for this hall
   const {
     data: pendingShippingInformations,

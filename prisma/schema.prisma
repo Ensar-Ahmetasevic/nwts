@@ -196,11 +196,12 @@ model FinalStorageCondition {
 }
 
 model StorageTransferRequest {
-  id                Int      @id @default(autoincrement())
-  createdAt         DateTime @default(now())
-  status            String   @default("pending")
-  requestedQuantity Int
-  containerType     String
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  finalStorageStatus String   @default("requestPending") // "requestPending", "transportPending","requestRejeted", "accepted", "rejected"
+  preStorageStatus   String   @default("pending") // "pending", "accepted", "rejected"
+  requestedQuantity  Int
+  containerType      String // do we need this?
 
   // Location references
   requestedByRoom       String
@@ -210,9 +211,8 @@ model StorageTransferRequest {
   approvedByEmployee    PreStorageResponsibleEmployee?  @relation(fields: [approvedByEmployeeId], references: [id])
 
   // Tracking dates
-  approvedAt         DateTime?
-  transportStartedAt DateTime?
-  completedAt        DateTime?
+  approvedAt  DateTime?
+  completedAt DateTime?
 
   notes         String?
   responseNotes String?

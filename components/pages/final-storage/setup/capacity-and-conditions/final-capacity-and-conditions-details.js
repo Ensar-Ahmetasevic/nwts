@@ -2,32 +2,39 @@ import { useState, useMemo } from "react";
 
 import ModalFinalStorageConditionsForm from "./conditions/modal/modal-final-storage-conditions-form";
 
-import WarningMessage from "./../../../shared/warningMessage";
+import WarningMessage from "./../../../../shared/warningMessage";
 
 import CapacityDetails from "./capacity/capacity-details";
 import ConditionsDetails from "./conditions/conditions-details";
-import BackButton from "./../../../shared/back-button";
+import BackButton from "./../../../../shared/back-button";
 
-export default function CapacityAndConditionsDetails({ finalStorageData }) {
+export default function FinalCapacityAndConditionsDetails({
+  finalStorageData,
+}) {
   const [isModalConditionsOpen, setIsModalConditionsOpen] = useState(false);
 
   // Function to toggle the visibility of a modal
   const toggelConditionsModal = () => setIsModalConditionsOpen((prev) => !prev);
 
-  const lastCondition = finalStorageData.finalStorageConditions.at(-1);
+  const lastCondition = finalStorageData.finalStorageConditions?.at(-1);
 
-  const haleConditions = finalStorageData.finalStorageConditions;
-  const halesurface = finalStorageData.surfaceArea;
+  const roomConditions = finalStorageData.finalStorageConditions;
+  const roomSurface = finalStorageData.surfaceArea;
   const containerFootprint = finalStorageData.containerFootprint;
 
-  // Total sum of containers in hale
-  const totalContainers = finalStorageData.finalStorageEntry.reduce(
-    (total, waste) => total + waste.quantity,
-    0,
-  );
+  // Check if finalStorageEntry exists and has items
+  const hasContainers = finalStorageData.finalStorageEntry?.length > 0;
+
+  // Total sum of containers in room (only calculate if there are containers)
+  const totalContainers = hasContainers
+    ? finalStorageData.finalStorageEntry.reduce(
+        (total, waste) => total + waste.quantity,
+        0,
+      )
+    : null;
 
   // Calculate maximum number of containers which can fit in the hall
-  const maxContainer = Math.round(halesurface / containerFootprint);
+  const maxContainer = Math.round(roomSurface / containerFootprint);
 
   // Calculate of how many more containers can fit in the hall
   const freeContainers = maxContainer - totalContainers;
@@ -35,12 +42,12 @@ export default function CapacityAndConditionsDetails({ finalStorageData }) {
   // Used space in m2
   const usedSpace = totalContainers * containerFootprint;
   // Feespace in m2
-  const freeSpace = halesurface - usedSpace;
+  const freeSpace = roomSurface - usedSpace;
 
   // Used Space Percentage
-  const usedSpacePercentage = Math.round((usedSpace / halesurface) * 100);
+  const usedSpacePercentage = Math.round((usedSpace / roomSurface) * 100);
   // Free Space finalcentage
-  const freeSpacePercentage = Math.round((freeSpace / halesurface) * 100);
+  const freeSpacePercentage = Math.round((freeSpace / roomSurface) * 100);
 
   // Determining the warning message and color based on the number of free containers
   const { warningMessage, warningColor } = useMemo(() => {
@@ -83,6 +90,7 @@ export default function CapacityAndConditionsDetails({ finalStorageData }) {
         )}
 
         {/* Capacity Details */}
+
         <CapacityDetails
           finalStorageData={finalStorageData}
           dataForPieChart={dataForPieChart}
@@ -99,6 +107,7 @@ export default function CapacityAndConditionsDetails({ finalStorageData }) {
         <div className="divider divider-warning my-10">Conditions</div>
 
         {/* Conditions Details */}
+
         <ConditionsDetails
           haleConditions={lastCondition}
           toggelModal={toggelConditionsModal}
