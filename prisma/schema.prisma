@@ -201,7 +201,7 @@ model StorageTransferRequest {
   finalStorageStatus String   @default("requestPending") // "requestPending", "transportPending","requestRejeted", "accepted", "rejected"
   preStorageStatus   String   @default("pending") // "pending", "accepted", "rejected"
   requestedQuantity  Int
-  containerType      String // do we need this?
+  //containerType      String // do we need this?
 
   // Location references
   requestedByRoom       String
@@ -210,10 +210,6 @@ model StorageTransferRequest {
   requestedByEmployee   FinalStorageResponsibleEmployee @relation(fields: [requestedByEmployeeId], references: [id])
   approvedByEmployee    PreStorageResponsibleEmployee?  @relation(fields: [approvedByEmployeeId], references: [id])
 
-  // Tracking dates
-  approvedAt  DateTime?
-  completedAt DateTime?
-
-  notes         String?
-  responseNotes String?
+  requestNote  String?
+  responseNote String?
 }

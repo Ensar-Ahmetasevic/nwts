@@ -1,7 +1,9 @@
+import { useState } from "react";
 import dynamic from "next/dynamic";
 
 import RequestFromEntry from "./request-from-entry";
 
+import ModalSendRequestToPreStorageForm from "./modal/modal-send-request-to-preStorage-form";
 import useShippingInformationsStautsQuery from "./../../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
 
 import LoadingSpinnerPage from "./../../../../../shared/loading-spiner-page";
@@ -24,26 +26,11 @@ export default function CapacityDetails({
   usedSpacePercentage,
   usedSpace,
   totalContainers,
-  hallData,
+  roomData,
 }) {
-  console.log("console.log: ", totalContainers);
+  const [isModalRequestOpen, setIsModalRequestOpen] = useState(false);
 
-  if (!totalContainers) {
-    return (
-      <div className="space-y-6">
-        <p>There are no containers in the room.</p>
-        {/* Provide an option to add new conditions */}
-        <button
-          className="btn btn-outline btn-info mb-5 w-full"
-          onClick={() => console.log("Sending request to pre-storage...")}
-        >
-          Send Request
-        </button>
-      </div>
-    );
-  }
-
-  // Get pending shipping information for this hall
+  // Get pending shipping information for this Room
   const {
     data: pendingShippingInformations,
     isLoading,
@@ -62,6 +49,23 @@ export default function CapacityDetails({
     return (
       <div className="flex h-screen items-center justify-center">
         <AlertWarning text={"Error loading FinalStorage request"} />
+      </div>
+    );
+  }
+
+  if (!totalContainers && !isModalRequestOpen) {
+    return (
+      <div className="space-y-6">
+        <p>There are no containers in the room.</p>
+        {/* Provide an option to add new conditions */}
+        <button
+          className="btn btn-outline btn-info mb-5 w-full"
+          onClick={() => {
+            setIsModalRequestOpen(true);
+          }}
+        >
+          Send New Request
+        </button>
       </div>
     );
   }
@@ -117,90 +121,107 @@ export default function CapacityDetails({
   );
 
   return (
-    <div className="flex flex-col">
-      {/* Display pie chart and usage information */}
-      <div className="mb-6 flex w-full flex-row space-x-12">
-        {/* Pie chart with transition effects */}
-        <div className="flex flex-row items-center justify-evenly">
-          <div className="transform transition-transform duration-700 ease-in-out hover:scale-110">
-            <CustomPieChart data={dataForPieChart} />
-          </div>
-        </div>
-
-        {/* Display free and used space information */}
-        <div className="flex flex-col space-y-8">
-          <InfoBox
-            label="Free space"
-            color="green"
-            percentage={freeSpacePercentage}
-            space={freeSpace}
-            containers={freeContainers}
-          />
-          <InfoBox
-            label="Used space"
-            color="red"
-            percentage={usedSpacePercentage}
-            space={usedSpace}
-            containers={totalContainers}
-          />
-        </div>
-      </div>
-
-      {/* Open Request Drawer */}
-      {hasPendingContainersInHall && (
-        <div className="alert alert-warning flex  flex-col items-center justify-center text-center">
-          <div className="flex flex-row space-x-2">
-            <p>You have</p>
-            <p className="font-semibold">
-              {filteredPendingShippingInformations.length}
-            </p>
-            <p> new requests!</p>
-          </div>
-          {/* Side drawer for the requests */}
-          <div className="drawer">
-            <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content static">
-              {/* Page content here */}
-              <label
-                htmlFor="my-drawer"
-                className="btn btn-info drawer-button z-0 text-white"
-              >
-                Show Requests
-                <span className="relative -top-6 left-6 right-6 flex h-4 w-4">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                  <span className="relative inline-flex h-4 w-4 rounded-full bg-sky-500"></span>
-                </span>
-              </label>
+    <>
+      <div className="flex flex-col">
+        {/* Display pie chart and usage information */}
+        <div className="mb-6 flex w-full flex-row space-x-12">
+          {/* Pie chart with transition effects */}
+          <div className="flex flex-row items-center justify-evenly">
+            <div className="transform transition-transform duration-700 ease-in-out hover:scale-110">
+              <CustomPieChart data={dataForPieChart} />
             </div>
-            <div className="drawer-side z-10">
-              <label
-                htmlFor="my-drawer"
-                aria-label="close sidebar"
-                className="drawer-overlay"
-              ></label>
-              <div className="menu min-h-full w-1/2 bg-base-200 p-4 text-base-content">
-                {/* Sidebar content here */}
-                {requestQuantity.map((request) => (
-                  <RequestFromEntry
-                    key={request.id}
-                    entryData={request}
-                    hallData={hallData}
-                  />
-                ))}
-                <div className="mt-10 flex justify-end">
-                  <label
-                    htmlFor="my-drawer"
-                    className="btnCancel drawer-button w-32"
-                  >
-                    Close
-                  </label>
-                </div>
+          </div>
+
+          {/* Display free and used space information */}
+          <div className="flex flex-col space-y-8">
+            <InfoBox
+              label="Free space"
+              color="green"
+              percentage={freeSpacePercentage}
+              space={freeSpace}
+              containers={freeContainers}
+            />
+            <InfoBox
+              label="Used space"
+              color="red"
+              percentage={usedSpacePercentage}
+              space={usedSpace}
+              containers={totalContainers}
+            />
+          </div>
+        </div>
+
+        {/* Send request to pre-storage */}
+        <button
+          className="btn btn-outline btn-info mb-5 w-full"
+          onClick={() => setIsModalRequestOpen(true)}
+        >
+          Send New Request
+        </button>
+
+        {/* Open Request Drawer */}
+        {hasPendingContainersInHall && (
+          <div className="alert alert-warning flex  flex-col items-center justify-center text-center">
+            <div className="flex flex-row space-x-2">
+              <p>You have</p>
+              <p className="font-semibold">
+                {filteredPendingShippingInformations.length}
+              </p>
+              <p> new requests!</p>
+            </div>
+            {/* Side drawer for the requests */}
+            <div className="drawer">
+              <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+              <div className="drawer-content static">
+                {/* Page content here */}
+                <label
+                  htmlFor="my-drawer"
+                  className="btn btn-info drawer-button z-0 text-white"
+                >
+                  Show Requests
+                  <span className="relative -top-6 left-6 right-6 flex h-4 w-4">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                    <span className="relative inline-flex h-4 w-4 rounded-full bg-sky-500"></span>
+                  </span>
+                </label>
+              </div>
+              <div className="drawer-side z-10">
+                <label
+                  htmlFor="my-drawer"
+                  aria-label="close sidebar"
+                  className="drawer-overlay"
+                ></label>
+                {
+                  <div className="menu min-h-full w-1/2 bg-base-200 p-4 text-base-content">
+                    {/* Sidebar content here */}
+                    {requestQuantity.map((request) => (
+                      <RequestFromEntry
+                        key={request.id}
+                        entryData={request}
+                        roomData={roomData}
+                      />
+                    ))}
+                    <div className="mt-10 flex justify-end">
+                      <label
+                        htmlFor="my-drawer"
+                        className="btnCancel drawer-button w-32"
+                      >
+                        Close
+                      </label>
+                    </div>
+                  </div>
+                }
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+      <ModalSendRequestToPreStorageForm
+        isOpen={isModalRequestOpen}
+        closeModal={() => setIsModalRequestOpen(false)}
+        roomData={roomData}
+      />
+    </>
   );
 }
 

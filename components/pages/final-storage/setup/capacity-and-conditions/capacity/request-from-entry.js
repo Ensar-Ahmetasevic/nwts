@@ -4,7 +4,7 @@ import ModalFinalStorageCapacityForm from "./modal/modal-final-storage-capacity-
 
 import useUpdateContainerProfileStatusMutation from "./../../../../../../requests/request-container-profile/use-update-container-profile-status-mutation";
 
-export default function RequestFromEntry({ entryData, hallData }) {
+export default function RequestFromEntry({ entryData, roomData }) {
   const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);
 
   // Update Container status
@@ -73,7 +73,7 @@ export default function RequestFromEntry({ entryData, hallData }) {
       <ModalFinalStorageCapacityForm
         isOpen={isModalCapacityOpen}
         closeModal={() => toggleCapacityModal()}
-        hallData={hallData}
+        roomData={roomData}
         entryData={entryData}
       />
     </>

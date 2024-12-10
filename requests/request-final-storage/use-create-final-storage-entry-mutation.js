@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useCreateFinalStorageCapacityMutation() {
+export default function useCreateFinalStorageEntryMutation() {
   const queryClient = useQueryClient();
 
-  const createFinalStorageCapacityMutation = async (formData) => {
+  const createFinalStorageEntryMutation = async (formData) => {
     try {
       const response = await axios.post("/api/final-storage-setup", formData);
       return response.data;
@@ -17,11 +17,11 @@ export default function useCreateFinalStorageCapacityMutation() {
   };
 
   const mutation = useMutation({
-    mutationFn: createFinalStorageCapacityMutation,
+    mutationFn: createFinalStorageEntryMutation,
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["finalStorageCapacityQueryKey"],
+        queryKey: ["finalStorageEntryQueryKey"],
       });
       queryClient.invalidateQueries({
         queryKey: ["finalStorageIDQueryKey"],

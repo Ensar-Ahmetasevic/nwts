@@ -23,15 +23,15 @@ export default function FinalCapacityAndConditionsDetails({
   const containerFootprint = finalStorageData.containerFootprint;
 
   // Check if finalStorageEntry exists and has items
-  const hasContainers = finalStorageData.finalStorageEntry?.length > 0;
+  const hasContainers = finalStorageData.finalStorageEntrys.length > 0;
 
   // Total sum of containers in room (only calculate if there are containers)
   const totalContainers = hasContainers
-    ? finalStorageData.finalStorageEntry.reduce(
+    ? finalStorageData.finalStorageEntrys.reduce(
         (total, waste) => total + waste.quantity,
         0,
       )
-    : null;
+    : 0;
 
   // Calculate maximum number of containers which can fit in the hall
   const maxContainer = Math.round(roomSurface / containerFootprint);
@@ -100,7 +100,7 @@ export default function FinalCapacityAndConditionsDetails({
           usedSpacePercentage={usedSpacePercentage}
           usedSpace={usedSpace}
           totalContainers={totalContainers}
-          hallData={finalStorageData}
+          roomData={finalStorageData}
         />
 
         {/* Divider */}
