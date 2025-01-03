@@ -11,12 +11,12 @@ export async function GET(req, { params }) {
     const finalStorageDataById = await prisma.finalStorageLocation.findUnique({
       where: { id: parseInt(finalStorageID) },
       include: {
-        finalStorageEntrys: true,
-        finalStorageConditions: {
+        storageTransferRequests: {
           include: {
-            finalStorageLocation: true,
+            requestedByEmployee: true,
           },
         },
+        finalStorageConditions: true,
       },
     });
 

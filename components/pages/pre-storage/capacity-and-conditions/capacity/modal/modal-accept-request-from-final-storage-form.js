@@ -1,58 +1,62 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import useCreateFinalStorageTransverRequestMutation from "../../../../../../../requests/request-final-storage/request-final-storage-transver-request/use-create-final-storage-transver-request-mutation";
+import useUpdateFinalStorageTransferRequestMutation from "../../../../../../requests/request-final-storage/request-final-storage-transver-request/use-update-final-storage-transver-request-mutation";
+import usePreStorageEmployeeQuery from "../../../../../../requests/request-pre-storage/request-pre-storage-employee/use-fetch-pre-storage-employee-query,";
 
-import useFinalStorageEmployeeQuery from "../../../../../../../requests/request-final-storage/request-final-storage-employee/use-fetch-final-storage-employee-query,";
+import LoadingSpinnerButton from "../../../../../shared/loading-spiner-button";
+import LoadingSpinnerPage from "../../../../../shared/loading-spiner-page";
+import AlertWarning from "../../../../../shared/alert-warning";
 
-import LoadingSpinnerButton from "../../../../../../shared/loading-spiner-button";
-import LoadingSpinnerPage from "../../../../../../shared/loading-spiner-page";
-import AlertWarning from "../../../../../../shared/alert-warning";
-
-export default function ModalSendRequestToPreStorageForm({
+export default function ModalAcceptRequestFromFinalStorageForm({
   isOpen,
   closeModal,
-  roomData,
+  requestData,
 }) {
-  // 1. All React hooks must be at the top
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: { quantity: requestData?.requestedQuantity } });
 
-  // 2. Data fetching
+  // Reset the form every time the `entryData` changes or the modal becomes visible
+  useEffect(() => {
+    if (isOpen) {
+      reset({ quantity: requestData?.requestedQuantity });
+    }
+  }, [requestData, isOpen, reset]);
+
+  // 2. Fetching Pre Storage Employee data
   const {
-    data: finalStorageEmployeeData,
+    data: preStorageEmployeeData,
     isLoading,
     isError,
-  } = useFinalStorageEmployeeQuery();
+  } = usePreStorageEmployeeQuery();
 
-  // 3. Mutation hook
+  // 3. Update FinalStorage Transfer Request
 
   const {
-    mutateAsync: createFinalStorageTransverRequestMutation,
+    mutateAsync: updateFinalStorageTransferRequestMutation,
     isPending: transferRequestPending,
     isSuccess: transferRequestSuccess,
-  } = useCreateFinalStorageTransverRequestMutation();
+  } = useUpdateFinalStorageTransferRequestMutation();
 
   // 4. Event handlers
   const isFormSubmit = async ({ quantity, responsibleEmployee }) => {
-    // Ensure values are numbers
-    const formData = {
-      requestedQuantity: parseInt(quantity),
-      requestedByRoom: roomData.name,
-      requestedByEmployeeId: parseInt(responsibleEmployee),
-      finalStorageLocationId: roomData.id,
-    };
-
     try {
-      // Step 1: Create the FinalStorage capacity entry
-      await createFinalStorageTransverRequestMutation(formData);
+      await updateFinalStorageTransferRequestMutation({
+        operationType: "PRE_STORAGE_ACCEPT_REQUEST",
+        data: {
+          id: requestData.id,
+          requestedQuantity: parseInt(quantity),
+          approvedByEmployeeId: parseInt(responsibleEmployee),
+        },
+      });
 
-      // Step 2: // Resetting the form after successful submission and close modal
+      // Resetting the form after successful submission and close modal
       reset();
       closeModal();
     } catch (error) {
@@ -69,7 +73,7 @@ export default function ModalSendRequestToPreStorageForm({
     );
   }
 
-  if (isError || !finalStorageEmployeeData) {
+  if (isError || !preStorageEmployeeData) {
     return (
       <div className="flex h-screen items-center justify-center">
         <AlertWarning text={"Error loading Final Storage Employee request"} />
@@ -82,10 +86,6 @@ export default function ModalSendRequestToPreStorageForm({
       {isOpen ? (
         <div className="modal modal-open">
           <div className="modal-box">
-            <div className="mb-8">
-              <h2>Sending request from {roomData.name}</h2>
-            </div>
-
             {/* Form */}
             <form
               className="flex flex-col items-start space-y-4"
@@ -130,7 +130,7 @@ export default function ModalSendRequestToPreStorageForm({
                 >
                   <option value="">---</option>
 
-                  {finalStorageEmployeeData.map((employee) => (
+                  {preStorageEmployeeData.map((employee) => (
                     <option key={employee.id} value={employee.id}>
                       {employee.name} {employee.surname}
                     </option>
@@ -144,13 +144,13 @@ export default function ModalSendRequestToPreStorageForm({
               </div>
 
               {/* Submit button */}
-              <div className=" space-x-2">
+              <div className="space-x-2">
                 <button
                   className="btnSave"
                   type="submit"
                   disabled={transferRequestPending}
                 >
-                  {transferRequestPending ? <LoadingSpinnerButton /> : "Send"}
+                  {transferRequestPending ? <LoadingSpinnerButton /> : "Accept"}
                 </button>
               </div>
             </form>
@@ -159,7 +159,8 @@ export default function ModalSendRequestToPreStorageForm({
               <button
                 className="btnCancel"
                 onClick={() => {
-                  closeModal(), reset();
+                  closeModal();
+                  reset();
                 }}
               >
                 Cancel

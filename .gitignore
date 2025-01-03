@@ -33,7 +33,7 @@ yarn-error.log*
 
 # personal files
 Info.txt
-cc.js
+helper.js
 
 # typescript
 *.tsbuildinfo

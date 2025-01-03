@@ -19,7 +19,7 @@ export default function DisplayFinalStorageData({ params }) {
   if (isError || !data || !data.finalStorageDataById) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <AlertWarning text={"Error loading FinalStorage details data"} />
+        <AlertWarning text={"Error loading data"} />
       </div>
     );
   }

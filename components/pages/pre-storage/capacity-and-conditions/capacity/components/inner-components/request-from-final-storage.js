@@ -1,10 +1,12 @@
 import { useState } from "react";
+import dayjs from "dayjs";
 
-import ModalFinalStorageCapacityForm from "../../../../pre-storage/capacity-and-conditions/capacity/modal/modal-accept-request-from-final-storage-form";
+import ModalAcceptRequestFromFinalStorageForm from "../../modal/modal-accept-request-from-final-storage-form";
 
-import useUpdateContainerProfileStatusMutation from "./../../../../../../requests/request-container-profile/use-update-container-profile-status-mutation";
+import useUpdateContainerProfileStatusMutation from "../../../../../../../requests/request-container-profile/use-update-container-profile-status-mutation";
+import useUpdateFinalStorageTransferRequestMutation from "./../../../../../../../requests/request-final-storage/request-final-storage-transver-request/use-update-final-storage-transver-request-mutation";
 
-export default function RequestFromEntry({ entryData, roomData }) {
+export default function RequestFromFinalStorage({ requestData }) {
   const [isModalCapacityOpen, setIsModalCapacityOpen] = useState(false);
 
   // Update Container status
@@ -14,15 +16,30 @@ export default function RequestFromEntry({ entryData, roomData }) {
     isSuccess: updateContainerProfileStatusSuccess,
   } = useUpdateContainerProfileStatusMutation();
 
+  const {
+    mutateAsync: updateFinalStorageTransferRequestMutation,
+    isPending: transferRequestPending,
+    isSuccess: transferRequestSuccess,
+  } = useUpdateFinalStorageTransferRequestMutation();
+
   // Function to toggle the visibility of a modal
   const toggleCapacityModal = () => setIsModalCapacityOpen((prev) => !prev);
 
+  // Reject request
   const isRejected = async () => {
-    const containerStatusUpdateData = {
-      containerStatus: "rejected",
-      containerProfileId: entryData.containerProfileIds[0],
-    };
+    try {
+      await updateFinalStorageTransferRequestMutation({
+        operationType: "PRE_STORAGE_REJECT_REQUEST",
+        data: {
+          id: requestData.id,
+        },
+      });
+    } catch (error) {
+      console.error("Error handling rejection:", error);
+    }
+  };
 
+  const updateContainerStatus = async (containerStatusUpdateData) => {
     try {
       await updateContainerProfileStatusMutation(containerStatusUpdateData);
     } catch (error) {
@@ -38,9 +55,10 @@ export default function RequestFromEntry({ entryData, roomData }) {
           <thead>
             <tr>
               <th></th>
-              <th>Company name:</th>
-              <th>Registration:</th>
-              <th>Quantity</th>
+              <th>Request from:</th>
+              <th>Quantity:</th>
+              <th>Date:</th>
+              <th>Send by Employee:</th>
               <th></th>
               <th></th>
             </tr>
@@ -49,9 +67,14 @@ export default function RequestFromEntry({ entryData, roomData }) {
             {/* row 1 */}
             <tr>
               <th></th>
-              <td>{entryData.companyName}</td>
-              <td>{entryData.registrationPlates}</td>
-              <td>{entryData.totalQuantity}</td>
+              <td>{requestData.requestedByRoom}</td>
+              <td>{requestData.requestedQuantity}</td>
+              <td>{dayjs(requestData.createdAt).format("DD.MM.YYYY HH:mm")}</td>
+              <td>
+                {requestData.requestedByEmployee.name +
+                  " " +
+                  requestData.requestedByEmployee.surname}
+              </td>
               <td>
                 <button
                   className="btnSave"
@@ -69,12 +92,12 @@ export default function RequestFromEntry({ entryData, roomData }) {
           </tbody>
         </table>
       </div>
+
       {/* Capacity modal component */}
-      <ModalFinalStorageCapacityForm
+      <ModalAcceptRequestFromFinalStorageForm
         isOpen={isModalCapacityOpen}
         closeModal={() => toggleCapacityModal()}
-        roomData={roomData}
-        entryData={entryData}
+        requestData={requestData}
       />
     </>
   );

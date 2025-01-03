@@ -1,24 +1,23 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
-import RequestFromEntry from "./request-from-entry";
-
 import ModalSendRequestToPreStorageForm from "./modal/modal-send-request-to-preStorage-form";
-import useShippingInformationsStautsQuery from "./../../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
+import useShippingInformationsStautsQuery from "../../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
 
-import LoadingSpinnerPage from "./../../../../../shared/loading-spiner-page";
-import AlertWarning from "./../../../../../shared/alert-warning";
+import LoadingSpinnerPage from "../../../../../shared/loading-spiner-page";
+import AlertWarning from "../../../../../shared/alert-warning";
+
+import RequestDrawer from "./components/request-drawer";
 
 // Dynamically import the CustomPieChart component without server-side rendering
 const CustomPieChart = dynamic(
-  () => import("./../../../../../shared/custom-pie-chart"),
+  () => import("../../../../../shared/custom-pie-chart"),
   {
     ssr: false,
   },
 );
 
 export default function CapacityDetails({
-  finalStorageData,
   dataForPieChart,
   freeSpacePercentage,
   freeSpace,
@@ -30,7 +29,16 @@ export default function CapacityDetails({
 }) {
   const [isModalRequestOpen, setIsModalRequestOpen] = useState(false);
 
-  // Get pending shipping information for this Room
+  // Check if there is any "requestPending" or "transportPending" or "requestRejected"  storage transfer request for this hall
+  const hasActiveStorageTransferRequests =
+    roomData.storageTransferRequests.some(
+      (request) =>
+        request.finalStorageStatus === "requestPending" ||
+        request.finalStorageStatus === "transportPending" ||
+        request.finalStorageStatus === "requestRejected",
+    );
+
+  // Make request to the pre-storage
   const {
     data: pendingShippingInformations,
     isLoading,
@@ -38,40 +46,15 @@ export default function CapacityDetails({
   } = useShippingInformationsStautsQuery();
 
   if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <LoadingSpinnerPage />
-      </div>
-    );
+    return <LoadingSpinnerPage />;
   }
 
   if (isError || !pendingShippingInformations) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <AlertWarning text={"Error loading FinalStorage request"} />
-      </div>
-    );
-  }
-
-  if (!totalContainers && !isModalRequestOpen) {
-    return (
-      <div className="space-y-6">
-        <p>There are no containers in the room.</p>
-        {/* Provide an option to add new conditions */}
-        <button
-          className="btn btn-outline btn-info mb-5 w-full"
-          onClick={() => {
-            setIsModalRequestOpen(true);
-          }}
-        >
-          Send New Request
-        </button>
-      </div>
-    );
+    return <AlertWarning text={"Error loading FinalStorage request"} />;
   }
 
   // Get the waste type or container type for the current hall
-  const hallContainerType = finalStorageData.containerType;
+  const hallContainerType = roomData.containerType;
 
   // Filter the pending shipping informations for this hall
   const filteredPendingShippingInformations =
@@ -116,14 +99,14 @@ export default function CapacityDetails({
   );
 
   // Check if there is any "pending" container status for this hall
-  const hasPendingContainersInHall = requestQuantity.some((request) =>
-    request.containerStatus.includes("pending"),
-  );
+  // const hasPendingContainersInHall = requestQuantity.some((request) =>
+  //   request.containerStatus.includes("pending"),
+  // );
 
   return (
     <>
       <div className="flex flex-col">
-        {/* Display pie chart and usage information */}
+        {/* Always show pie chart and usage information */}
         <div className="mb-6 flex w-full flex-row space-x-12">
           {/* Pie chart with transition effects */}
           <div className="flex flex-row items-center justify-evenly">
@@ -151,71 +134,22 @@ export default function CapacityDetails({
           </div>
         </div>
 
-        {/* Send request to pre-storage */}
-        <button
-          className="btn btn-outline btn-info mb-5 w-full"
-          onClick={() => setIsModalRequestOpen(true)}
-        >
-          Send New Request
-        </button>
-
-        {/* Open Request Drawer */}
-        {hasPendingContainersInHall && (
-          <div className="alert alert-warning flex  flex-col items-center justify-center text-center">
-            <div className="flex flex-row space-x-2">
-              <p>You have</p>
-              <p className="font-semibold">
-                {filteredPendingShippingInformations.length}
-              </p>
-              <p> new requests!</p>
-            </div>
-            {/* Side drawer for the requests */}
-            <div className="drawer">
-              <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-              <div className="drawer-content static">
-                {/* Page content here */}
-                <label
-                  htmlFor="my-drawer"
-                  className="btn btn-info drawer-button z-0 text-white"
-                >
-                  Show Requests
-                  <span className="relative -top-6 left-6 right-6 flex h-4 w-4">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                    <span className="relative inline-flex h-4 w-4 rounded-full bg-sky-500"></span>
-                  </span>
-                </label>
-              </div>
-              <div className="drawer-side z-10">
-                <label
-                  htmlFor="my-drawer"
-                  aria-label="close sidebar"
-                  className="drawer-overlay"
-                ></label>
-                {
-                  <div className="menu min-h-full w-1/2 bg-base-200 p-4 text-base-content">
-                    {/* Sidebar content here */}
-                    {requestQuantity.map((request) => (
-                      <RequestFromEntry
-                        key={request.id}
-                        entryData={request}
-                        roomData={roomData}
-                      />
-                    ))}
-                    <div className="mt-10 flex justify-end">
-                      <label
-                        htmlFor="my-drawer"
-                        className="btnCancel drawer-button w-32"
-                      >
-                        Close
-                      </label>
-                    </div>
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
+        {hasActiveStorageTransferRequests ? (
+          <RequestDrawer
+            hasActiveStorageTransferRequests={hasActiveStorageTransferRequests}
+            roomData={roomData}
+            requestQuantity={requestQuantity}
+          />
+        ) : (
+          <button
+            className="btn btn-outline btn-info mb-5 w-full"
+            onClick={() => setIsModalRequestOpen(true)}
+          >
+            Send New Request
+          </button>
         )}
       </div>
+
       <ModalSendRequestToPreStorageForm
         isOpen={isModalRequestOpen}
         closeModal={() => setIsModalRequestOpen(false)}

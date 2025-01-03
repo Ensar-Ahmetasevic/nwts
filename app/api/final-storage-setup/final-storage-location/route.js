@@ -64,7 +64,11 @@ export async function GET() {
       {
         orderBy: { id: "desc" },
         include: {
-          finalStorageEntrys: true,
+          storageTransferRequests: {
+            include: {
+              requestedByEmployee: true,
+            },
+          },
           finalStorageConditions: true,
         },
       },

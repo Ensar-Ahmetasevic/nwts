@@ -1,8 +1,10 @@
 import dynamic from "next/dynamic";
 
-import RequestFromEntry from "./request-from-entry";
-
 import useShippingInformationsStautsQuery from "./../../../../../requests/request-shipping-information/use-fetch-shipping-information-status-query";
+import useFinalStorageLocationQuery from "./../../../../../requests/request-final-storage/request-final-storage-location/use-fetch-final-storage-location-query,";
+
+import RequestDrawerFromEntry from "./components/request-drawer-from-entry";
+import RequestDrawerFromFinalStorage from "./components/request-drawer-from-final-storage";
 
 import LoadingSpinnerPage from "../../../../shared/loading-spiner-page";
 import AlertWarning from "../../../../shared/alert-warning";
@@ -16,7 +18,6 @@ const CustomPieChart = dynamic(
 );
 
 export default function CapacityDetails({
-  preStorageData,
   dataForPieChart,
   freeSpacePercentage,
   freeSpace,
@@ -33,7 +34,13 @@ export default function CapacityDetails({
     isError,
   } = useShippingInformationsStautsQuery();
 
-  if (isLoading) {
+  const {
+    data: finalStorageLocationData,
+    isLoading: finalStorageLocationLoading,
+    isError: finalStorageLocationError,
+  } = useFinalStorageLocationQuery();
+
+  if (isLoading || finalStorageLocationLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <LoadingSpinnerPage />
@@ -41,7 +48,12 @@ export default function CapacityDetails({
     );
   }
 
-  if (isError || !pendingShippingInformations) {
+  if (
+    isError ||
+    !pendingShippingInformations ||
+    finalStorageLocationError ||
+    !finalStorageLocationData
+  ) {
     return (
       <div className="flex h-screen items-center justify-center">
         <AlertWarning text={"Error loading PreStorage request"} />
@@ -50,7 +62,29 @@ export default function CapacityDetails({
   }
 
   // Get the waste type or container type for the current hall
-  const hallContainerType = preStorageData.containerType;
+  const hallContainerType = hallData.containerType;
+
+  // Filter the transport requests for this hall
+  const filteredTransportRequestsFromFinalStorage =
+    finalStorageLocationData.filter(
+      (request) => request.containerType === hallContainerType,
+    );
+
+  // Filter data which have finalStorageStatus === pending
+  const pendingDataFromFinalStorage =
+    filteredTransportRequestsFromFinalStorage.flatMap((request) =>
+      request.storageTransferRequests.filter(
+        (transferRequest) => transferRequest.preStorageStatus === "pending",
+      ),
+    );
+
+  // Check if there is any "pending" containers with status pending from final storage for this hall
+  const hasPendingContainersFromFinalStorage =
+    filteredTransportRequestsFromFinalStorage.some((request) =>
+      request.storageTransferRequests.some(
+        (transferRequest) => transferRequest.preStorageStatus === "pending",
+      ),
+    );
 
   // Filter the pending shipping informations for this hall
   const filteredPendingShippingInformations =
@@ -129,60 +163,26 @@ export default function CapacityDetails({
         </div>
       </div>
 
-      {/* Open Request Drawer */}
-      {hasPendingContainersInHall && (
-        <div className="alert alert-warning flex  flex-col items-center justify-center text-center">
-          <div className="flex flex-row space-x-2">
-            <p>You have</p>
-            <p className="font-semibold">
-              {filteredPendingShippingInformations.length}
-            </p>
-            <p> new requests!</p>
-          </div>
-          {/* Side drawer for the requests */}
-          <div className="drawer">
-            <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content static">
-              {/* Page content here */}
-              <label
-                htmlFor="my-drawer"
-                className="btn btn-info drawer-button z-0 text-white"
-              >
-                Show Requests
-                <span className="relative -top-6 left-6 right-6 flex h-4 w-4">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                  <span className="relative inline-flex h-4 w-4 rounded-full bg-sky-500"></span>
-                </span>
-              </label>
-            </div>
-            <div className="drawer-side z-10">
-              <label
-                htmlFor="my-drawer"
-                aria-label="close sidebar"
-                className="drawer-overlay"
-              ></label>
-              <div className="menu min-h-full w-1/2 bg-base-200 p-4 text-base-content">
-                {/* Sidebar content here */}
-                {requestQuantity.map((request) => (
-                  <RequestFromEntry
-                    key={request.id}
-                    entryData={request}
-                    hallData={hallData}
-                  />
-                ))}
-                <div className="mt-10 flex justify-end">
-                  <label
-                    htmlFor="my-drawer"
-                    className="btnCancel drawer-button w-32"
-                  >
-                    Close
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="flex flex-col space-y-4">
+        {/* Alert message for pending containers from final storage */}
+
+        <RequestDrawerFromFinalStorage
+          hasPendingContainersFromFinalStorage={
+            hasPendingContainersFromFinalStorage
+          }
+          requestData={pendingDataFromFinalStorage}
+        />
+
+        {/* Open Request Drawer from Entry */}
+        <RequestDrawerFromEntry
+          hasPendingContainersInHall={hasPendingContainersInHall}
+          filteredPendingShippingInformations={
+            filteredPendingShippingInformations
+          }
+          requestQuantity={requestQuantity}
+          hallData={hallData}
+        />
+      </div>
     </div>
   );
 }

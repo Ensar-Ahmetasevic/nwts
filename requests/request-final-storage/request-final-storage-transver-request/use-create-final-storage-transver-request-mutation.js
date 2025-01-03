@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 export default function useCreateFinalStorageTransverRequestMutation() {
   const queryClient = useQueryClient();
 
-  const createFinalStorageTransverRequestMutation = async ({ formData }) => {
+  const createFinalStorageTransverRequestMutation = async (formData) => {
     try {
       const response = await axios.post(
         "/api/final-storage-setup/final-storage-transver-request",

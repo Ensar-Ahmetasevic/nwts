@@ -2,37 +2,42 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export default function useUpdateFinalStorageLocationMutation() {
+export default function useUpdateFinalStorageTransferRequestMutation() {
   const queryClient = useQueryClient();
 
-  const updateFinalStorageLocationMutation = async (dataForUpdate) => {
+  const updateFinalStorageTransferRequestMutation = async ({
+    operationType,
+    data,
+  }) => {
     try {
       const response = await axios.put(
-        "/api/final-storage-setup/final-storage-location",
-        {
-          dataForUpdate,
-        },
+        "/api/final-storage-setup/final-storage-transver-request",
+        { operationType, data },
       );
       return response.data;
     } catch (error) {
       console.error(
-        "Failed to UPDATE FinalStorage Location informations: ",
+        "Failed to UPDATE FinalStorage Transfer Request informations: ",
         error,
       );
-      toast.error(`Error: ${error.response.data.message}`);
-      throw error; // Throw the error to trigger onError callback
+      // Use the server's error message if available
+      const errorMessage =
+        error.response?.data?.message || "An unknown error occurred";
+      toast.error(errorMessage);
+      throw error;
     }
   };
 
   const mutation = useMutation({
-    mutationFn: updateFinalStorageLocationMutation,
-    onSuccess: () => {
+    mutationFn: updateFinalStorageTransferRequestMutation,
+    onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
+        queryKey: ["finalStorageTransferRequestQueryKey"],
         queryKey: ["finalStorageLocationQueryKey"],
       });
-      // Toast a success message
-      toast.success("FinalStorage Location UPDATED successfully.", {
+      // Use the server's success message
+      toast.success(data.message, {
         autoClose: 2000,
       });
     },

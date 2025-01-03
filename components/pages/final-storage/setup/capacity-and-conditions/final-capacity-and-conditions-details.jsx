@@ -2,11 +2,11 @@ import { useState, useMemo } from "react";
 
 import ModalFinalStorageConditionsForm from "./conditions/modal/modal-final-storage-conditions-form";
 
-import WarningMessage from "./../../../../shared/warningMessage";
+import WarningMessage from "../../../../shared/warningMessage";
 
 import CapacityDetails from "./capacity/capacity-details";
 import ConditionsDetails from "./conditions/conditions-details";
-import BackButton from "./../../../../shared/back-button";
+import BackButton from "../../../../shared/back-button";
 
 export default function FinalCapacityAndConditionsDetails({
   finalStorageData,
@@ -23,15 +23,10 @@ export default function FinalCapacityAndConditionsDetails({
   const containerFootprint = finalStorageData.containerFootprint;
 
   // Check if finalStorageEntry exists and has items
-  const hasContainers = finalStorageData.finalStorageEntrys.length > 0;
+  const hasContainers = finalStorageData.storageTransferRequests.length > 0;
 
   // Total sum of containers in room (only calculate if there are containers)
-  const totalContainers = hasContainers
-    ? finalStorageData.finalStorageEntrys.reduce(
-        (total, waste) => total + waste.quantity,
-        0,
-      )
-    : 0;
+  const totalContainers = hasContainers ? finalStorageData.quantity : 0;
 
   // Calculate maximum number of containers which can fit in the hall
   const maxContainer = Math.round(roomSurface / containerFootprint);
@@ -88,6 +83,8 @@ export default function FinalCapacityAndConditionsDetails({
             warningMessage={warningMessage}
           />
         )}
+
+       
 
         {/* Capacity Details */}
 

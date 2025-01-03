@@ -148,26 +148,36 @@ model PreStorageConditions {
 // Step 3 "Final Storage of waste"
 
 model FinalStorageLocation {
-  id                     Int                     @id @default(autoincrement())
-  name                   String
-  containerType          String
-  containerFootprint     Int
-  surfaceArea            Int
-  depth                  Int
-  finalStorageEntrys     FinalStorageEntry[]
-  finalStorageConditions FinalStorageCondition[]
+  id                      Int                      @id @default(autoincrement())
+  name                    String
+  containerType           String
+  containerFootprint      Int
+  surfaceArea             Int
+  depth                   Int
+  quantity                Int                      @default(0)
+  storageTransferRequests StorageTransferRequest[]
+  finalStorageConditions  FinalStorageCondition[]
 }
 
-model FinalStorageEntry {
-  id                     Int                             @id @default(autoincrement())
-  createdAt              DateTime                        @default(now())
-  quantity               Int
-  status                 String                          @default("pending")
-  // Statuts: "pending", "in transport", "accepted", "rejected".
-  FinalStorageLocationId Int                             @unique
-  FinalStorageLocation   FinalStorageLocation            @relation(fields: [FinalStorageLocationId], references: [id], onDelete: Cascade)
-  finalStorageEmployeeId Int                             @unique
-  finalStorageEmployee   FinalStorageResponsibleEmployee @relation(fields: [finalStorageEmployeeId], references: [id], onDelete: Cascade)
+model StorageTransferRequest {
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  finalStorageStatus String   @default("requestPending") // "requestPending", "transportPending","requestRejeted", "accepted", "rejected"
+  preStorageStatus   String   @default("pending") // "pending", "accepted", "rejected", "completed"
+  requestedQuantity  Int
+
+  // Location references
+  requestedByRoom       String
+  requestedByEmployeeId Int
+  approvedByEmployeeId  Int?
+  acceptedByEmployeeId  Int?
+
+  requestedByEmployee FinalStorageResponsibleEmployee  @relation("RequestedBy", fields: [requestedByEmployeeId], references: [id], onDelete: Cascade)
+  approvedByEmployee  PreStorageResponsibleEmployee?   @relation(fields: [approvedByEmployeeId], references: [id], onDelete: Cascade)
+  acceptedByEmployee  FinalStorageResponsibleEmployee? @relation("AcceptedBy", fields: [acceptedByEmployeeId], references: [id], onDelete: Cascade)
+
+  finalStorageLocationId Int?
+  finalStorageLocation   FinalStorageLocation? @relation(fields: [finalStorageLocationId], references: [id], onDelete: Cascade)
 }
 
 model FinalStorageResponsibleEmployee {
@@ -178,8 +188,8 @@ model FinalStorageResponsibleEmployee {
   qualifications     String
   address            String
   safetyTraining     Boolean
-  finalStorageEntrys FinalStorageEntry[]
-  approvedTransfers  StorageTransferRequest[]
+  requestedTransfers StorageTransferRequest[] @relation("RequestedBy")
+  acceptedTransfers  StorageTransferRequest[] @relation("AcceptedBy")
 }
 
 // Step 3.1 Storage Conditions
@@ -193,23 +203,4 @@ model FinalStorageCondition {
   storagePressure        Float
   finalStorageLocationId Int
   finalStorageLocation   FinalStorageLocation @relation(fields: [finalStorageLocationId], references: [id], onDelete: Cascade)
-}
-
-model StorageTransferRequest {
-  id                 Int      @id @default(autoincrement())
-  createdAt          DateTime @default(now())
-  finalStorageStatus String   @default("requestPending") // "requestPending", "transportPending","requestRejeted", "accepted", "rejected"
-  preStorageStatus   String   @default("pending") // "pending", "accepted", "rejected"
-  requestedQuantity  Int
-  //containerType      String // do we need this?
-
-  // Location references
-  requestedByRoom       String
-  requestedByEmployeeId Int
-  approvedByEmployeeId  Int?
-  requestedByEmployee   FinalStorageResponsibleEmployee @relation(fields: [requestedByEmployeeId], references: [id])
-  approvedByEmployee    PreStorageResponsibleEmployee?  @relation(fields: [approvedByEmployeeId], references: [id])
-
-  requestNote  String?
-  responseNote String?
 }
